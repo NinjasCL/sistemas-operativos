@@ -1,0 +1,205 @@
+= Strings 
+
+
+Los Strings o cadenas de caracteres en _Ada_ están condicionadas por la codificación de caracteres.
+
+- `String`: 256 caracteres disponibles en la codificación _Latin-1_ (8 bit).
+- `Wide_String`: 65536 caracteres disponibles (16 bit).
+- `Wide_Wide_String`: 1114112 caracteres disponibles (code points de 32 bit). Ideal para almacenar emojis (UTF-8).
+
+[source, ada]
+----
+type String is
+  array (Positive range <>) of Character;
+
+type Wide_String is
+  array (Positive range <>) of Wide_Character;
+
+type Wide_Wide_String is
+  array (Positive range <>) of
+    Wide_Wide_Character;
+----
+
+Cada una tiene su procedimiento de salida asociado. Si bien `Wide_Wide_String` tiene un amplio abanico
+de caracteres posibles, no es lo suficientemente flexible para todo _Unicode_, ya que el estándar _Unicode_
+no solo manipula caracteres, también la combinación de los mismos. Para trabajar con _Unicode_ se recomienda
+el uso de una biblioteca externa como https://github.com/AdaCore/VSS[VSS].
+
+[source, ada]
+----
+with Ada.Text_IO;
+with Ada.Wide_Text_IO;
+with Ada.Wide_Wide_Text_IO;
+
+procedure Strings is
+   ñandú : constant String := "Ñandú";
+   π : constant := 3.14;
+   hello : constant Wide_String := "Привіт";
+   fire : constant Wide_Wide_String := "🔥";
+begin
+   
+   Ada.Text_IO.Put_Line(ñandú);
+   Ada.Text_IO.Put_Line(π'Image);
+   Ada.Wide_Text_IO.Put_Line (hello);
+   Ada.Wide_Wide_Text_IO.Put_Line (fire);
+
+end Strings;
+----
+
+Sin embargo el código anterior no compilará, ya que es necesario configurar 
+el proyecto para que soporte _Unicode_. Se debe editar el archivo de proyecto `gpr`, 
+en este caso `strings.gpr` y añadir la opción `-gnatW8` para que autorice el uso
+de caracteres _Unicode_.
+
+[source, ada]
+----
+package Compiler is
+      for Default_Switches ("Ada") use Strings_Config.Ada_Compiler_Switches & ("-gnatW8");
+end Compiler;
+----
+
+Una vez configurado se puede ejecutar normalmente.
+
+[source, bash]
+----
+$ alr run
+----
+
+[source, text]
+----
+✓ Build finished successfully in 7.82 seconds.
+ñandú
+ 3.14000000000000000E+00
+Привіт
+🔥
+----
+
+[NOTE]
+====
+Se puede notar el uso de identificadores con caracteres especiales como `ñandú`. _Ada_ soporta
+identificadores dentro del rango de 16 bit (Wide_String), es decir puede ser con letras, pero
+no ser un emoji.
+====
+
+[CAUTION]
+====
+Se recomienda usar solamente _ASCII_ para identificadores, ya que facilita la programación entre 
+personas con distintos idiomas y configuración de teclado. 
+====
+
+== Caracteres
+
+Los strings son arreglos compuestos por caracteres. El cual es un símbolo que ésta definido por la codificación, 
+al igual que el string. Está delimitado por dos comillas simples (`''`).
+
+- `Character`: 256 caracteres disponibles en la codificación _Latin-1_ (8 bit).
+- `Wide_Character`: 65536 caracteres disponibles (16 bit).
+- `Wide_Wide_Character`: 1114112 caracteres disponibles (code points de 32 bit).
+
+[source, ada]
+----
+type Roman_Digit is ('I', 'V', 'X', 'L', 'C', 'D', 'M');
+----
+
+== Concatenación
+
+En muchos lenguajes de programación se tiene un mecanismo que permite
+crear strings multilínea. En _Ada_ esto no es posible, sin embargo, se puede lograr el efecto de múltiples líneas usando secuencias de escape para representar caracteres de nueva línea dentro de una cadena o definiendo múltiples cadenas concatenadas con el operador `&`.
+
+[source, ada]
+----
+with Ada.Text_IO;
+
+procedure Main is
+   My_String : constant String := "Primera línea" & ASCII.LF 
+                                 & "Segunda línea" & ASCII.LF 
+                                 & "Tercera línea";
+
+begin
+   Ada.Text_IO.Put_Line(My_String);
+end Main;
+----
+
+== Unbounded String
+
+Una vez definido un string su tamaño es estático. Si se desea tener un tamaño dinámico
+se debe usar el tipo _Unbounded String_ que permite aumentar su tamaño. Un dato del tipo `Unbounded_String`
+representa un `String` que va desde 1 caracter y de un largo variable entre 0 y el máximo de los números naturales (`Narutal'Last`).
+
+Los `Unbounded_String` a diferencia de los strings nativos no son arreglos de caracters, eso quiere decir que no se les puede aplicar el atributo `'Range` ni los parentesis para indexar. En vez de eso son un tipo privado que tiene en su paquete (el `Ada.Strings.Unbounded`) todas las operaciones necesarias para reemplazar caracteres (`Replace_Element`), convertir a string (`To_String`) y desde string (`To_Unbounded_String`), concatenar (operador `&`), reemplazar subcadenas del `Unbounded_String` por otras (`Replace_Slice`), buscar subcadenas (`Index`), etc.
+
+La ventaja de un `Unbounded_String` es que puede crecer y decrecer sin límite (o sin otro límite que la memoria disponible). 
+
+[source, ada]
+----
+with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
+procedure Ejemplo_Unbounded_String is
+   -- Declaración de un Unbounded_String
+   Mi_Cadena : Unbounded_String;
+   Otra_Cadena : Unbounded_String;
+
+   --  Declaración de una cadena regular
+   Mi_String : String := "Hola";
+
+begin
+   -- Conversión de String a Unbounded_String
+   Mi_Cadena := To_Unbounded_String(Mi_String);
+   Put_Line("Mi_Cadena (inicial): " & To_String(Mi_Cadena));
+
+   --  Concatenación con Unbounded_String
+   Otra_Cadena := Mi_Cadena & " Mundo";
+   Put_Line("Otra_Cadena (concatenada): " & To_String(Otra_Cadena));
+
+   -- Concatenación con String
+   Mi_Cadena := Mi_Cadena & " ";
+   Mi_Cadena := Mi_Cadena & To_Unbounded_String("de nuevo");
+   Put_Line("Mi_Cadena (concatenada): " & To_String(Mi_Cadena));
+
+   --  Longitud de la cadena
+   Put_Line("Longitud de Mi_Cadena: " & Integer'Image(Length(Mi_Cadena)));
+
+   --  Acceso a un caracter (necesita conversión a String)
+   if Length(Mi_Cadena) > 0 then
+       Put_Line("Primer caracter de Mi_Cadena: " & Mi_Cadena'image(1));
+       Put_Line("Primer caracter de Mi_Cadena (usando To_String): " & To_String(Mi_Cadena)(1));
+   end if;
+
+
+   --  Reemplazo de un caracter
+   Replace_Element(Mi_Cadena, 1, 'h');
+   Put_Line("Mi_Cadena (después de reemplazar): " & To_String(Mi_Cadena));
+
+   --  Extracción de una subcadena (Slice)
+   declare
+       Sub_Cadena : Unbounded_String := Slice(Mi_Cadena, 3, 6);
+   begin
+      Put_Line("Sub_Cadena: " & To_String(Sub_Cadena));
+   end;
+   
+end Ejemplo_Unbounded_String;
+----
+
+
+
+== ¿Por qué tantos tipos de String?
+
+A diferencia de otros lenguajes que tienen un solo tipo de string para todos los casos.
+Es importante recalcar que _Ada_ es un lenguaje pensado para sistemas críticos
+donde la gestión de memoria es de suma importancia para evitar errores imprevistos.
+El tener una definición exacta del tamaño de un string, permite un manejo granular
+y seguro de los tipos y tamaños de datos.
+
+Las formas restringidas (`String`) pueden lanzar excepciones al alcanzar sus límites (`Constraint_Error`).
+Y las formas dinámicas (`Unbounded_String`) pueden alcanzar límites de memoria (_heap_) que no son deseables en aplicaciones de uso crítico.
+
+Sin embargo tener tantos tipos de datos puede causar problemas de complejidad
+combinatoria (muchos tipos de datos y su manejo de memoria respectivo). Es por esto que actualmente la comunidad está pensando https://github.com/Ada-Rapporteur-Group/User-Community-Input/issues/40[alternativas de solución].
+
+Por el momento se recomienda usar una https://github.com/AdaCore/VSS[biblioteca externa como VSS] para cuando
+el uso de `String` y `Unbounded_String` no sea apropiado.
+
+== Más Info
+
+Para mayor información se puede revisar el https://learn.adacore.com/courses/advanced-ada/parts/data_types/strings.html[manual avanzado de strings en Ada].

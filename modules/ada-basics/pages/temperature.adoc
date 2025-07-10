@@ -1,0 +1,143 @@
+= Conversor de Temperatura
+
+En el siguiente proyecto se elaborará un conversor de temperaturas para demostrar
+el uso de bucles, concatenación de texto y variables.
+
+== Creación del Proyecto
+
+Para crear el proyecto utilizamos el comando `init`.
+
+[source, bash]
+----
+$ alr init --bin temperature
+----
+
+== Resultado Esperado
+
+Al ejecutar el programa debería mostrar la siguiente tabla:
+
+[source, text]
+----
+ F°	     C°
+ 0	     -17
+ 20	     -6
+ 40	     4
+ 60	     15
+ 80	     26
+ 100	 37
+ 120	 48
+ 140	 60
+ 160	 71
+ 180	 82
+ 200	 93
+ 220	 104
+ 240	 115
+ 260	 126
+ 280	 137
+ 300	 148
+----
+
+Donde los grados celcius corresponden a la siguiente fórmula:
+
+[asciimath]
+++++
+Celcius = (5 * (Fahrenheit - 32))/9
+++++
+
+== Código con Integer
+
+El código para lograr el resultado es el siguiente:
+
+[source, ada]
+----
+with Ada.Text_IO;
+
+procedure Temp is
+   use Ada.Text_IO;
+
+   fahrenheit, celcius : Integer;
+   lower, upper, step : Integer;
+begin
+   lower := 0;
+   upper := 300;
+   step := 20;
+
+   Put_Line(" F°" & ASCII.HT & "C°");
+   
+   fahrenheit := lower;
+   while (fahrenheit <= upper) loop
+      celcius := 5 * (fahrenheit - 32) / 9;
+         
+      Put_Line(fahrenheit'Image & ASCII.HT & celcius'Image);
+
+      fahrenheit := fahrenheit + step;
+   end loop;
+end Temp;
+----
+
+|====
+| Línea | Descripción
+
+| `fahrenheit, celcius : Integer;` | Se definen dos variables del tipo entero para almacenar la temperatura.
+| `lower, upper, step : Integer;` | Se define variables para controlar los límites inferior, superior e incremento.
+| `lower := 0;
+   upper := 300;
+   step := 20;` | Se establece los valores iniciales de los límites inferior, superior e incremento.
+| `Put_Line(" F°" & ASCII.HT & "C°");` | Se muestra en consola las cabeceras de la tabla. `ASCII.HT` corresponde a una tabulación ("\t"). El caracter `&` (ampersand) permite concatenar las cadenas de caracteres.
+| `fahrenheit := lower;` | Se asigna el valor inicial de la temperatura.
+| `while (fahrenheit <= upper) loop` | Se realiza un bucle `while` desde el valor inferior hasta que `fahrenheit` alcance el límite superior.
+| `celcius := 5 * (fahrenheit - 32) / 9;` | Se realiza el cálculo de la temperatura.
+| `Put_Line(fahrenheit'Image & ASCII.HT & celcius'Image);` | Se muestra el mensaje separado por tabs ("\t") y retorno de carro ("\n").
+| `fahrenheit := fahrenheit + step;` | Se incrementa el valor de la temperatura según la variable `step`.
+|====
+
+== Código con Float
+
+El código anterior solamente consideraba los números enteros, por lo que
+la precisión al convertir las temperaturas se perdía. Se debe modificar
+el código para considerar los tipos correctos.
+
+[source, ada]
+----
+with Ada.Text_IO;
+with Ada.Float_Text_IO;
+
+procedure Temp is
+   use Ada.Text_IO;
+   use Ada.Float_Text_IO;
+
+   fahrenheit, celcius : Float;
+   lower, upper, step : Float;
+begin
+   lower := 0.0;
+   upper := 300.0;
+   step := 20.0;
+
+   Put_Line("   F°" & ASCII.HT & "C°");
+   fahrenheit := lower;
+   
+   while (fahrenheit <= upper) loop
+      celcius := 5.0 * (fahrenheit - 32.0) / 9.0;
+         
+      Put(Item => fahrenheit, Fore => 5, Aft => 1, Exp => 0);
+      
+      Put(Item => celcius, Fore => 5, Aft => 1, Exp => 0);
+      
+      New_Line;
+
+      fahrenheit := fahrenheit + step;
+   end loop;
+end Temp;
+----
+
+[NOTE]
+====
+Todas las operaciones deben ser añadidos los decimales, debido a que _Ada_ debe ser explícito
+la conversión.
+====
+
+[NOTE]
+====
+La línea `Put(Item => fahrenheit, Fore => 5, Aft => 1, Exp => 0);` nos permite mostrar un número
+con decimales formateado. Ésta función es parte de la biblioteca estándar importada con `with Ada.Float_Text_IO;`.
+====

@@ -1,0 +1,124 @@
+= Argumentos de Línea de Comandos
+
+En éste proyecto se creará un programa que repetira las palabras que sean 
+proporcionadas desde la línea de comandos.
+
+Estas palabras serán dadas al iniciar el programa como "argumentos de línea de comandos", 
+el cual es un elemento común que permite obtener resultados y comportamientos diferentes
+dependiendo de los valores proporcionados. Es el primer paso en crear programas usables.
+
+Para ejemplificar se puede nombrar a _Alire_, que previamente se ha usado con argumentos
+para distintas operaciones.
+
+== Creación del Proyecto
+
+Para crear el proyecto utilizamos el comando `init`.
+
+[source, bash]
+----
+$ alr init --bin command_line_args
+----
+
+_Alire_ preguntará algunos datos necesarios para nuestro proyecto.
+La mayoría se puede omitir presionando la tecla `Enter`.
+
+Al abrir el archivo `src/command_line_args.adb` se puede ver el siguiente código
+
+[source, ada]
+----
+procedure Command_Line_Args is
+begin
+   null;
+end Command_Line_Args;
+----
+
+== Implementación
+
+La implementación consiste en utilizar la biblioteca `Ada.Command_Line` para obtener los argumentos
+y un ciclo `for` para mostrarlos. 
+
+
+[source, ada]
+----
+with Ada.Text_IO;
+with Ada.Command_Line;
+
+procedure Command_Line_Args is
+   use Ada.Text_IO;
+   use Ada.Command_Line;
+begin
+   for next in 1 .. Argument_Count loop
+      Put_Line(Argument(next));
+   end loop;
+end Command_Line_Args;
+----
+
+Al ejecutar el siguiente comando:
+
+[source, bash]
+----
+$ alr run --args="Yo Como Pan"
+----
+
+Se obtiene el resultado
+
+[source, text]
+----
+✓ Build finished successfully in 1.44 seconds.
+Yo
+Como
+Pan
+----
+
+.Comentarios
+|====
+| Línea | Descripción 
+
+| `Argument_Count` | Parte de la biblioteca `Ada.Command_Line`, contiene la cantidad de argumentos de la línea de comandos.
+| `Argument(next)` | Parte de la biblioteca `Ada.Command_Line`, es una función que retorna el valor de la posición `next`.
+
+|====
+
+[NOTE]
+====
+La diferencia entre un ciclo `for` y un ciclo `while` es que en _Ada_ un 
+ciclo `for` solamente puede hacer incrementos de 1 paso. Mientras que el ciclo `while`
+puede incrementar de más pasos a la vez. El ciclo `for` es recomendables para recorrer
+una lista de elementos discreta.
+====
+
+== Mostrar argumentos a la inversa
+
+Para invertir el orden de los argumentos se puede usar la palabra clave `reverse`.
+
+[source, ada]
+----
+with Ada.Text_IO;
+with Ada.Command_Line;
+
+procedure Command_Line_Args is
+   use Ada.Text_IO;
+   use Ada.Command_Line;
+begin
+   for next in reverse 1 .. Argument_Count loop
+      Put_Line(Argument(next));
+   end loop;
+end Command_Line_Args;
+----
+
+Al ejecutar el siguiente comando:
+
+[source, bash]
+----
+$ alr run --args="Yo Como Pan"
+----
+
+Se obtiene el resultado
+
+[source, text]
+----
+✓ Build finished successfully in 1.44 seconds.
+Pan
+Como
+Yo
+----

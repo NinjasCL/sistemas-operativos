@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Hola mundo :: Programación en Ada</title>
+    <link rel="canonical" href="https://ninjascl.github.io/ada-libro/introduction/hello.html">
+    <link rel="prev" href="history.html">
+    <link rel="next" href="sqrt.html">
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://ninjascl.github.io/ada-libro">Programación en Ada</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Programación en Ada</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Introducción General</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="history.html">Historia del lenguaje de programación Ada</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="hello.html">Hola mundo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="sqrt.html">Raíz Cuadrada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="temp.html">Conversor de Temperatura</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Programación en Ada</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Programación en Ada</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Programación en Ada</a></li>
+    <li>Introducción General</li>
+    <li><a href="hello.html">Hola mundo</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///antora/./modules/introduction/pages/hello.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Hola mundo</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>La forma más efectiva de aprender un nuevo lenguaje de programación es creando programas.
+La tradición dicta que se cree un programa llamado "Hola Mundo", el cual simplemente
+muestra un mensaje por consola. Este tipo de programas permiten validar que las
+herramientas y entorno de desarrollo estan correctamente configurados. Con ello facilitan
+la compilación de programas en <em>Ada</em>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Ada.Text_IO;
+
+procedure Hola is
+begin
+   Ada.Text_IO.Put_Line("¡Hola Mundo!");
+end Hola;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>En <em>Ada</em> se puede utilizar las herramientas de <a href="https://alire.ada.dev/">Alire + Gprbuild</a> o <a href="https://gcc.gnu.org/onlinedocs/gnat_ugn/Getting-Started-with-GNAT.html">GNATmake</a> para compilar y generar los ejecutables. Se prefiere la herramienta <em>Alire</em>  ya que es moderna y tiene las comodidades de los sistemas actuales para la gestión de proyectos e instalación de dependencias.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="instalación-de-alire"><a class="anchor" href="#instalación-de-alire"></a>Instalación de Alire</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>La herramienta <a href="https://alire.ada.dev/"><strong>Alire</strong></a> es la utilizada en <em>Ada</em> para ejecución de distintas tareas.
+Como la compilación e instalación de dependencias (bibliotecas de código externas que no vienen
+con la biblioteca estándar). Es similar a herramientas usadas en otros lenguajes como
+<code>npm</code> (Javascript) o <code>mix</code> (Elixir).</p>
+</div>
+<div class="paragraph">
+<p>La instalación dependerá del sistema operativo para ello se debe descargar la versión
+correspondiente en el <a href="https://github.com/alire-project/alire/releases">repositorio de Github</a>.
+Puede revisar más detalles en la <a href="https://alire.ada.dev/docs/#installation">documentación oficial</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="instalación-de-ejemplo-en-windows"><a class="anchor" href="#instalación-de-ejemplo-en-windows"></a>Instalación de Ejemplo en Windows</h3>
+<div class="paragraph">
+<p>Como ejemplo de instalación usaremos la plataforma <em>Windows</em>.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Descargar el instalador de Alire para Windows en: <a href="https://github.com/alire-project/alire/releases/download/v2.1.0/alr-2.1.0-installer-x86_64-windows.exe" class="bare">https://github.com/alire-project/alire/releases/download/v2.1.0/alr-2.1.0-installer-x86_64-windows.exe</a></p>
+</li>
+<li>
+<p>Instalar alire.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Ahora es necesario instalar las dependencias de <code>Msys</code> (bash, git, openssl) en <em>Windows</em>.
+Para ello abrimos el programa <em>Alire</em> que estará en el escritorio.</p>
+</div>
+<div class="paragraph">
+<p>Y descargamos el proyecto "Hola Mundo" de ejemplo.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ alr get hello</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Alire</em> preguntará si estamos de acuerdo en descargar las dependencias
+y escribimos <code>Y</code> y presionar <code>Enter</code>. Esto solamente lo preguntará
+si no se han instalado las dependencias.</p>
+</div>
+<div class="paragraph">
+<p>Una vez descargadas las dependencias se debe instalar el compilador de <em>Ada</em>.</p>
+</div>
+<div class="paragraph">
+<p>Para ello vamos al directorio generado y ejecutamos el comando <code>build</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ cd hello_1.0.2_5715870b
+$ alr build</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Alire</em> preguntará si estamos de acuerdo en descargar el compilador
+y escribimos <code>Y</code> y presionar <code>Enter</code>. Esto solamente lo preguntará
+una única vez, luego de la instalación pasará a compilar directamente.</p>
+</div>
+<div class="paragraph">
+<p>Finalmente tendremos un ejecutable dentro de la carpeta <code>bin</code></p>
+</div>
+<div class="paragraph">
+<p>Para lo cual lo podremos ejecutar y mostrará el mensaje <code>Hello, world!</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-batch hljs" data-lang="batch">/bin/hello.exe
+Hello, world!</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="proyecto-hello"><a class="anchor" href="#proyecto-hello"></a>Proyecto <code>hello</code></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>El directorio <code>hello_1.0.2_5715870b</code> (puede variar el número despues de hello) contiene
+los archivos necesarios para el proyecto. Los cuales son:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">hello_1.0.2_5715870b
+├── LICENSE
+├── README.md
+├── bin/
+│   └── hello.exe
+├── alire
+│   ├── alire.lock
+│   ├── alire.toml.upstream
+│   └── flags
+│       └── complete_copy
+├── alire.toml
+├── config
+│   ├── hello_config.ads
+│   ├── hello_config.gpr
+│   └── hello_config.h
+├── hello.gpr
+└── src
+    └── hello.adb</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Ítem</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">LICENSE</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archivo de texto que contiene la licencia del código.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">README.md</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archivo de texto (<em>Markdown</em>) que contiene una introducción al proyecto.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">bin/</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Directorio donde se almacenan los ejecutables (archivos binarios) del comando <code>alr build</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">alire/</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Directorio generado automáticamente por el comando <code>alr</code>. Almacena información de las dependencias.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">config/</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Directorio generado automáticamente por el comando <code>alr</code>. Almacena información para la compilación del proyecto.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">alire.toml</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archivo de texto (TOML) con metadatos del proyecto (nombre, versión, autor, email, descripción, etc.) y definición de las dependencias con sus versiones. Se debe modificar cada vez que necesitemos añadir una dependencia.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">hello.gpr</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archivo de texto (Ada) con la configuración del proyecto. Puede ser modificado, pero normalmente con la configuración predeterminada es suficiente para la mayoría de los proyectos.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">src/hello.adb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Directorio <code>src</code> contiene el código fuente de nuestro proyecto y el archivo <code>hello.adb</code> tiene el código principal.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="contenido-de-srchello-adb"><a class="anchor" href="#contenido-de-srchello-adb"></a>Contenido de <code>src/hello.adb</code></h3>
+<div class="paragraph">
+<p>El archivo que muestra el texto contiene el siguiente código:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Libhello;
+
+procedure Hello is
+
+begin
+   Libhello.Hello_World;
+end Hello;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Como se puede apreciar con la instrucción <code>with Libhello;</code> está importando una biblioteca externa llamada <code>Libhello</code>.
+Luego esta llamando al procedimiento <code>Hello_World</code> en la línea <code>Libhello.Hello_World;</code>.</p>
+</div>
+<div class="paragraph">
+<p>La biblioteca <code>Libhello</code> esta establecida como dependencia en el archivo <code>alire.toml</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-toml hljs" data-lang="toml"># ...
+[[depends-on]]
+libhello = "^1.0"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="contenido-de-libhello"><a class="anchor" href="#contenido-de-libhello"></a>Contenido de <code>libhello</code></h3>
+<div class="paragraph">
+<p>Si vamos al <a href="https://github.com/alire-project/libhello">repositorio de la dependencia</a>. Se puede revisar
+el contenido del archivo <code>src/libhello.adb</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Ada.Text_IO;
+
+package body Libhello is
+
+   -----------------
+   -- Hello_World --
+   -----------------
+
+   procedure Hello_World is
+      use Ada.Text_IO;
+   begin
+      Put_Line ("Hello, world!");
+   end Hello_World;
+
+end Libhello;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Para no sobre complicar solamente se explicará las siguientes líneas:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Línea</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>with Ada.Text_IO;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Permite usar la biblioteca de imprimir texto estándar como <code>Put_Line</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>package body Libhello is</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Define el contenido del paquete Libhello, es decir sus funciones y procedimientos que estarán disponibles para ser usados por otros programas.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>-- Hello_World</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Es un comentario. El compilador ignorará toda la línea desde <code>--</code> hasta el final de línea.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>procedure Hello_World is</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Se define el cuerpo de un procedimiento llamado <code>Hello_World</code>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>use Ada.Text_IO;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Trae al contexto actual las funciones y procedimientos de <code>Text_IO</code>, permitiendo llamarlos directamente sin su ruta completa (<code>Ada.Text_IO.Put_line</code>);</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Put_Line ("Hello, world!");</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Muestra el mensaje <code>Hello, world!</code> en la consola.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Ésta separación entre una biblioteca de acciones y un código que la usa es una buena práctica de ingeniería de software,
+separando las capas de funcionalidad, datos y presentación. Acá puede parecer innecesario, más ha servido
+como ejemplo sobre como añadir dependencias a un proyecto.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tipos-de-archivo"><a class="anchor" href="#tipos-de-archivo"></a>Tipos de Archivo</h3>
+<div class="paragraph">
+<p>Como se pudo apreciar en el proyecto <code>hello</code> se puede tener distintos tipos de archivo
+para un proyecto de <em>Ada</em>.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Tipo</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*.gpr</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archivo de definición de proyecto. Utiliza un lenguaje similar a <em>Ada</em> para la configuración.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*.adb</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archivo de implementación (<em>Ada Body</em>). Contiene el código a ejecutar en un proyecto.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">*.ads</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archivo de especificación (<em>Ada Specification</em>). Contiene la especificación de los procedimientos (entre otros exportables) que podrán ser usados públicamente. Normalmente asociados a bibliotecas.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="history.html">Historia del lenguaje de programación Ada</a></span>
+  <span class="next"><a href="sqrt.html">Raíz Cuadrada</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+  </body>
+</html>

@@ -1,0 +1,214 @@
+= Hola mundo
+
+La forma más efectiva de aprender un nuevo lenguaje de programación es creando programas.
+La tradición dicta que se cree un programa llamado "Hola Mundo", el cual simplemente
+muestra un mensaje por consola. Este tipo de programas permiten validar que las 
+herramientas y entorno de desarrollo estan correctamente configurados. Con ello facilitan
+la compilación de programas en _Ada_.
+
+[source, ada]
+----
+with Ada.Text_IO;
+
+procedure Hola is
+begin
+   Ada.Text_IO.Put_Line("¡Hola Mundo!");
+end Hola;
+----
+
+_Ada_ no distingue mayúsculas y minúsculas. Por lo que el siguiente código es exactamente el mismo.
+Sin embargo pueden salir advertencias al no seguir un formato consistente. Lo ideal es siempre
+ser consistente al programar y seguir las convenciones estandarizadas del lenguaje.
+
+[source, ada]
+----
+with ada.text_io;
+
+procedure hola is
+begin
+   ada.text_io.put_line("¡Hola Mundo!");
+end hola;
+----
+
+En _Ada_ se puede utilizar las herramientas de https://alire.ada.dev/[Alire + Gprbuild] o https://gcc.gnu.org/onlinedocs/gnat_ugn/Getting-Started-with-GNAT.html[GNATmake] para compilar y generar los ejecutables. Se prefiere la herramienta _Alire_  ya que es moderna y tiene las comodidades de los sistemas actuales para la gestión de proyectos e instalación de dependencias.
+
+== Instalación de Alire
+
+La herramienta https://alire.ada.dev/[*Alire*] es la utilizada en _Ada_ para ejecución de distintas tareas.
+Como la compilación e instalación de dependencias (bibliotecas de código externas que no vienen 
+con la biblioteca estándar). Es similar a herramientas usadas en otros lenguajes como 
+`npm` (Javascript) o `mix` (Elixir).
+
+La instalación dependerá del sistema operativo para ello se debe descargar la versión
+correspondiente en el https://github.com/alire-project/alire/releases[repositorio de Github].
+Puede revisar más detalles en la https://alire.ada.dev/docs/#installation[documentación oficial].
+
+=== Instalación de Ejemplo en Windows
+
+Como ejemplo de instalación usaremos la plataforma _Windows_.
+
+. Descargar el instalador de Alire para Windows en: https://github.com/alire-project/alire/releases/download/v2.1.0/alr-2.1.0-installer-x86_64-windows.exe
+. Instalar alire.
+
+Ahora es necesario instalar las dependencias de `Msys` (bash, git, openssl) en _Windows_.
+Para ello abrimos el programa _Alire_ que estará en el escritorio.
+
+Y descargamos el proyecto "Hola Mundo" de ejemplo.
+
+[source, bash]
+----
+$ alr get hello
+----
+
+_Alire_ preguntará si estamos de acuerdo en descargar las dependencias
+y escribimos `Y` y presionar `Enter`. Esto solamente lo preguntará
+si no se han instalado las dependencias.
+
+Una vez descargadas las dependencias se debe instalar el compilador de _Ada_.
+
+Para ello vamos al directorio generado y ejecutamos el comando `build`.
+
+[source, bash]
+----
+$ cd hello_1.0.2_5715870b
+$ alr build
+----
+
+_Alire_ preguntará si estamos de acuerdo en descargar el compilador
+y escribimos `Y` y presionar `Enter`. Esto solamente lo preguntará
+una única vez, luego de la instalación pasará a compilar directamente.
+
+Finalmente tendremos un ejecutable dentro de la carpeta `bin`
+
+Para lo cual lo podremos ejecutar y mostrará el mensaje `Hello, world!`.
+
+[source, batch]
+----
+/bin/hello.exe
+Hello, world!
+----
+
+== Proyecto `hello`
+
+El directorio `hello_1.0.2_5715870b` (puede variar el número despues de hello) contiene
+los archivos necesarios para el proyecto. Los cuales son:
+
+[source, text]
+----
+hello_1.0.2_5715870b
+├── LICENSE
+├── README.md
+├── bin/
+│   └── hello.exe
+├── alire
+│   ├── alire.lock
+│   ├── alire.toml.upstream
+│   └── flags
+│       └── complete_copy
+├── alire.toml
+├── config
+│   ├── hello_config.ads
+│   ├── hello_config.gpr
+│   └── hello_config.h
+├── hello.gpr
+└── src
+    └── hello.adb
+----
+
+|====
+|Ítem| Descripción
+
+|LICENSE | Archivo de texto que contiene la licencia del código.
+|README.md | Archivo de texto (_Markdown_) que contiene una introducción al proyecto.
+|bin/ | Directorio donde se almacenan los ejecutables (archivos binarios) del comando `alr build`.
+|alire/ | Directorio generado automáticamente por el comando `alr`. Almacena información de las dependencias.
+|config/ | Directorio generado automáticamente por el comando `alr`. Almacena información para la compilación del proyecto.
+|alire.toml| Archivo de texto (TOML) con metadatos del proyecto (nombre, versión, autor, email, descripción, etc.) y definición de las dependencias con sus versiones. Se debe modificar cada vez que necesitemos añadir una dependencia.
+|hello.gpr| Archivo de texto (Ada) con la configuración del proyecto. Puede ser modificado, pero normalmente con la configuración predeterminada es suficiente para la mayoría de los proyectos.
+|src/hello.adb| Directorio `src` contiene el código fuente de nuestro proyecto y el archivo `hello.adb` tiene el código principal.
+|====
+
+=== Contenido de `src/hello.adb`
+
+El archivo que muestra el texto contiene el siguiente código:
+
+[source, ada]
+----
+with Libhello;
+
+procedure Hello is
+
+begin
+   Libhello.Hello_World;
+end Hello;
+----
+
+Como se puede apreciar con la instrucción `with Libhello;` está importando una biblioteca externa llamada `Libhello`.
+Luego esta llamando al procedimiento `Hello_World` en la línea `Libhello.Hello_World;`.
+
+La biblioteca `Libhello` esta establecida como dependencia en el archivo `alire.toml`.
+
+[source, toml]
+----
+# ...
+[[depends-on]]
+libhello = "^1.0"
+----
+
+=== Contenido de `libhello` 
+
+Si vamos al https://github.com/alire-project/libhello[repositorio de la dependencia]. Se puede revisar
+el contenido del archivo `src/libhello.adb`. 
+
+[source, ada, linenums]
+----
+with Ada.Text_IO;
+
+package body Libhello is
+
+   -----------------
+   -- Hello_World --
+   -----------------
+
+   procedure Hello_World is
+      use Ada.Text_IO;
+   begin
+      Put_Line ("Hello, world!");
+   end Hello_World;
+
+end Libhello;
+----
+
+
+Para no sobre complicar solamente se explicará las siguientes líneas:
+
+|====
+| Línea | Descripción 
+
+| `with Ada.Text_IO;` | Permite usar la biblioteca de imprimir texto estándar como `Put_Line`.
+| `package body Libhello is` | Define el contenido del paquete Libhello, es decir sus funciones y procedimientos que estarán disponibles para ser usados por otros programas.
+| `-- Hello_World` | Es un comentario. El compilador ignorará toda la línea desde `--` hasta el final de línea.
+| `procedure Hello_World is` | Se define el cuerpo de un procedimiento llamado `Hello_World`.
+| `use Ada.Text_IO;` | Trae al contexto actual las funciones y procedimientos de `Text_IO`, permitiendo llamarlos directamente sin su ruta completa (`Ada.Text_IO.Put_line`);
+| `Put_Line ("Hello, world!");` | Muestra el mensaje `Hello, world!` en la consola.
+|====
+
+[NOTE]
+====
+Ésta separación entre una biblioteca de acciones y un código que la usa es una buena práctica de ingeniería de software, 
+separando las capas de funcionalidad, datos y presentación. Acá puede parecer innecesario, más ha servido
+como ejemplo sobre como añadir dependencias a un proyecto.
+====
+
+=== Tipos de Archivo
+
+Como se pudo apreciar en el proyecto `hello` se puede tener distintos tipos de archivo
+para un proyecto de _Ada_.
+
+|====
+|Tipo| Descripción
+
+|*.gpr | Archivo de definición de proyecto. Utiliza un lenguaje similar a _Ada_ para la configuración.
+|*.adb | Archivo de implementación (_Ada Body_). Contiene el código a ejecutar en un proyecto.
+|*.ads | Archivo de especificación (_Ada Specification_). Contiene la especificación de los procedimientos (entre otros exportables) que podrán ser usados públicamente. Normalmente asociados a bibliotecas.
+|====

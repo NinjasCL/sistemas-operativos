@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Raíz Cuadrada :: Conceptos de Sistemas Operativos con Ada y Elixir</title>
+    <link rel="canonical" href="https://ninjascl.github.io/ada-libro/ada-basics/sqrt.html">
+    <link rel="prev" href="hello.html">
+    <link rel="next" href="temperature.html">
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://ninjascl.github.io/ada-libro">Conceptos de Sistemas Operativos con Ada y Elixir</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación en Ada</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="about.html">Introducción al lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="history.html">Historia del lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="hello.html">Hola mundo</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="sqrt.html">Raíz Cuadrada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="temperature.html">Conversor de Temperatura</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="args.html">Argumentos de Línea de Comandos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="strings.html">Strings</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Conceptos de Sistemas Operativos con Ada y Elixir</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></li>
+    <li>Programación en Ada</li>
+    <li><a href="sqrt.html">Raíz Cuadrada</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///antora/./modules/ada-basics/pages/sqrt.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Raíz Cuadrada</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>El siguiente proyecto será el uso de la función matemática de la raíz cuadrada.
+Se creará un procedimiento que reciba un parámetro, calcule la raíz cuadrada y la muestre por consola.</p>
+</div>
+<div class="paragraph">
+<p>El objetivo es demostrar como modularizar código y crear procedimientos que reciben un parámetro.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="creación-del-proyecto"><a class="anchor" href="#creación-del-proyecto"></a>Creación del Proyecto</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para crear el proyecto utilizamos el comando <code>init</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ alr init --bin sqrt</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Alire</em> preguntará algunos datos necesarios para nuestro proyecto.
+La mayoría se puede omitir presionando la tecla <code>Enter</code>.</p>
+</div>
+<div class="paragraph">
+<p>Al abrir el archivo <code>src/sqrt.adb</code> se puede ver el siguiente código</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">procedure Sqrt is
+begin
+   null;
+end Sqrt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>El cual es simplemente un procedimiento vacío.
+Este archivo será nuestro <code>"main"</code>. En <em>Ada</em> no es obligación
+que la función principal tenga este nombre, sin embargo debe estar
+definida en el archivo <code>sqrt.gpr</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">for Main use ("sqrt.adb");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>El nombre del procedimiento principal (camel case) debe ser igual al nombre del archivo (minúsculas),
+caso contrario producirá un error. Solamente puede existir un procedimiento principal,
+si se desea agregar más funciones o procedimientos deben estar dentro de un paquete definido
+en su propio archivo o dentro de la definición del procedimiento principal.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="primera-iteración-anidado"><a class="anchor" href="#primera-iteración-anidado"></a>Primera Iteración (Anidado)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para la primera iteración se utilizará una definición de un procedimiento
+dentro del procedimiento principal. Esto quiere decir que es un procedimiento
+anidado.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Ada.Text_IO;
+with Ada.Numerics.Elementary_Functions;
+
+procedure Sqrt is
+   procedure Raiz(numero : Float) is
+      use Ada.Text_IO;
+      use Ada.Numerics.Elementary_Functions;
+   begin
+      Put_Line(Sqrt(numero)'Image);
+   end Raiz;
+begin
+   Raiz(9.0);
+end Sqrt;</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Línea</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>with Ada.Text_IO;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Importa las herramientas para escribir el texto en la consola</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>with Ada.Numerics.Elementary_Functions;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Importa las herramientas matemáticas como la función de raíz cuadrada (Sqrt)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>procedure Sqrt is</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Define el procedimiento principal.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>procedure Raiz(numero : Float) is</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Define el procedimiento interior llamado <code>Raiz</code> que acepta un parámetro llamado <code>numero</code> del tipo <code>Float</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>use Ada.Text_IO;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Permite utilizar las utilidad <code>Put_Line</code> sin la ruta completa (<code>Ada.Text_IO.Put_Line</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>use Ada.Numerics.Elementary_Functions;</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Permite utilizar la función <code>Sqrt</code> sin la ruta completa (<code>Ada.Numerics.Elementary_Functions.Sqrt</code>)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Put_Line(Sqrt(numero)'Image);</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Muestra en consola el resultado de aplicar <code>Sqrt</code> al numero. Además <code>Image</code> permite representar el número en una cadena de caracteres.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Raiz(9.0);</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Se llama al procedimiento con el parámetro <code>9.0</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Para ejecutar simplemente utilizamos el comando <code>run</code>
+(en la misma ubicación del archivo sqrt.gpr)</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ alr run</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Debería dar un resultado similar a</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">✓ Build finished successfully in 4.78 seconds.
+ 3.00000E+00</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ejercicios"><a class="anchor" href="#ejercicios"></a>Ejercicios</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>¿Qué se produce si no usamos 'Image después de <code>Sqrt(numero)</code>?.</p>
+</li>
+<li>
+<p>¿Qué se produce si usamos <code>9</code> en vez de <code>9.0</code> al utilizar <code>Raiz()</code>?.</p>
+</li>
+<li>
+<p>¿Qué se pasa si cambiamos el nombre del procedimiento principal diferente al nombre del archivo?.</p>
+</li>
+<li>
+<p>¿Qué pasa si movemos el procedimiento <code>Raiz</code> fuera del procedimiento principal (en la misma altura)?.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="segunda-iteración-paquete"><a class="anchor" href="#segunda-iteración-paquete"></a>Segunda Iteración (Paquete)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>La forma recomendada de organizar código en <em>Ada</em> es un único procedimiento (<em>main</em>)
+y todo lo demás debe estar almacenado en paquetes. El procedimiento
+principal va en un archivo y cada paquete (<em>adb</em>) más su especificación (<em>ads</em>)
+en su propio archivo.</p>
+</div>
+<div class="paragraph">
+<p>Una curiosidad es que el procedimiento principal no necesita una especificación (aunque puede tenerla).
+Es poco recomendable tener procedimientos fuera de un paquete (con la excepción del procedimiento principal,
+el cual <em>Ada</em> no permite que esté dentro de un paquete).</p>
+</div>
+<div class="paragraph">
+<p>Para esta segunda iteración se creará un paquete nuevo llamado <code>core</code> (núcleo), el cual consistirá en un cuerpo (<code>core.adb</code>) y una especificación (<code>core.ads</code>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">sqrt
+├── src
+│   ├── sqrt.adb
+│   ├── core.adb
+│   └── core.ads
+└── sqrt.gpr</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>El código fuente de <code>sqrt.adb</code> consistirá en llamar al procedimiento <code>Raiz</code> dentro del paquete <code>Core</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Core;
+
+procedure Sqrt is
+begin
+   Core.Raiz(9.0);
+end Sqrt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>El paquete <code>core.adb</code> contiene la implementación del procedimiento <code>Raiz</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Ada.Text_IO;
+with Ada.Numerics.Elementary_Functions;
+
+package body Core is
+   procedure Raiz(numero : Float) is
+      use Ada.Text_IO;
+      use Ada.Numerics.Elementary_Functions;
+   begin
+      Put_Line(Sqrt(numero)'Image);
+   end Raiz;
+end Core;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Mientras que el archivo <code>core.ads</code> contiene la especificación del paquete <code>Core</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">package Core is
+   procedure Raiz(numero: Float);
+end Core;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Si se ejecuta el comando <code>run</code> se obtendrá el mismo resultado
+de la iteración anterior.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ alr run</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">✓ Build finished successfully in 4.78 seconds.
+ 3.00000E+00</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="subdirectorios"><a class="anchor" href="#subdirectorios"></a>Subdirectorios</h3>
+<div class="paragraph">
+<p>Si se desea organizar el paquete dentro de subdirectorios, es decir, con la siguiente estructura:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">sqrt
+├── src
+│   ├── sqrt.adb
+│   └── core
+│       └── core.adb
+│       └── core.ads
+└── sqrt.gpr</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Es posible, pero se requiere añadir una configuración adicional al archivo <code>sqrt.gpr</code>.
+Se debe añadir <code>**</code> al final de <code>src/</code> para definir que busque los archivos de código
+fuente de forma recursiva dentro del directorio <code>src/</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">for Source_Dirs use ("src/**", "config/");</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Si se desea añadir un único directorio puede ser de la siguiente forma:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">for Source_Dirs use ("src/", "src/core/", "config/");</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="hello.html">Hola mundo</a></span>
+  <span class="next"><a href="temperature.html">Conversor de Temperatura</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+  </body>
+</html>

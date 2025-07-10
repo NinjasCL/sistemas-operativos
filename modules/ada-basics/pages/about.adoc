@@ -1,0 +1,95 @@
+= Introducción al lenguaje Ada
+
+Este capítulo tiene por objetivo mostrar los elementos escenciales del lenguaje de programación _Ada_.
+No se intenta ser completo ni preciso (exceptuando los ejemplos que si deben serlo). Principalmente
+la meta es lograr llegar al punto donde se pueda escribir programas útiles tan rápido
+como sea posible, concentrándose en las bases como variables y constantes, aritmética, control de flujo, 
+funciones, procedimientos y herramientas de entrada y salida.
+
+Estará fuera de alcance conceptos más avanzados, los cuales deben ser suplementados por la vasta
+información disponible en internet. Este apartado servirá tanto a programadores principantes como 
+a los con experiencia, que podrían extrapolar sus conocimientos a los mencionados en este libro.
+
+== ¿Por qué Ada frente a las alternativas?
+
+Hoy en día existen multitud de lenguajes de programación.
+Se puede nombrar al https://es.wikipedia.org/wiki/C_(lenguaje_de_programaci%C3%B3n)[venerable C] y el https://es.wikipedia.org/wiki/Rust_(lenguaje_de_programaci%C3%B3n)[moderno Rust] como buenas opciones para crear aplicaciones a nivel del sistema operativo. Sin embargo existe _Ada_, con una historia tan venerable como _C_ y con capacidades suficientes para
+ser utilizado en aplicaciones aeroespaciales, militares y de transporte, entre muchas otras.
+
+=== Mantenibilidad y legibilidad
+
+Si comparamos un programa de "Hola Mundo" entre los lenguajes _Ada_, _C_ y _Rust_ se puede ver que _Ada_ es bastante fácil de leer por alguien no familiarizado en programación, en comparación con _C_ y _Rust_ que requieren un poco más de conocimientos previos para entender completamente lo que está pasando. El lenguaje _Ada_ fue diseñado, entre otras cosas, para imprimirse en papel y ser lo más legible posible en cualquier punto del programa, sin generar dudas. Para que fuese comprensible al instante, sin necesidad de consultar el contexto.
+
+.Hola Mundo en Ada
+[source, ada]
+----
+with Ada.Text_IO;
+
+procedure Hola is
+begin
+   Ada.Text_IO.Put_Line("Hola, mundo desde Ada!");
+end Hola;
+----
+
+.Hola Mundo en C
+[source, c]
+----
+#include <stdio.h>
+
+int main(void) {
+    printf("Hola, mundo desde C!\n");
+    return 0;
+}
+----
+
+.Hola Mundo en Rust
+[source, rust]
+----
+fn main() {
+    println!("Hola, mundo desde Rust!");
+}
+----
+
+En _C_, el código tiende a crecer en macros y punteros crípticos; en _Rust_, aunque moderno, su curva de aprendizaje enlaza con lifetimes y traits, que a veces complican la lectura de proyectos grandes.
+
+=== Seguridad y confiabilidad
+
+_Ada_ incorpora un sistema de tipos muy estricto, detección de errores en tiempo de compilación y comprobaciones en tiempo de ejecución (como desbordamientos de enteros y accesos a arreglos). Esto reduce defectos críticos que en _C_ suelen pasar inadvertidos hasta producción.
+
+=== Concurrencia estructurada
+
+_Ada_ utiliza el concepto de "tareas" para la programación concurrente. Estas tareas son unidades de ejecución independientes que pueden correr concurrentemente con otras tareas dentro del mismo programa. La gestión de hilos o procesos a nivel del sistema operativo es diferente a la forma en que _Ada_ maneja las tareas. _Ada_ proporciona su propia abstracción para la concurrencia, lo que permite a los programadores escribir código concurrente sin tener que lidiar directamente con las complejidades del sistema operativo.
+
+_Ada_ fue de los primeros lenguajes en ofrecer mecanismos de concurrencia nativos:
+
+- Tareas (_Tasks_): hilos a nivel de lenguaje con comunicación via _Rendezvous_.
+
+- Objetos Protegidos (_Protected Objects_): acceso seguro a recursos compartidos sin miedo a condiciones de carrera.
+
+- Perfil de Ravenscar (_Ravenscar Profile_): un subconjunto definido para aplicaciones de tiempo real que garantiza determinismo y análisis de temporización.
+
+Estos modelos superan la complejidad de hilos _POSIX_ en _C_ y evitan el sobrepeso de ecosistemas externos en _Rust_.
+
+=== Certificaciones y estándares
+
+_Ada_ cumple con normas ISO (Ada 83, 95, 2005, 2012 y 2022). Existen perfiles y guías de certificación (DO-178C para aviación, IEC 61508 para seguridad funcional) que reconocen _Ada_ como un lenguaje apto para sistemas críticos, ventaja que ni _C_ ni _Rust_ poseen de forma tan madura.
+
+=== Retrocompatibilidad
+
+Cada revisión de _Ada_ mantiene compatibilidad con versiones anteriores, asegurando que bases de código de décadas sigan compilando sin cambios drásticos. Los compiladores (GNAT, AdaCore) ofrecen soporte industrial, análisis estático y herramientas de verificación (SPARK Ada) para auditorías formales.
+
+=== Tabla Comparativa
+
+La siguiente tabla resume las características y comparación entre _Ada_, _C_ y _Rust_.
+
+.Tabla de Comparación entre Ada, C y Rust
+|====
+| Característica| C | Rust | Ada
+
+| Tipado fuerte	| Débil	| Fuerte	| Muy fuerte, con chequeos en tiempo real.
+| Concurrencia	| Hilos POSIX y sincronización |	async/await, threads	| Tasks, protected objects, Ravenscar
+| Diseño por contrato |	No nativo	| Macros externas	| Integrado (Pre/Post/Invariant).
+| Reglamento y certificación |Parcial (MISRA C) | Experimental | Amplio (ISO, DO-178C, IEC 61508).
+| Retrocompatibilidad | Sí, pero con problemas de comportamiento no definido frecuentes. El mismo programa puede comportarse de forma distinta entre compiladores, o incluso cambiar de comportamiento al modificar una línea sin relación aparente.  | Al ser un lenguaje en evolución puede existir cambios que rompan código entre versiones. | Sí, sin romper código existente.
+| Ecosistema de herramientas | Fragmentado | Creciente | Maduro (Alire, GNAT, SPARK, GNATcheck).
+|====

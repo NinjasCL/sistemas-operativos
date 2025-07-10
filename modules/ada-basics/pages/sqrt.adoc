@@ -1,0 +1,208 @@
+= Raíz Cuadrada
+
+El siguiente proyecto será el uso de la función matemática de la raíz cuadrada.
+Se creará un procedimiento que reciba un parámetro, calcule la raíz cuadrada y la muestre por consola.
+
+El objetivo es demostrar como modularizar código y crear procedimientos que reciben un parámetro.
+
+== Creación del Proyecto
+
+Para crear el proyecto utilizamos el comando `init`.
+
+[source, bash]
+----
+$ alr init --bin sqrt
+----
+
+_Alire_ preguntará algunos datos necesarios para nuestro proyecto.
+La mayoría se puede omitir presionando la tecla `Enter`.
+
+Al abrir el archivo `src/sqrt.adb` se puede ver el siguiente código
+
+[source, ada]
+----
+procedure Sqrt is
+begin
+   null;
+end Sqrt;
+----
+
+El cual es simplemente un procedimiento vacío.
+Este archivo será nuestro `"main"`. En _Ada_ no es obligación
+que la función principal tenga este nombre, sin embargo debe estar
+definida en el archivo `sqrt.gpr`.
+
+[source, ada]
+----
+for Main use ("sqrt.adb");
+----
+
+El nombre del procedimiento principal (camel case) debe ser igual al nombre del archivo (minúsculas), 
+caso contrario producirá un error. Solamente puede existir un procedimiento principal, 
+si se desea agregar más funciones o procedimientos deben estar dentro de un paquete definido
+en su propio archivo o dentro de la definición del procedimiento principal.
+
+== Primera Iteración (Anidado)
+
+Para la primera iteración se utilizará una definición de un procedimiento
+dentro del procedimiento principal. Esto quiere decir que es un procedimiento
+anidado.
+
+[source, ada]
+----
+with Ada.Text_IO;
+with Ada.Numerics.Elementary_Functions;
+
+procedure Sqrt is
+   procedure Raiz(numero : Float) is 
+      use Ada.Text_IO;
+      use Ada.Numerics.Elementary_Functions;
+   begin
+      Put_Line(Sqrt(numero)'Image);
+   end Raiz;
+begin
+   Raiz(9.0);
+end Sqrt;
+----
+
+|====
+| Línea | Descripción
+
+| `with Ada.Text_IO;` | Importa las herramientas para escribir el texto en la consola
+| `with Ada.Numerics.Elementary_Functions;` | Importa las herramientas matemáticas como la función de raíz cuadrada (Sqrt)
+| `procedure Sqrt is` | Define el procedimiento principal.
+| `procedure Raiz(numero : Float) is` | Define el procedimiento interior llamado `Raiz` que acepta un parámetro llamado `numero` del tipo `Float`
+| `use Ada.Text_IO;` | Permite utilizar las utilidad `Put_Line` sin la ruta completa (`Ada.Text_IO.Put_Line`)
+| `use Ada.Numerics.Elementary_Functions;` | Permite utilizar la función `Sqrt` sin la ruta completa (`Ada.Numerics.Elementary_Functions.Sqrt`)
+| `Put_Line(Sqrt(numero)'Image);` | Muestra en consola el resultado de aplicar `Sqrt` al numero. Además `Image` permite representar el número en una cadena de caracteres.
+| `Raiz(9.0);` | Se llama al procedimiento con el parámetro `9.0`.
+|====
+
+Para ejecutar simplemente utilizamos el comando `run`
+(en la misma ubicación del archivo sqrt.gpr)
+
+[source, bash]
+----
+$ alr run
+----
+
+Debería dar un resultado similar a 
+
+[source, text]
+----
+✓ Build finished successfully in 4.78 seconds.
+ 3.00000E+00
+----
+
+=== Ejercicios
+
+. ¿Qué se produce si no usamos 'Image después de `Sqrt(numero)`?.
+. ¿Qué se produce si usamos `9` en vez de `9.0` al utilizar `Raiz()`?.
+. ¿Qué se pasa si cambiamos el nombre del procedimiento principal diferente al nombre del archivo?.
+. ¿Qué pasa si movemos el procedimiento `Raiz` fuera del procedimiento principal (en la misma altura)?.
+
+== Segunda Iteración (Paquete)
+
+La forma recomendada de organizar código en _Ada_ es un único procedimiento (_main_)
+y todo lo demás debe estar almacenado en paquetes. El procedimiento
+principal va en un archivo y cada paquete (_adb_) más su especificación (_ads_)
+en su propio archivo.
+
+Una curiosidad es que el procedimiento principal no necesita una especificación (aunque puede tenerla).
+Es poco recomendable tener procedimientos fuera de un paquete (con la excepción del procedimiento principal, 
+el cual _Ada_ no permite que esté dentro de un paquete).
+
+Para esta segunda iteración se creará un paquete nuevo llamado `core` (núcleo), el cual consistirá en un cuerpo (`core.adb`) y una especificación (`core.ads`).
+
+[source, text]
+----
+sqrt
+├── src
+│   ├── sqrt.adb
+│   ├── core.adb
+│   └── core.ads
+└── sqrt.gpr
+----
+
+El código fuente de `sqrt.adb` consistirá en llamar al procedimiento `Raiz` dentro del paquete `Core`.
+
+[source, ada]
+----
+with Core;
+
+procedure Sqrt is
+begin
+   Core.Raiz(9.0);
+end Sqrt;
+----
+
+El paquete `core.adb` contiene la implementación del procedimiento `Raiz`.
+
+[source, ada]
+----
+with Ada.Text_IO;
+with Ada.Numerics.Elementary_Functions;
+
+package body Core is 
+   procedure Raiz(numero : Float) is 
+      use Ada.Text_IO;
+      use Ada.Numerics.Elementary_Functions;
+   begin
+      Put_Line(Sqrt(numero)'Image);
+   end Raiz;
+end Core;
+----
+
+Mientras que el archivo `core.ads` contiene la especificación del paquete `Core`.
+
+[source, ada]
+----
+package Core is
+   procedure Raiz(numero: Float);
+end Core;
+----
+
+Si se ejecuta el comando `run` se obtendrá el mismo resultado
+de la iteración anterior.
+
+[source, bash]
+----
+$ alr run
+----
+
+[source, text]
+----
+✓ Build finished successfully in 4.78 seconds.
+ 3.00000E+00
+----
+
+=== Subdirectorios
+
+Si se desea organizar el paquete dentro de subdirectorios, es decir, con la siguiente estructura:
+
+[source, text]
+----
+sqrt
+├── src
+│   ├── sqrt.adb
+│   └── core
+│       └── core.adb
+│       └── core.ads
+└── sqrt.gpr
+----
+
+Es posible, pero se requiere añadir una configuración adicional al archivo `sqrt.gpr`.
+Se debe añadir `**` al final de `src/` para definir que busque los archivos de código
+fuente de forma recursiva dentro del directorio `src/`.
+
+[source, ada]
+----
+for Source_Dirs use ("src/**", "config/");
+----
+
+Si se desea añadir un único directorio puede ser de la siguiente forma:
+
+[source, ada]
+----
+for Source_Dirs use ("src/", "src/core/", "config/");
+----

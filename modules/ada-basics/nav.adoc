@@ -1,0 +1,8 @@
+.Programación en Ada
+* xref:about.adoc[]
+* xref:history.adoc[]
+* xref:hello.adoc[]
+* xref:sqrt.adoc[]
+* xref:temperature.adoc[]
+* xref:args.adoc[]
+* xref:strings.adoc[]

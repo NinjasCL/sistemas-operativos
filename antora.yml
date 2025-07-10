@@ -1,5 +1,6 @@
 name: ROOT
 version: ~
-title: Example Documentation
+title: Conceptos de Sistemas Operativos con Ada y Elixir
 nav:
   - modules/ROOT/nav.adoc
+  - modules/ada-basics/nav.adoc

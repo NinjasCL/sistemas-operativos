@@ -1,0 +1,9 @@
+.Programación en Ada
+* Source Files and Directories - GNAT User’s Guide. (n.d.). Retrieved from https://gcc.gnu.org/onlinedocs/gcc-4.9.0/gnat_ugn_unw/Source-Files-and-Directories.html
+* Multiple procedures in the same adb file? (n.d.). Retrieved from https://groups.google.com/g/comp.lang.ada/c/1gnTw4BjAec
+* Alire-Project. (n.d.). GitHub - alire-project/libhello: Demo library. Retrieved from https://github.com/alire-project/libhello
+* Alire - Docs. (n.d.). Retrieved from https://alire.ada.dev/docs/#installation
+* Command Line Arguments | ada-lang.io, an Ada community site. (n.d.). Retrieved from https://ada-lang.io/docs/learn/tutorial/command-line-arguments
+* JTC1/SC22/WG9/ARG, by Randall Brukardt, ARG Editor. (n.d.). Unbounded-Length string handling. Retrieved from https://www.adaic.com/resources/add_content/standards/95lrm/ARM_HTML/RM-A-4-5.html
+* Ada95 Lovelace Tutorial Section 8.3 - Basics of Type String. (n.d.). Retrieved from https://dwheeler.com/lovelace/s8s3.htm
+* Programación en Ada/Unidades predefinidas/Ada.Strings.Unbounded - Wikilibros. (n.d.). Retrieved from https://es.wikibooks.org/wiki/Programaci%C3%B3n_en_Ada/Unidades_predefinidas/Ada.Strings.Unbounded

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Argumentos de Línea de Comandos :: Conceptos de Sistemas Operativos con Ada y Elixir</title>
+    <link rel="canonical" href="https://ninjascl.github.io/ada-libro/ada-basics/args.html">
+    <link rel="prev" href="temperature.html">
+    <link rel="next" href="strings.html">
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://ninjascl.github.io/ada-libro">Conceptos de Sistemas Operativos con Ada y Elixir</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación en Ada</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="about.html">Introducción al lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="history.html">Historia del lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="hello.html">Hola mundo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="sqrt.html">Raíz Cuadrada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="temperature.html">Conversor de Temperatura</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="args.html">Argumentos de Línea de Comandos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="strings.html">Strings</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Conceptos de Sistemas Operativos con Ada y Elixir</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></li>
+    <li>Programación en Ada</li>
+    <li><a href="args.html">Argumentos de Línea de Comandos</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///antora/./modules/ada-basics/pages/args.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Argumentos de Línea de Comandos</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>En éste proyecto se creará un programa que repetira las palabras que sean
+proporcionadas desde la línea de comandos.</p>
+</div>
+<div class="paragraph">
+<p>Estas palabras serán dadas al iniciar el programa como "argumentos de línea de comandos",
+el cual es un elemento común que permite obtener resultados y comportamientos diferentes
+dependiendo de los valores proporcionados. Es el primer paso en crear programas usables.</p>
+</div>
+<div class="paragraph">
+<p>Para ejemplificar se puede nombrar a <em>Alire</em>, que previamente se ha usado con argumentos
+para distintas operaciones.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="creación-del-proyecto"><a class="anchor" href="#creación-del-proyecto"></a>Creación del Proyecto</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para crear el proyecto utilizamos el comando <code>init</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ alr init --bin command_line_args</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>Alire</em> preguntará algunos datos necesarios para nuestro proyecto.
+La mayoría se puede omitir presionando la tecla <code>Enter</code>.</p>
+</div>
+<div class="paragraph">
+<p>Al abrir el archivo <code>src/command_line_args.adb</code> se puede ver el siguiente código</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">procedure Command_Line_Args is
+begin
+   null;
+end Command_Line_Args;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="implementación"><a class="anchor" href="#implementación"></a>Implementación</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>La implementación consiste en utilizar la biblioteca <code>Ada.Command_Line</code> para obtener los argumentos
+y un ciclo <code>for</code> para mostrarlos.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Ada.Text_IO;
+with Ada.Command_Line;
+
+procedure Command_Line_Args is
+   use Ada.Text_IO;
+   use Ada.Command_Line;
+begin
+   for next in 1 .. Argument_Count loop
+      Put_Line(Argument(next));
+   end loop;
+end Command_Line_Args;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Al ejecutar el siguiente comando:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ alr run --args="Yo Como Pan"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Se obtiene el resultado</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">✓ Build finished successfully in 1.44 seconds.
+Yo
+Como
+Pan</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Comentarios</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Línea</th>
+<th class="tableblock halign-left valign-top">Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Argument_Count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parte de la biblioteca <code>Ada.Command_Line</code>, contiene la cantidad de argumentos de la línea de comandos.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Argument(next)</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Parte de la biblioteca <code>Ada.Command_Line</code>, es una función que retorna el valor de la posición <code>next</code>.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>La diferencia entre un ciclo <code>for</code> y un ciclo <code>while</code> es que en <em>Ada</em> un
+ciclo <code>for</code> solamente puede hacer incrementos de 1 paso. Mientras que el ciclo <code>while</code>
+puede incrementar de más pasos a la vez. El ciclo <code>for</code> es recomendables para recorrer
+una lista de elementos discreta.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="mostrar-argumentos-a-la-inversa"><a class="anchor" href="#mostrar-argumentos-a-la-inversa"></a>Mostrar argumentos a la inversa</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para invertir el orden de los argumentos se puede usar la palabra clave <code>reverse</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Ada.Text_IO;
+with Ada.Command_Line;
+
+procedure Command_Line_Args is
+   use Ada.Text_IO;
+   use Ada.Command_Line;
+begin
+   for next in reverse 1 .. Argument_Count loop
+      Put_Line(Argument(next));
+   end loop;
+end Command_Line_Args;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Al ejecutar el siguiente comando:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ alr run --args="Yo Como Pan"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Se obtiene el resultado</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">✓ Build finished successfully in 1.44 seconds.
+Pan
+Como
+Yo</code></pre>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="temperature.html">Conversor de Temperatura</a></span>
+  <span class="next"><a href="strings.html">Strings</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+  </body>
+</html>

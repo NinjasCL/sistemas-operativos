@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Strings :: Conceptos de Sistemas Operativos con Ada y Elixir</title>
+    <link rel="canonical" href="https://ninjascl.github.io/ada-libro/ada-basics/strings.html">
+    <link rel="prev" href="args.html">
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://ninjascl.github.io/ada-libro">Conceptos de Sistemas Operativos con Ada y Elixir</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación en Ada</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="about.html">Introducción al lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="history.html">Historia del lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="hello.html">Hola mundo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="sqrt.html">Raíz Cuadrada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="temperature.html">Conversor de Temperatura</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="args.html">Argumentos de Línea de Comandos</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="strings.html">Strings</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Conceptos de Sistemas Operativos con Ada y Elixir</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></li>
+    <li>Programación en Ada</li>
+    <li><a href="strings.html">Strings</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///antora/./modules/ada-basics/pages/strings.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Strings</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Los Strings o cadenas de caracteres en <em>Ada</em> están condicionadas por la codificación de caracteres.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>String</code>: 256 caracteres disponibles en la codificación <em>Latin-1</em> (8 bit).</p>
+</li>
+<li>
+<p><code>Wide_String</code>: 65536 caracteres disponibles (16 bit).</p>
+</li>
+<li>
+<p><code>Wide_Wide_String</code>: 1114112 caracteres disponibles (code points de 32 bit). Ideal para almacenar emojis (UTF-8).</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">type String is
+  array (Positive range &lt;&gt;) of Character;
+
+type Wide_String is
+  array (Positive range &lt;&gt;) of Wide_Character;
+
+type Wide_Wide_String is
+  array (Positive range &lt;&gt;) of
+    Wide_Wide_Character;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Cada una tiene su procedimiento de salida asociado. Si bien <code>Wide_Wide_String</code> tiene un amplio abanico
+de caracteres posibles, no es lo suficientemente flexible para todo <em>Unicode</em>, ya que el estándar <em>Unicode</em>
+no solo manipula caracteres, también la combinación de los mismos. Para trabajar con <em>Unicode</em> se recomienda
+el uso de una biblioteca externa como <a href="https://github.com/AdaCore/VSS">VSS</a>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Ada.Text_IO;
+with Ada.Wide_Text_IO;
+with Ada.Wide_Wide_Text_IO;
+
+procedure Strings is
+   ñandú : constant String := "Ñandú";
+   π : constant := 3.14;
+   hello : constant Wide_String := "Привіт";
+   fire : constant Wide_Wide_String := "🔥";
+begin
+
+   Ada.Text_IO.Put_Line(ñandú);
+   Ada.Text_IO.Put_Line(π'Image);
+   Ada.Wide_Text_IO.Put_Line (hello);
+   Ada.Wide_Wide_Text_IO.Put_Line (fire);
+
+end Strings;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Sin embargo el código anterior no compilará, ya que es necesario configurar
+el proyecto para que soporte <em>Unicode</em>. Se debe editar el archivo de proyecto <code>gpr</code>,
+en este caso <code>strings.gpr</code> y añadir la opción <code>-gnatW8</code> para que autorice el uso
+de caracteres <em>Unicode</em>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">package Compiler is
+      for Default_Switches ("Ada") use Strings_Config.Ada_Compiler_Switches &amp; ("-gnatW8");
+end Compiler;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Una vez configurado se puede ejecutar normalmente.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ alr run</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">✓ Build finished successfully in 7.82 seconds.
+ñandú
+ 3.14000000000000000E+00
+Привіт
+🔥</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Se puede notar el uso de identificadores con caracteres especiales como <code>ñandú</code>. <em>Ada</em> soporta
+identificadores dentro del rango de 16 bit (Wide_String), es decir puede ser con letras, pero
+no ser un emoji.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Se recomienda usar solamente <em>ASCII</em> para identificadores, ya que facilita la programación entre
+personas con distintos idiomas y configuración de teclado.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="caracteres"><a class="anchor" href="#caracteres"></a>Caracteres</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Los strings son arreglos compuestos por caracteres. El cual es un símbolo que ésta definido por la codificación,
+al igual que el string. Está delimitado por dos comillas simples (<code>''</code>).</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>Character</code>: 256 caracteres disponibles en la codificación <em>Latin-1</em> (8 bit).</p>
+</li>
+<li>
+<p><code>Wide_Character</code>: 65536 caracteres disponibles (16 bit).</p>
+</li>
+<li>
+<p><code>Wide_Wide_Character</code>: 1114112 caracteres disponibles (code points de 32 bit).</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">type Roman_Digit is ('I', 'V', 'X', 'L', 'C', 'D', 'M');</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="concatenación"><a class="anchor" href="#concatenación"></a>Concatenación</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>En muchos lenguajes de programación se tiene un mecanismo que permite
+crear strings multilínea. En <em>Ada</em> esto no es posible, sin embargo, se puede lograr el efecto de múltiples líneas usando secuencias de escape para representar caracteres de nueva línea dentro de una cadena o definiendo múltiples cadenas concatenadas con el operador <code>&amp;</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Ada.Text_IO;
+
+procedure Main is
+   My_String : constant String := "Primera línea" &amp; ASCII.LF
+                                 &amp; "Segunda línea" &amp; ASCII.LF
+                                 &amp; "Tercera línea";
+
+begin
+   Ada.Text_IO.Put_Line(My_String);
+end Main;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="unbounded-string"><a class="anchor" href="#unbounded-string"></a>Unbounded String</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Una vez definido un string su tamaño es estático. Si se desea tener un tamaño dinámico
+se debe usar el tipo <em>Unbounded String</em> que permite aumentar su tamaño. Un dato del tipo <code>Unbounded_String</code>
+representa un <code>String</code> que va desde 1 caracter y de un largo variable entre 0 y el máximo de los números naturales (<code>Narutal&#8217;Last</code>).</p>
+</div>
+<div class="paragraph">
+<p>Los <code>Unbounded_String</code> a diferencia de los strings nativos no son arreglos de caracters, eso quiere decir que no se les puede aplicar el atributo <code>'Range</code> ni los parentesis para indexar. En vez de eso son un tipo privado que tiene en su paquete (el <code>Ada.Strings.Unbounded</code>) todas las operaciones necesarias para reemplazar caracteres (<code>Replace_Element</code>), convertir a string (<code>To_String</code>) y desde string (<code>To_Unbounded_String</code>), concatenar (operador <code>&amp;</code>), reemplazar subcadenas del <code>Unbounded_String</code> por otras (<code>Replace_Slice</code>), buscar subcadenas (<code>Index</code>), etc.</p>
+</div>
+<div class="paragraph">
+<p>La ventaja de un <code>Unbounded_String</code> es que puede crecer y decrecer sin límite (o sin otro límite que la memoria disponible).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
+procedure Ejemplo_Unbounded_String is
+   -- Declaración de un Unbounded_String
+   Mi_Cadena : Unbounded_String;
+   Otra_Cadena : Unbounded_String;
+
+   --  Declaración de una cadena regular
+   Mi_String : String := "Hola";
+
+begin
+   -- Conversión de String a Unbounded_String
+   Mi_Cadena := To_Unbounded_String(Mi_String);
+   Put_Line("Mi_Cadena (inicial): " &amp; To_String(Mi_Cadena));
+
+   --  Concatenación con Unbounded_String
+   Otra_Cadena := Mi_Cadena &amp; " Mundo";
+   Put_Line("Otra_Cadena (concatenada): " &amp; To_String(Otra_Cadena));
+
+   -- Concatenación con String
+   Mi_Cadena := Mi_Cadena &amp; " ";
+   Mi_Cadena := Mi_Cadena &amp; To_Unbounded_String("de nuevo");
+   Put_Line("Mi_Cadena (concatenada): " &amp; To_String(Mi_Cadena));
+
+   --  Longitud de la cadena
+   Put_Line("Longitud de Mi_Cadena: " &amp; Integer'Image(Length(Mi_Cadena)));
+
+   --  Acceso a un caracter (necesita conversión a String)
+   if Length(Mi_Cadena) &gt; 0 then
+       Put_Line("Primer caracter de Mi_Cadena: " &amp; Mi_Cadena'image(1));
+       Put_Line("Primer caracter de Mi_Cadena (usando To_String): " &amp; To_String(Mi_Cadena)(1));
+   end if;
+
+
+   --  Reemplazo de un caracter
+   Replace_Element(Mi_Cadena, 1, 'h');
+   Put_Line("Mi_Cadena (después de reemplazar): " &amp; To_String(Mi_Cadena));
+
+   --  Extracción de una subcadena (Slice)
+   declare
+       Sub_Cadena : Unbounded_String := Slice(Mi_Cadena, 3, 6);
+   begin
+      Put_Line("Sub_Cadena: " &amp; To_String(Sub_Cadena));
+   end;
+
+end Ejemplo_Unbounded_String;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="por-qué-tantos-tipos-de-string"><a class="anchor" href="#por-qué-tantos-tipos-de-string"></a>¿Por qué tantos tipos de String?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A diferencia de otros lenguajes que tienen un solo tipo de string para todos los casos.
+Es importante recalcar que <em>Ada</em> es un lenguaje pensado para sistemas críticos
+donde la gestión de memoria es de suma importancia para evitar errores imprevistos.
+El tener una definición exacta del tamaño de un string, permite un manejo granular
+y seguro de los tipos y tamaños de datos.</p>
+</div>
+<div class="paragraph">
+<p>Las formas restringidas (<code>String</code>) pueden lanzar excepciones al alcanzar sus límites (<code>Constraint_Error</code>).
+Y las formas dinámicas (<code>Unbounded_String</code>) pueden alcanzar límites de memoria (<em>heap</em>) que no son deseables en aplicaciones de uso crítico.</p>
+</div>
+<div class="paragraph">
+<p>Sin embargo tener tantos tipos de datos puede causar problemas de complejidad
+combinatoria (muchos tipos de datos y su manejo de memoria respectivo). Es por esto que actualmente la comunidad está pensando <a href="https://github.com/Ada-Rapporteur-Group/User-Community-Input/issues/40">alternativas de solución</a>.</p>
+</div>
+<div class="paragraph">
+<p>Por el momento se recomienda usar una <a href="https://github.com/AdaCore/VSS">biblioteca externa como VSS</a> para cuando
+el uso de <code>String</code> y <code>Unbounded_String</code> no sea apropiado.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="más-info"><a class="anchor" href="#más-info"></a>Más Info</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para mayor información se puede revisar el <a href="https://learn.adacore.com/courses/advanced-ada/parts/data_types/strings.html">manual avanzado de strings en Ada</a>.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="args.html">Argumentos de Línea de Comandos</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+  </body>
+</html>

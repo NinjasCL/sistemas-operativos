@@ -1,0 +1,3 @@
+= Bibliografía
+
+include::../../ada-basics/pages/bibliography.adoc[]
