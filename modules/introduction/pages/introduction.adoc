@@ -1,0 +1,113 @@
+= Introducción a los Sistemas Operativos
+
+Cuando se habla de sistemas operativos se debe responder algunas preguntas. ¿Por qué es importante el tema?, 
+¿Por qué es complejo?, y ¿Qué es un sistema operativo?.
+
+== ¿Por qué es importante estudiar sistemas operativos?
+
+Los sistemas operativos son importantes debido a que están presentes en todas partes. En la actualidad
+todos los dispositivos "smart" como relojes, ampolletas, teléfonos, televisores y computadores, entre muchos otros, cuentan
+con un sistema operativo que los hace funcionar. La mayor parte de los programas se ejecutan sobre un sistema operativo
+y sus comportamientos y desempeño también dependen del mismo.
+
+== ¿Por qué el diseño de sistemas operativos es complejo?
+
+En la actualidad existen millares de dispositivos diferentes, cada uno con su propia especificaciones de hardware, con capacidades y funciones únicas. La mayoría de estos dispositivos tienen algo en común. Disponen de un sistema operativo y se conectan a internet para comunicarse entre sí. La labor de un sistema operativo es ser un puente e interfaz entre 
+un rango diverso y amplio de dispositivos.
+
+El ingeniero https://en.wikipedia.org/wiki/Bell%27s_law_of_computer_classes[Gordon Bell] (1972) describió cómo aproximadamente cada década surge una nueva clase de computadoras, desplazando a las anteriores y transformando la industria tecnológica. Es decir, cada década tenemos nuevos dispositivos más poderosos que la generación anterior y
+estos tienen mayor adopción por el público.
+
+- Mainframes (1960s)
+- Minicomputers (1970s)
+- Computadoras personales (1980s)
+- Navegadores Web, Internet (1990s)
+- Computación en la Nube, (AWS, GCP) (2000s)
+- Teléfonos móviles (iPhone, Android) y dispositivos inteligentes (2010s)
+- Internet of things, IA (2020s)
+
+Además de la gran cantidad de dispositivos, un sistema operativo debe navegar por diferentes escalas
+de tiempo.
+
+.Comparación de Latencia de Jeff Dean, https://gist.github.com/jboner/2841832
+[source, text]
+----
+Latency Comparison Numbers (~2012)
+----------------------------------
+L1 cache reference                           0.5 ns
+Branch mispredict                            5   ns
+L2 cache reference                           7   ns                      14x L1 cache
+Mutex lock/unlock                           25   ns
+Main memory reference                      100   ns                      20x L2 cache, 200x L1 cache
+Compress 1K bytes with Zippy             3,000   ns        3 us
+Send 1K bytes over 1 Gbps network       10,000   ns       10 us
+Read 4K randomly from SSD*             150,000   ns      150 us          ~1GB/sec SSD
+Read 1 MB sequentially from memory     250,000   ns      250 us
+Round trip within same datacenter      500,000   ns      500 us
+Read 1 MB sequentially from SSD*     1,000,000   ns    1,000 us    1 ms  ~1GB/sec SSD, 4X memory
+Disk seek                           10,000,000   ns   10,000 us   10 ms  20x datacenter roundtrip
+Read 1 MB sequentially from disk    20,000,000   ns   20,000 us   20 ms  80x memory, 20X SSD
+Send packet CA->Netherlands->CA    150,000,000   ns  150,000 us  150 ms
+----
+
+La inmensa cantidad de dispositivos son más complejos cada vez debido
+a las mejoras en su hardware, mayor importancia en la seguridad, resiliencia y confiabilidad, tener
+mayores velocidades de desempeño (con computación paralela y códigos más eficientes), 
+mejoras en la gestión de uso energético y el soporte a dispositivos anteriores (legacy).
+
+El siguiente gráfico muestra los millones de líneas de código necesario para implementar
+software como sistemas operativos. Se puede destacar que las versiones nuevas son más grandes cada vez, 
+debido a la mayor complejidad del ecosistema cuando fueron desarrollados. También se puede notar
+que los automóviles se han vuelto más complejos requiriendo más de 100 millones de líneas de código.
+
+.Líneas de Código, fuente: https://informationisbeautiful.net/visualizations/million-lines-of-code/
+image::lines_of_code.png[]
+
+== ¿Qué es un sistema operativo?
+
+Para poder describir lo que hace un sistema operativo debemos deglosar sus componentes.
+
+- Sistema: Un conjunto de componentes interconectados con un comportamiento esperado observado en la interfaz con su entorno.
+
+- Operativo: Administra múltiples tareas y usuarios.
+
+Entonces se puede definir un sistema operativo como una capa de software que proporciona una interfaz entre 
+múltiples y diversos componentes de hardware y las distintas aplicaciones que se ejecutan en una máquina.
+El sistema operativo proporciona una máquina virtual para las aplicaciones, ésta interfaz es más conveniente
+(mayor seguridad, confiabilidad, disponibilidad, portabilidad) que si las aplicaciones interactuaran directamente con el hardware. El sistema operativo proporciona una capa que hace toda la complejidad del hardware más manejable.
+
+
+[plantuml]
+----
+@startuml
+
+title Esquema de Sistema Operativo
+
+component "Aplicación 1"
+component "Aplicación 2"
+component "Aplicación 3"
+
+
+component "Sistema Operativo"
+
+
+"Aplicación 1" --> "Sistema Operativo"
+"Aplicación 2" --> "Sistema Operativo"
+"Aplicación 3" --> "Sistema Operativo"
+
+
+component Hardware
+
+"Sistema Operativo" --> Hardware
+
+@enduml
+----
+
+
+
+
+// - https://www.scs.stanford.edu/15wi-cs140/reference/
+// - https://ocw.uc3m.es/mod/page/view.php?id=2798
+// - https://www.inf.uva.es/wp-content/uploads/2016/06/G46912.pdf
+// - https://frippery.org/busybox/
+// - https://cs162.org/

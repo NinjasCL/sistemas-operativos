@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Adivina el Número :: Conceptos de Sistemas Operativos</title>
+    <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/ada-basics/guess.html">
+    <link rel="prev" href="strings.html">
+    <link rel="next" href="process.html">
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://ninjascl.github.io/sistemas-operativos">Conceptos de Sistemas Operativos</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Introducción</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/introduction.html">Introducción a los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/history.html">Historia de los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/roles.html">¿Qué Roles Tiene un Sistema Operativo?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Kernel y Procesos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kernels-process/process.html">¿Qué es un Proceso?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación en Ada</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="about.html">Introducción al lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="history.html">Historia del lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="hello.html">Hola mundo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="sqrt.html">Raíz Cuadrada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="temperature.html">Conversor de Temperatura</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="arrays.html">Arreglos y Listas</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="args.html">Argumentos de Línea de Comandos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="strings.html">Strings</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="guess.html">Adivina el Número</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="process.html">Gatillar Procesos</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Proyectos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project1.html">Proyecto 1: Minishell</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Conceptos de Sistemas Operativos</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
+    <li>Programación en Ada</li>
+    <li><a href="guess.html">Adivina el Número</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///antora/./modules/ada-basics/pages/guess.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Adivina el Número</h1>
+<div class="paragraph">
+<p>Éste pequeño proyecto muestra un juego de adivinar el número.</p>
+</div>
+<div class="paragraph">
+<p>Se parte con el principio básico de obtener los datos de usuario.
+para esto ejemplificamos con un programa de calculadora simple.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="http://archive.adaic.com/docs/craft/html/ch02.htm" class="bare">http://archive.adaic.com/docs/craft/html/ch02.htm</a></p>
+</li>
+<li>
+<p><a href="https://www.coniferproductions.com/ada/ohyes/getting-started-with-ada-by-way-of-rust/" class="bare">https://www.coniferproductions.com/ada/ohyes/getting-started-with-ada-by-way-of-rust/</a></p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Juego de Calculadora Simple</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Ada.Text_IO, Ada.Integer_Text_IO;
+
+procedure Guess is
+   primero, segundo : Integer;
+begin
+   Ada.Text_IO.Put ("Ingresa dos números: ");
+   Ada.Integer_Text_IO.Get (primero);
+   Ada.Integer_Text_IO.Get (segundo);
+   Ada.Text_IO.Put ("La suma es:");
+   Ada.Integer_Text_IO.Put (primero + segundo);
+   Ada.Text_IO.New_Line;
+end Guess;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Luego se puede crear un juego de adivinar el número un poco más complejo.</p>
+</div>
+<div class="listingblock">
+<div class="title">Juego de Adivinar el Número</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">with Ada.Text_IO;
+with Ada.Integer_Text_IO;
+with Ada.Numerics.Discrete_Random;
+with Ada.IO_Exceptions;
+
+procedure Guess is
+   subtype Guess_Type is Positive range 1..100;
+   guess : Guess_Type;
+
+   package Random_Guess is new Ada.Numerics.Discrete_Random(Result_Subtype =&gt; Guess_Type);
+   gen : Random_Guess.Generator;
+   secret_number : Guess_Type;
+begin
+   Ada.Text_IO.Put_Line("¡Adivina el número!");
+   Random_Guess.Reset(gen);
+   secret_number := Random_Guess.Random(gen);
+
+   loop
+      begin
+         Ada.Text_IO.Put_Line("Ingresa el número que piensas que es el correcto");
+         Ada.Integer_Text_IO.Get(Item =&gt; guess);
+         Ada.Text_IO.Put("Tu selección: ");
+         Ada.Integer_Text_IO.Put(guess);
+         Ada.Text_IO.New_Line;
+
+         if guess &lt; secret_number then
+            Ada.Text_IO.Put_Line("¡Muy pequeño!");
+         elsif guess &gt; secret_number then
+            Ada.Text_IO.Put_Line("¡Muy grande!");
+         else
+            Ada.Text_IO.Put_Line("¡Excelente, Adivinaste!");
+         end if;
+
+         exit when guess = secret_number;
+      exception
+         when Error : Ada.IO_Exceptions.Data_Error =&gt; Ada.Text_IO.Skip_Line;
+
+      end;
+   end loop;
+end Guess;</code></pre>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="strings.html">Strings</a></span>
+  <span class="next"><a href="process.html">Gatillar Procesos</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+  </body>
+</html>

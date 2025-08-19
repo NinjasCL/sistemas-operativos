@@ -1,6 +1,6 @@
 site:
-  title: Conceptos de Sistemas Operativos con Ada y Elixir
-  url: https://ninjascl.github.io/ada-libro
+  title: Conceptos de Sistemas Operativos
+  url: https://ninjascl.github.io/sistemas-operativos
   start_page: "ROOT::index.adoc"
 
 content:

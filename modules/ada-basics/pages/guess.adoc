@@ -1,0 +1,73 @@
+= Adivina el Número
+
+Éste pequeño proyecto muestra un juego de adivinar el número.
+
+Se parte con el principio básico de obtener los datos de usuario. 
+para esto ejemplificamos con un programa de calculadora simple.
+
+- http://archive.adaic.com/docs/craft/html/ch02.htm
+- https://www.coniferproductions.com/ada/ohyes/getting-started-with-ada-by-way-of-rust/
+
+.Juego de Calculadora Simple
+[source, ada]
+----
+with Ada.Text_IO, Ada.Integer_Text_IO;
+
+procedure Guess is
+   primero, segundo : Integer;
+begin
+   Ada.Text_IO.Put ("Ingresa dos números: ");
+   Ada.Integer_Text_IO.Get (primero);
+   Ada.Integer_Text_IO.Get (segundo);
+   Ada.Text_IO.Put ("La suma es:");
+   Ada.Integer_Text_IO.Put (primero + segundo);
+   Ada.Text_IO.New_Line;
+end Guess;
+----
+
+Luego se puede crear un juego de adivinar el número un poco más complejo.
+
+.Juego de Adivinar el Número
+[source, ada]
+----
+with Ada.Text_IO;
+with Ada.Integer_Text_IO;
+with Ada.Numerics.Discrete_Random;
+with Ada.IO_Exceptions;
+
+procedure Guess is
+   subtype Guess_Type is Positive range 1..100;
+   guess : Guess_Type;
+
+   package Random_Guess is new Ada.Numerics.Discrete_Random(Result_Subtype => Guess_Type);
+   gen : Random_Guess.Generator;
+   secret_number : Guess_Type;
+begin
+   Ada.Text_IO.Put_Line("¡Adivina el número!");
+   Random_Guess.Reset(gen);
+   secret_number := Random_Guess.Random(gen);
+
+   loop 
+      begin
+         Ada.Text_IO.Put_Line("Ingresa el número que piensas que es el correcto");
+         Ada.Integer_Text_IO.Get(Item => guess);
+         Ada.Text_IO.Put("Tu selección: ");
+         Ada.Integer_Text_IO.Put(guess);
+         Ada.Text_IO.New_Line;
+
+         if guess < secret_number then
+            Ada.Text_IO.Put_Line("¡Muy pequeño!");
+         elsif guess > secret_number then
+            Ada.Text_IO.Put_Line("¡Muy grande!");
+         else
+            Ada.Text_IO.Put_Line("¡Excelente, Adivinaste!");
+         end if;
+
+         exit when guess = secret_number;
+      exception
+         when Error : Ada.IO_Exceptions.Data_Error => Ada.Text_IO.Skip_Line;
+
+      end;
+   end loop;
+end Guess;
+----

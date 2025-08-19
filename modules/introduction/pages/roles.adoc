@@ -1,0 +1,292 @@
+= ¿Qué Roles Tiene un Sistema Operativo?
+
+Un sistema operativo cumple tres roles principales: Un réferi, un ilusionista y un pegamento.
+
+== Réferi
+
+Administra la protección, aislamiento y la asignación de recursos.
+Gracias a esta correcta gestión de recursos, el sistema operativo permite
+que múltiples aplicaciones, incluso algunas no confiables, puedan ejecutarse
+simultáneamente.
+
+Para lograr esta gestión de recursos debe considerar:
+
+- Aislamiento de fallas: Cada programa debe estar aislado y los programas críticos del sistema operativo
+deben ser protegidos. Normalmente relacionados a los conceptos de *Procesos* y *Ejecución de modo Dual*.
+
+- Compartir recursos: El sistema operativo debe saber priorizar las tareas a ejecutar y como asignar los recursos
+a cada tarea, de modo que puedan tener suficientes para su correcta operación sin acabar con la totalidad de recursos disponibles en el hardware (cpu, ram, disco, etc). Ésta característica es conocida como *Scheduling*.
+
+- Comunicación: El sistema debe proporcionar mecanismos de comunicación entre los procesos, de modo que puedan compartir
+los resultados. Comunmente se utilizan las estrategias de *Pipes* y *Sockets*.
+
+El sistema operativo debe proteger de programas como el siguiente, 
+donde tiene un bucle infinito que podria agotar los recursos disponibles.
+
+.Programa no confiable en C que tiene un bucle infinito (while true)
+[source, c]
+----
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+
+    char *str = argv[1];
+    while (1) {
+        printf("%s\n", str);
+    }
+    
+    return 0;
+}
+----
+
+.Compilación y ejecución de cpu.c
+[source, sh]
+---
+$ gcc –o cpu cpu.c -Wall
+$ ./cpu A & ./cpu B & ./cpu C
+$ ./cpu & ; ./cpu B
+---
+
+La labor de réferi es una de las más complicadas de un sistema operativo
+debido a no es simple forzar a un programa a liberar el control de los recursos asignados.
+
+== Ilusionista
+
+Proporciona abstracciones de hardware con interfaces simples de utilizar. Para esto enmascara las restricciones
+del hardware disponible utilizando técnicas de virtualización.
+
+- Exclusividad: Proporciona una abstracción que permite a una aplicación la ilusión de uso exclusivo de los recursos (cpu, ram, disco).
+
+- Omnipotencia: Proporciona una abstracción donde las aplicaciones tienen la ilusión de tener recursos sin límites.
+
+- Expresividad: Proporciona una abstracción que permite utilizar las características de hardware, aunque estos no estén físicamente presentes.
+
+.Ejemplo de uso de memoria en C
+[source, c]
+----
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+int main(int argc, char *argv[]) {
+    
+    int *p = malloc(sizeof(int));
+    printf("(%d) p: %p\n", getpid(), p);
+    
+    *p = 0;
+    while (1) {
+        *p = *p + 1;
+        printf("(%d) p: %d\n", getpid(), *p);
+    }
+    return 0;
+}
+----
+
+.Compilación y ejecución de memory.c
+[source, sh]
+----
+$ gcc –o memory memory.c -Wall
+$ ./memory
+$ ./memory & ./memory
+----
+
+En el rol de ilusionista el sistema operativo:
+
+- Disminuye la complejidad al remover las diferencias y características únicas del hardware/software.
+- Ayuda al programador al optimizar para mayor conveniencia, utilización, confiabilidad, entre otros.
+
+Responde las preguntas para cualquier área del sistema (sistemas de archivos, memoria virtual, red, scheduling, etc):
+
+- ¿Cuál es el hardware que debe ser utilizado? (realidad física, mecanismos de bajo nivel).
+- ¿Qué interfaz de software se debe proporcionar? (abstracción, mecanismos y políticas de alto nivel).
+
+== Pegamento
+
+Brinda un conjunto de servicios comunes. Cada sistema operativo debe proporcionar una serie de herramientas, 
+servicios y estándares de uso común a las aplicaciones para estandarizar y facilitar el diseño e implementación
+de las mismas.
+
+- Permite la comunicación y el compartir entre aplicaciones: Al tener las mismas bases primitivas facilita la estandarización de protocolos y patrones.
+
+- Maximiza la reutilización: Se reduce el retrabajo y la reimplementación de funcionalidades básicas desde cero. Además de permitir que los componentes evolucionen de forma independiente.
+
+Entre los servicios comunes se puede mencionar: Sistemas de Archivo, Interfaces de Usuario, Protocolos de Red, entre otros.
+
+Éste rol está fuertemente ligado a cada implementación de sistema operativo, por lo que su estudio en profundidad
+se delegará a materiales específicos de Linux, Windows, MacOS, FreeBSD, entre otros.
+
+== Navegadores Web
+
+Los navegadores web pueden ser considerados como otra instancia donde los conceptos
+de réferi, ilusionista y pegamento son utilizados. En la actualidad las aplicaciones web
+realizan operaciones de alto nivel y requieren de un entorno de ejecución tan complejo y variado como un sistema operativo.
+
+- Ver: https://webassembly.org/
+
+== Sistema Operativo como Máquina Virtual
+
+En resumen los roles de réferi, ilusionista y pegamento de un sistema operativo, 
+genera una máquina virtual donde las aplicaciones pueden ejecutar sus operaciones
+sin preocuparse por el hardware real de la máquina. El sistema operativo
+proporciona una abstracción del hardware que permite domar la complejidad del mismo.
+
+.Abtracciones del Sistema Operativo
+|====
+| Hardware | Abstracción del S.O
+
+| Procesador | Hilos (Threads)
+| Memoria (RAM) | Espacio de Direcciones (Address Space)
+| Disco Duro (SSD) | Archivos
+| Red (Wifi, RJ45) | Sockets
+| Maquinaria | Procesos
+|====
+
+.Sistema Operativo como Máquina Virtual
+[plantuml]
+----
+@startuml
+
+title "Sistema Operativo como Máquina Virtual"
+
+
+ 
+node "Hardware" {
+    component "Memoria RAM"
+    component "Procesador"
+    component "Disco Duro"
+    component "Video"
+    component "Red"
+    component "Entrada/Salida"
+    
+    package "Sistema Operativo" {
+      
+      package "Programa 2" {
+        component "Memoria Infinita" as MI
+        component "Procesadores Infinitos" as PI
+        component "GUI" as GUI
+        component "Administrador de Disco" as AD
+        component "Administrador de Red" as AR
+      }
+      
+      package "Programa 1" {
+        component "Memoria Infinita"
+        component "Procesadores Infinitos"
+        component "GUI" as GUI1
+        component "Administrador de Disco"
+        component "Administrador de Red"
+      }
+    }
+} 
+
+@enduml
+----
+
+== ¿Cómo se evalúa un Sistema Operativo?
+
+Los criterios de evaluación de un sistema operativo son: Desempeño, Confiabilidad, Seguridad y Portabilidad.
+
+=== Desempeño (Perfomance)
+
+El sistema operativo debe implementar la abstracción de manera eficiente, con bajo consumo de recursos y de manera equitativa.
+
+Entre las métricas más importantes se puede mencionar las siguientes:
+
+- Sobrecarga (Overhead): Costo adicional de recursos al implementar una abstracción.
+- Equidad (Fairness): Qué tan "bien" se distribuyen los recursos entre las aplicaciones.
+- Tiempo de respuesta (Response time): Cuánto tiempo tarda una tarea en completarse.
+- Rendimiento (Throughput): Velocidad a la que se puede completar un grupo de tareas.
+- Predecibilidad (Predictability): ¿Son constantes las métricas de desempeño a lo largo del tiempo?.
+
+=== Confiabilidad (Reliability)
+
+Un sistema operativo que falla constantemente es poco confiable. El sistema operativo
+debe funcionar según su diseño, ya que las fallas pueden ocacionar pérdida de información
+importante, corrupción de datos u otras consecuencias catastróficas.
+
+La métrica más importante para medir la confiabilidad son:
+
+- Tiempo promedio de falla (Mean time to failure, MTTF): El tiempo promedio en que se gatilla un fallo.
+- Tiempo promedio de reparación (Mean time to repair, MTTR): El tiempo promedio en que se logra reparar un fallo.
+
+Ambas métricas dan la *Disponibilidad* (Availability).
+
+[asciimath]
+++++
+"Disponibilidad" = "MTTF" + "MTTR"
+++++
+
+Si un sistema operativo no está bien diseñado puede llevar a que extensiones como plugins y drivers
+de terceros causen fallos. Debido principalmente a malas prácticas de diseño y programación, lo que
+obliga a los creadores del sistema operativo a implementar sistemas y políticas para verificar la calidad
+de software de terceros. 
+
+=== Seguridad (Security)
+
+La seguridad se enfoca en minimizar las vulnerabilidades a los ataques. Agujeros de seguridad o bugs en el 
+sistema operativo pueden llevar a la inestabilidad y vulneración de la privacidad.
+
+Se puede mencionar los siguientes conceptos claves:
+
+- Integridad: La operación de un sistema no debe ser comprometida por un usuario malicioso atacante.
+- Privacidad: El acceso a los datos almacenados solo debe estar disponible para los usuarios autorizados.
+
+Para lograr esto el sistema operativo tiene políticas:
+
+- Política de seguridad: ¿Qué está permitido?.
+- Política de cumplimiento: ¿De qué forma el sistema operativo se asegura de que solamente las acciones permitidas y autorizadas sean realizadas?.
+
+*¿Cuál es la diferencia entre mecanismo y política?*
+
+- Mecanismo: Son métodos y protocolos de bajo nivel que implementan una necesidad o funcionalidad específica.
+- Política: Son algoritmos que permiten al sistema operativo tomar decisiones, utilizan a los mecanismos.
+
+Ejemplo de un automóvil: Los frenos (mecanismo). Detenerse al ver un disco "Pare" (política).
+
+*Ejemplos*
+
+- https://es.wikipedia.org/wiki/Meltdown_(vulnerabilidad)[Meltdown (2017)]: Extracción de datos del espacio protegido del kernel.
+- https://support.microsoft.com/es-es/topic/kb5042426-problema-de-crowdstrike-que-afecta-a-los-servidores-de-windows-que-provoca-un-mensaje-de-error-de-0x50-o-0x7e-en-una-pantalla-azul-0d7741f7-aca1-4487-8a54-bd431cb49455[CrowdStrike (2024)]: Servidores de Windows hospedados en local que ejecutan el agente CrowdStrike Falcon. Estos servidores pueden encontrar mensajes de error 0x50 o 0x7E en una pantalla azul y experimentar un estado de reinicio continuo.
+
+
+=== Portabilidad (Portability)
+
+Un sistema operativo debe implementar una abstracción que permita a los programas seguir funcionando, 
+incluso cuando el hardware original cambie. Es decir una abstracción portable se mantiene igual independiente
+de cambios en el hardware, no existe la necesidad de cambiar la abstracción cuando el hardware cambia. Los sistemas operativos son difíciles de crear, requieren de mucho tiempo y esfuerzo en su elaboración, por lo que se deben diseñar incluso para hardware no existente que podría existir en el futuro.
+
+
+== Lectura
+
+Operating Systems: Principles and Practice (Second Edition) by Thomas Anderson and Michael Dahlin ISBN 978-0-9856735-2-9. Secciones 1.1, 1.2 y 1.3
+
+== Actividades
+
+_Debian_ es una distribución de GNU/Linux conocida por su estabilidad. En ésta actividad instalaremos la 
+versión 13 disponible en https://www.debian.org/. Descargar la versión https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.0.0-amd64-netinst.iso[AMD x86_64 Net Install] para ser instalada
+en una máquina virtual usando https://www.virtualbox.org/[Virtual Box].
+
+*Si dispone de un computador que puede formatear, experimente instalando Debian*.
+
+Otras alternativas que pueden explorar son:
+
+- Fedora: https://fedoraproject.org/
+- Trisquel: https://trisquel.info/
+- Devuan: https://www.devuan.org/
+- FreeBSD: https://www.freebsd.org/
+- Manjaro: https://manjaro.org/
+- Mint: https://linuxmint.com/
+- Ubuntu: https://ubuntu.com/
+- Rocky Linux: https://rockylinux.org/es-ES
+
+== Foro Debate
+
+En un mínimo de 250 palabras y un máximo de 350 palabras. Responda lo siguiente:
+
+De un ejemplo sobre en que instancias un Sistema Operativo se comporta como:
+
+- a) Un Réferi
+- b) Un Ilusionista
+- c) Un Pegamento
+
+
+Incluya introducción, desarrollo, conclusión y referencias bibliográficas (al menos 2) formato APA 7. Comente la respuesta de dos de sus compañeros (con referencias en APA 7).
+

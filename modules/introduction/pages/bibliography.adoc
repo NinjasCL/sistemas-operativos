@@ -1,0 +1,7 @@
+.Introducción
+
+- Bell, G. (1972). Bell’s Law for the birth and death of computer classes. Communications of the ACM, 51(1), 86-94. https://cacm.acm.org/research/bells-law-for-the-birth-and-death-of-computer-classes/
+- Modern Operating Systems de Andrew S. Tanenbaum (5 edición, 2022, ISBN 978-0-13-761887-3)
+- Operating Systems: Principles and Practice (Second Edition) by Thomas Anderson and Michael Dahlin ISBN 978-0-9856735-2-9
+- Fundamentos de sistemas operativos. (s.f.). Sistop. Recuperado el 17 de agosto de 2025, de https://sistop.org/
+- Fundamentos de Sistemas Operativos: Una Aproximación Práctica Usando Linux. (s.f.). https://honecomp.github.io/librossoo.html

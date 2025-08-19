@@ -4,5 +4,8 @@
 * xref:hello.adoc[]
 * xref:sqrt.adoc[]
 * xref:temperature.adoc[]
+* xref:arrays.adoc[]
 * xref:args.adoc[]
 * xref:strings.adoc[]
+* xref:guess.adoc[]
+* xref:process.adoc[]

@@ -1,3 +1,4 @@
 = Bibliografía
 
 include::../../ada-basics/pages/bibliography.adoc[]
+include::../../introduction/pages/bibliography.adoc[]

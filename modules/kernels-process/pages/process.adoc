@@ -1,0 +1,18 @@
+= ¿Qué es un Proceso?
+
+// https://www.youtube.com/watch?v=4FpG1DcvHzc
+
+En éste capítulo se responderán las siguientes preguntas: ¿Cuáles son los requisitos de una buena abstracción de máquina virtual (VM)?, ¿Qué es un proceso?, ¿Cómo utiliza el kernel los procesos para hacer cumplir la protección?, ¿Cuándo se cambia del modo kernel al modo usuario y viceversa?.
+
+== ¿Qué debe hacer una buena máquina virtual?
+
+La protección es vital para preservar la abstracción de la virtualización. 
+Se debe proteger las aplicaciones de las otras para lograr la confiabilidad, seguridad y privacidad requeridas.
+Se debe proteger al sistema operativo de las aplicaciones que se ejecutan en este.
+Se debe proteger a las aplicaciones de una mala asignación y uso de recursos de CPU y memoria, entre otros.
+
+
+== ¿Qué es un proceso?
+
+En forma simple, un proceso es una instancia de ejecución de un programa y el sistema operativo
+puede crear múltiples instancias del mismo programa.

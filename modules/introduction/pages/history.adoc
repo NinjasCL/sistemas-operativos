@@ -1,0 +1,70 @@
+= Historia de los Sistemas Operativos
+
+== Actividades
+
+Utilizando un LLM como _Chatgpt_ o _Copilot_ simule una Shell y explore los comandos disponibles y sus parámetros.
+
+Pruebe los siguientes comandos:
+
+[source, text]
+----
+date
+cal
+ls
+pwd
+cd
+cat
+pipes |
+grep
+tail
+head
+more
+echo
+mkdir
+touch
+mv
+rm
+----
+
+*Ejemplo*
+
+[source, text]
+----
+> "Desde ahora simula ser una shell Unix"
+> "ls -las"
+> "Explica para que sirve el comando ls"
+----
+
+== Foro de Debate
+
+En un mínimo de 250 palabras y un máximo de 350 palabras. Responda la siguiente pregunta: ¿Cuál es la importancia de la Shell en los Sistemas Operativos?. Incluya introducción, desarrollo, conclusión y referencias bibliográficas (al menos 2) formato APA 7. Comente la respuesta de dos de sus compañeros (con referencias en APA 7).
+
+
+*Material de Referencia*
+
+- Libro de Enrique Soriano. Secciones 2.1 y 2.2
+
+== Lectura Complementaria
+
+- Libro Gunnar Wolf (https://sistop.org/). Secciones 1.1 a 1.5.1 (Páginas 17 a 31).
+- Libro Enrique Soriano (https://honecomp.github.io/librossoo.html). Secciones 1.1 hasta 1.2.1 (Páginas 20 a 25).
+- Libro Modern Operating Systems de Andrew S. Tanenbaum (5 edición, 2022, ISBN 978-0-13-761887-3). Secciones 1.1 a 1.2. (Páginas 4 a 19)
+
+== Videos Complementarios
+
+- https://www.youtube.com/watch?v=5nK_ft0Lf1s[Alan Turing and Bletchley Park]: Conducido por Charles Severance, presenta al equipo electromecánico BOMBE, construido para romper el cifrado de la máquina Enigma atacándolo con fuerza bruta, y del electrónico Colossus.
+
+- https://www.youtube.com/watch?v=BlUWg2nxCz0[Once upon a punched card]: Presenta la historia de las tarjetas perforadas, y cómo (en 1964) pueden ayudar a cualquier negocio.
+
+- https://www.youtube.com/watch?v=cO6asQjQmPM[Michigan Terminal System]: (Primeros 5 minutos). Instrucciones para el uso del sistema de terminales (teletipos) para la computadora de la Universidad de Michigan.
+
+- https://www.youtube.com/watch?v=yJDv-zdhzMY[The mother of all demos]: Revolucionaria presentación en que Douglas Engelbert presenta ventanas, hipertexto, gráficas, navegación eficiente, entrada de datos, video conferencia, el mouse, procesamiento de texto, ligado dinámico de archivos, control de versiones, y trabajo colaborativo, completamente funcional, en 1968.
+
+- https://www.youtube.com/watch?v=BZykunYYeQk[Altair 8800 Pong]: Presenta el juego Pong en la primera computadora personal, la Altair 8800. Muestra cómo se podía programar, cargar un programa desde cinta.
+
+- https://www.youtube.com/watch?v=uFQ3sajIdaM[The IBM 1401 compiles and runs FORTRAN II]: Muestra una computadora de 1959 restaurada en el Computer History Museum. Presenta muy bien el entorno de uso de este equipo, las frustraciones de echar a andar un programa, y la forma de recibir respuesta de una computadora de la era de programación por lotes.
+
+*Referencias*
+
+- https://github.com/gwolf/sistop-2021-1/blob/master/ejemplos_en_clase/1._Introducci%C3%B3n/videos_introduccion.txt
+- https://github.com/gwolf/sistop-2019-2/tree/master/ejemplos_en_clase/1-Introducci%C3%B3n

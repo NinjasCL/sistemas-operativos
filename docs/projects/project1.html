@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Proyecto 1: Minishell :: Conceptos de Sistemas Operativos</title>
+    <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/projects/project1.html">
+    <link rel="prev" href="../ada-basics/process.html">
+    <link rel="next" href="../bibliography.html">
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://ninjascl.github.io/sistemas-operativos">Conceptos de Sistemas Operativos</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Introducción</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/introduction.html">Introducción a los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/history.html">Historia de los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/roles.html">¿Qué Roles Tiene un Sistema Operativo?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Kernel y Procesos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kernels-process/process.html">¿Qué es un Proceso?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación en Ada</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/about.html">Introducción al lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/history.html">Historia del lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/hello.html">Hola mundo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/sqrt.html">Raíz Cuadrada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/temperature.html">Conversor de Temperatura</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/arrays.html">Arreglos y Listas</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/args.html">Argumentos de Línea de Comandos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/strings.html">Strings</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/guess.html">Adivina el Número</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/process.html">Gatillar Procesos</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Proyectos</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="project1.html">Proyecto 1: Minishell</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Conceptos de Sistemas Operativos</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
+    <li>Proyectos</li>
+    <li><a href="project1.html">Proyecto 1: Minishell</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///antora/./modules/projects/pages/project1.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Proyecto 1: Minishell</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Intérprete de Comandos o Mandatos (Minishell)</p>
+</div>
+<div class="paragraph">
+<p>En este proyecto individual o grupal donde se debe elaborar un programa que pueda ejecutar otros programas a través de una línea de comandos.</p>
+</div>
+<div class="paragraph">
+<p>Puede usar referencias y código de ejemplo disponible en internet. Pero debe ser correctamente referenciado el origen.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Plazo Recomendado: 4 semanas.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="características"><a class="anchor" href="#características"></a>Características</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>El programa debe permitir ejecutar comandos simples de UNIX como: <code>echo, ls, cp, mv, rm, mkdir</code>, entre otros. Para encontrar el programa debe buscar en las rutas disponibles en la variable de entorno <em>PATH</em>.</p>
+</div>
+<div class="paragraph">
+<p>El programa debe permitir ejecutar comandos en secuencia (hasta 3 comandos) con el operador pipe <code>|</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ejemplo 1: <code>ls | wc -l</code></p>
+</li>
+<li>
+<p>Ejemplo 2: <code>ls | sort | wc -l</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>El programa debe permitir ejecutar comandos o secuencia de comandos en segundo plano background (El proceso padre no se bloquea esperando la finalización del proceso hijo) con el operador <code>&amp;</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ejemplo 1: <code>ls &amp;</code></p>
+</li>
+<li>
+<p>Ejemplo 2: <code>ls | sort | wc -l &amp;</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>El programa debe redireccionar el resultado de un comando a la salida estándar usando el operador (<code>&gt;</code>):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ejemplo: <code>ls &gt; archivos.txt</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>El programa debe redireccionar el resultado de un comando a la salida de error usando el operador (<code>2&gt;</code>);</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ejemplo: <code>make install 2&gt; salida_error</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>El programa debe redireccionar el contenido desde la entrada estándar usando el operador (<code>&lt;</code>):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ejemplo: <code>cat | more &lt; archivo.txt</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>El programa debe implementar dos comandos internos (cd y pwd) que deben ser obtenidos de una ruta interna y no desde PATH.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pwd: Permite mostrar el directorio actual de la minishell.</p>
+</li>
+<li>
+<p>cd: Permite cambiar el directorio actual de la minishell.</p>
+</li>
+<li>
+<p>cd (sin argumentos). Cambia el directorio a la ruta raíz de pwd.</p>
+</li>
+<li>
+<p>cd . cambia el directorio a la ruta retornada por pwd</p>
+</li>
+<li>
+<p>cd .. cambia el directorio a la ruta padre de la ruta actual retornada por pwd</p>
+</li>
+<li>
+<p>cd &lt;directorio&gt; cambia el directorio a la ruta suministrada en &lt;directorio&gt;.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="recomendaciones"><a class="anchor" href="#recomendaciones"></a>Recomendaciones</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>El desarrollo incremental de las funcionalidades facilitará la implementación de las características.</p>
+</li>
+<li>
+<p>Primero partir con ejecutar los comandos simples como : ls, cp, mv, etc.</p>
+</li>
+<li>
+<p>Luego añadir la capacidad de ejecutar los comandos simples en background como: ls &amp;.</p>
+</li>
+<li>
+<p>Siguiente es añadir la capacidad de ejecutar comandos en secuencia (pipes).</p>
+</li>
+<li>
+<p>A continuación implementar los comandos en secuencia con background.</p>
+</li>
+<li>
+<p>Añadir la capacidad de las redirecciones a las salida estándar, salida de error y entrada (&gt;, &lt;, 2&gt;).</p>
+</li>
+<li>
+<p>Añadir los comandos internos (cd, pwd).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="restricciones"><a class="anchor" href="#restricciones"></a>Restricciones</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Debe ser elaborado en uno de los siguientes lenguajes C, Python, Ada o Elixir. El utilizar Ada o Elixir tiene un punto base adicional ya que se consideran lenguaje nuevos y se premia la motivación por aprenderlos.</p>
+</li>
+<li>
+<p>Debe ser elaborado de forma ordenada y lo más profesional posible. Pensando que es un proyecto para un cliente que les ha solicitado este programa.</p>
+</li>
+<li>
+<p>El entorno de ejecución puede ser un sistema operativo Linux (Debian), MacOS o entorno <a href="https://frippery.org/busybox/">Busybox</a> o <a href="https://www.msys2.org/">Msys para Windows</a>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Recomendación de investigar las alternativas: C, Python, Ada o Elixir y escoger según su predilección.</p>
+</div>
+<div class="paragraph">
+<p>Todas las alternativas pueden desarrollar el proyecto.</p>
+</div>
+<div class="paragraph">
+<p>Pueden comparar los lenguajes en ésta página que tiene ejemplos de código:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ada: <a href="https://rosettacode.org/wiki/Category:Ada" class="bare">https://rosettacode.org/wiki/Category:Ada</a></p>
+</li>
+<li>
+<p>Elixir: <a href="https://rosettacode.org/wiki/Category:Elixir" class="bare">https://rosettacode.org/wiki/Category:Elixir</a></p>
+</li>
+<li>
+<p>C: <a href="https://rosettacode.org/wiki/Category:C" class="bare">https://rosettacode.org/wiki/Category:C</a></p>
+</li>
+<li>
+<p>Python: <a href="https://rosettacode.org/wiki/Category:Python" class="bare">https://rosettacode.org/wiki/Category:Python</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="referencias"><a class="anchor" href="#referencias"></a>Referencias</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Universidad Carlos III de Madrid. (s.f.). Sistemas Operativos: Prácticas. <a href="https://ocw.uc3m.es/mod/page/view.php?id=2795" class="bare">https://ocw.uc3m.es/mod/page/view.php?id=2795</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="../ada-basics/process.html">Gatillar Procesos</a></span>
+  <span class="next"><a href="../bibliography.html">Bibliografía</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+  </body>
+</html>

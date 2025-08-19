@@ -13,7 +13,7 @@ build b:
 server s:
 	@cd docs && python3 -m http.server
 
-sh:
+sh shell:
 	${BUILD} run -it --entrypoint /bin/sh -v .:/antora:z -t ${CONTAINER_LABEL}
 
 antora.build ab:

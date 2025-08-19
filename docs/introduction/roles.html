@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>¿Qué Roles Tiene un Sistema Operativo? :: Conceptos de Sistemas Operativos</title>
+    <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/introduction/roles.html">
+    <link rel="prev" href="history.html">
+    <link rel="next" href="../kernels-process/process.html">
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://ninjascl.github.io/sistemas-operativos">Conceptos de Sistemas Operativos</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Introducción</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="introduction.html">Introducción a los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="history.html">Historia de los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="roles.html">¿Qué Roles Tiene un Sistema Operativo?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Kernel y Procesos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kernels-process/process.html">¿Qué es un Proceso?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación en Ada</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/about.html">Introducción al lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/history.html">Historia del lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/hello.html">Hola mundo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/sqrt.html">Raíz Cuadrada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/temperature.html">Conversor de Temperatura</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/arrays.html">Arreglos y Listas</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/args.html">Argumentos de Línea de Comandos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/strings.html">Strings</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/guess.html">Adivina el Número</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/process.html">Gatillar Procesos</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Proyectos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project1.html">Proyecto 1: Minishell</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Conceptos de Sistemas Operativos</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
+    <li>Introducción</li>
+    <li><a href="roles.html">¿Qué Roles Tiene un Sistema Operativo?</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///antora/./modules/introduction/pages/roles.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">¿Qué Roles Tiene un Sistema Operativo?</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Un sistema operativo cumple tres roles principales: Un réferi, un ilusionista y un pegamento.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="réferi"><a class="anchor" href="#réferi"></a>Réferi</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Administra la protección, aislamiento y la asignación de recursos.
+Gracias a esta correcta gestión de recursos, el sistema operativo permite
+que múltiples aplicaciones, incluso algunas no confiables, puedan ejecutarse
+simultáneamente.</p>
+</div>
+<div class="paragraph">
+<p>Para lograr esta gestión de recursos debe considerar:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Aislamiento de fallas: Cada programa debe estar aislado y los programas críticos del sistema operativo
+deben ser protegidos. Normalmente relacionados a los conceptos de <strong>Procesos</strong> y <strong>Ejecución de modo Dual</strong>.</p>
+</li>
+<li>
+<p>Compartir recursos: El sistema operativo debe saber priorizar las tareas a ejecutar y como asignar los recursos
+a cada tarea, de modo que puedan tener suficientes para su correcta operación sin acabar con la totalidad de recursos disponibles en el hardware (cpu, ram, disco, etc). Ésta característica es conocida como <strong>Scheduling</strong>.</p>
+</li>
+<li>
+<p>Comunicación: El sistema debe proporcionar mecanismos de comunicación entre los procesos, de modo que puedan compartir
+los resultados. Comunmente se utilizan las estrategias de <strong>Pipes</strong> y <strong>Sockets</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>El sistema operativo debe proteger de programas como el siguiente,
+donde tiene un bucle infinito que podria agotar los recursos disponibles.</p>
+</div>
+<div class="listingblock">
+<div class="title">Programa no confiable en C que tiene un bucle infinito (while true)</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#include &lt;stdio.h&gt;
+
+int main(int argc, char *argv[]) {
+
+    char *str = argv[1];
+    while (1) {
+        printf("%s\n", str);
+    }
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Compilación y ejecución de cpu.c</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">---
+$ gcc –o cpu cpu.c -Wall
+$ ./cpu A &amp; ./cpu B &amp; ./cpu C
+$ ./cpu &amp; ; ./cpu B
+---</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>La labor de réferi es una de las más complicadas de un sistema operativo
+debido a no es simple forzar a un programa a liberar el control de los recursos asignados.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ilusionista"><a class="anchor" href="#ilusionista"></a>Ilusionista</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Proporciona abstracciones de hardware con interfaces simples de utilizar. Para esto enmascara las restricciones
+del hardware disponible utilizando técnicas de virtualización.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Exclusividad: Proporciona una abstracción que permite a una aplicación la ilusión de uso exclusivo de los recursos (cpu, ram, disco).</p>
+</li>
+<li>
+<p>Omnipotencia: Proporciona una abstracción donde las aplicaciones tienen la ilusión de tener recursos sin límites.</p>
+</li>
+<li>
+<p>Expresividad: Proporciona una abstracción que permite utilizar las características de hardware, aunque estos no estén físicamente presentes.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Ejemplo de uso de memoria en C</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;unistd.h&gt;
+int main(int argc, char *argv[]) {
+
+    int *p = malloc(sizeof(int));
+    printf("(%d) p: %p\n", getpid(), p);
+
+    *p = 0;
+    while (1) {
+        *p = *p + 1;
+        printf("(%d) p: %d\n", getpid(), *p);
+    }
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Compilación y ejecución de memory.c</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-sh hljs" data-lang="sh">$ gcc –o memory memory.c -Wall
+$ ./memory
+$ ./memory &amp; ./memory</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="pegamento"><a class="anchor" href="#pegamento"></a>Pegamento</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Brinda un conjunto de servicios comunes. Cada sistema operativo debe proporcionar una serie de herramientas,
+servicios y estándares de uso común a las aplicaciones para estandarizar y facilitar el diseño e implementación
+de las mismas.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Permite la comunicación y el compartir entre aplicaciones: Al tener las mismas bases primitivas facilita la estandarización de protocolos y patrones.</p>
+</li>
+<li>
+<p>Maximiza la reutilización: Se reduce el retrabajo y la reimplementación de funcionalidades básicas desde cero. Además de permitir que los componentes evolucionen de forma independiente.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Entre los servicios comunes se puede mencionar: Sistemas de Archivo, Interfaces de Usuario, Protocolos de Red, entre otros.</p>
+</div>
+<div class="paragraph">
+<p>Éste rol está fuertemente ligado a cada implementación de sistema operativo, por lo que su estudio en profundidad
+se delegará a materiales específicos de Linux, Windows, MacOS, FreeBSD, entre otros.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="navegadores-web"><a class="anchor" href="#navegadores-web"></a>Navegadores Web</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Los navegadores web pueden ser considerados como otra instancia donde los conceptos
+de réferi, ilusionista y pegamento son utilizados. En la actualidad las aplicaciones web
+realizan operaciones de alto nivel y requieren de un entorno de ejecución tan complejo y variado como un sistema operativo.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ver: <a href="https://webassembly.org/" class="bare">https://webassembly.org/</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sistema-operativo-como-máquina-virtual"><a class="anchor" href="#sistema-operativo-como-máquina-virtual"></a>Sistema Operativo como Máquina Virtual</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>En resumen los roles de réferi, ilusionista y pegamento de un sistema operativo,
+genera una máquina virtual donde las aplicaciones pueden ejecutar sus operaciones
+sin preocuparse por el hardware real de la máquina. El sistema operativo
+proporciona una abstracción del hardware que permite domar la complejidad del mismo.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Abtracciones del Sistema Operativo</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Hardware</th>
+<th class="tableblock halign-left valign-top">Abstracción del S.O</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Procesador</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hilos (Threads)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Memoria (RAM)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Espacio de Direcciones (Address Space)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Disco Duro (SSD)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Archivos</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Red (Wifi, RJ45)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Sockets</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Maquinaria</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Procesos</p></td>
+</tr>
+</tbody>
+</table>
+<div class="imageblock kroki">
+<div class="content">
+<img src="_images/diag-603d27530a0c66c0ace41457fabdec63968a15dd.svg" alt="Sistema Operativo como Máquina Virtual">
+</div>
+<div class="title">Figure 1. Sistema Operativo como Máquina Virtual</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cómo-se-evalúa-un-sistema-operativo"><a class="anchor" href="#cómo-se-evalúa-un-sistema-operativo"></a>¿Cómo se evalúa un Sistema Operativo?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Los criterios de evaluación de un sistema operativo son: Desempeño, Confiabilidad, Seguridad y Portabilidad.</p>
+</div>
+<div class="sect2">
+<h3 id="desempeño-perfomance"><a class="anchor" href="#desempeño-perfomance"></a>Desempeño (Perfomance)</h3>
+<div class="paragraph">
+<p>El sistema operativo debe implementar la abstracción de manera eficiente, con bajo consumo de recursos y de manera equitativa.</p>
+</div>
+<div class="paragraph">
+<p>Entre las métricas más importantes se puede mencionar las siguientes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Sobrecarga (Overhead): Costo adicional de recursos al implementar una abstracción.</p>
+</li>
+<li>
+<p>Equidad (Fairness): Qué tan "bien" se distribuyen los recursos entre las aplicaciones.</p>
+</li>
+<li>
+<p>Tiempo de respuesta (Response time): Cuánto tiempo tarda una tarea en completarse.</p>
+</li>
+<li>
+<p>Rendimiento (Throughput): Velocidad a la que se puede completar un grupo de tareas.</p>
+</li>
+<li>
+<p>Predecibilidad (Predictability): ¿Son constantes las métricas de desempeño a lo largo del tiempo?.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="confiabilidad-reliability"><a class="anchor" href="#confiabilidad-reliability"></a>Confiabilidad (Reliability)</h3>
+<div class="paragraph">
+<p>Un sistema operativo que falla constantemente es poco confiable. El sistema operativo
+debe funcionar según su diseño, ya que las fallas pueden ocacionar pérdida de información
+importante, corrupción de datos u otras consecuencias catastróficas.</p>
+</div>
+<div class="paragraph">
+<p>La métrica más importante para medir la confiabilidad son:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Tiempo promedio de falla (Mean time to failure, MTTF): El tiempo promedio en que se gatilla un fallo.</p>
+</li>
+<li>
+<p>Tiempo promedio de reparación (Mean time to repair, MTTR): El tiempo promedio en que se logra reparar un fallo.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Ambas métricas dan la <strong>Disponibilidad</strong> (Availability).</p>
+</div>
+  <div class="stemblock">
+    <div class="content halign-center valign-middle" style="padding-top: 1rem">
+      <svg style="vertical-align: -0.439ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="33.925ex" height="2.009ex" role="img" focusable="false" viewBox="0 -694 14995 888"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mrow"><g data-mml-node="mtext"><path data-c="44" d="M130 622Q123 629 119 631T103 634T60 637H27V683H228Q399 682 419 682T461 676Q504 667 546 641T626 573T685 470T708 336Q708 210 634 116T442 3Q429 1 228 0H27V46H60Q102 47 111 49T130 61V622ZM593 338Q593 439 571 501T493 602Q439 637 355 637H322H294Q238 637 234 628Q231 624 231 344Q231 62 232 59Q233 49 248 48T339 46H350Q456 46 515 95Q561 133 577 191T593 338Z"></path><path data-c="69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z" transform="translate(764,0)"></path><path data-c="73" d="M295 316Q295 356 268 385T190 414Q154 414 128 401Q98 382 98 349Q97 344 98 336T114 312T157 287Q175 282 201 278T245 269T277 256Q294 248 310 236T342 195T359 133Q359 71 321 31T198 -10H190Q138 -10 94 26L86 19L77 10Q71 4 65 -1L54 -11H46H42Q39 -11 33 -5V74V132Q33 153 35 157T45 162H54Q66 162 70 158T75 146T82 119T101 77Q136 26 198 26Q295 26 295 104Q295 133 277 151Q257 175 194 187T111 210Q75 227 54 256T33 318Q33 357 50 384T93 424T143 442T187 447H198Q238 447 268 432L283 424L292 431Q302 440 314 448H322H326Q329 448 335 442V310L329 304H301Q295 310 295 316Z" transform="translate(1042,0)"></path><path data-c="70" d="M36 -148H50Q89 -148 97 -134V-126Q97 -119 97 -107T97 -77T98 -38T98 6T98 55T98 106Q98 140 98 177T98 243T98 296T97 335T97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 61 434T98 436Q115 437 135 438T165 441T176 442H179V416L180 390L188 397Q247 441 326 441Q407 441 464 377T522 216Q522 115 457 52T310 -11Q242 -11 190 33L182 40V-45V-101Q182 -128 184 -134T195 -145Q216 -148 244 -148H260V-194H252L228 -193Q205 -192 178 -192T140 -191Q37 -191 28 -194H20V-148H36ZM424 218Q424 292 390 347T305 402Q234 402 182 337V98Q222 26 294 26Q345 26 384 80T424 218Z" transform="translate(1436,0)"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(1992,0)"></path><path data-c="6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z" transform="translate(2492,0)"></path><path data-c="69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z" transform="translate(3048,0)"></path><path data-c="62" d="M307 -11Q234 -11 168 55L158 37Q156 34 153 28T147 17T143 10L138 1L118 0H98V298Q98 599 97 603Q94 622 83 628T38 637H20V660Q20 683 22 683L32 684Q42 685 61 686T98 688Q115 689 135 690T165 693T176 694H179V543Q179 391 180 391L183 394Q186 397 192 401T207 411T228 421T254 431T286 439T323 442Q401 442 461 379T522 216Q522 115 458 52T307 -11ZM182 98Q182 97 187 90T196 79T206 67T218 55T233 44T250 35T271 29T295 26Q330 26 363 46T412 113Q424 148 424 212Q424 287 412 323Q385 405 300 405Q270 405 239 390T188 347L182 339V98Z" transform="translate(3326,0)"></path><path data-c="69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z" transform="translate(3882,0)"></path><path data-c="6C" d="M42 46H56Q95 46 103 60V68Q103 77 103 91T103 124T104 167T104 217T104 272T104 329Q104 366 104 407T104 482T104 542T103 586T103 603Q100 622 89 628T44 637H26V660Q26 683 28 683L38 684Q48 685 67 686T104 688Q121 689 141 690T171 693T182 694H185V379Q185 62 186 60Q190 52 198 49Q219 46 247 46H263V0H255L232 1Q209 2 183 2T145 3T107 3T57 1L34 0H26V46H42Z" transform="translate(4160,0)"></path><path data-c="69" d="M69 609Q69 637 87 653T131 669Q154 667 171 652T188 609Q188 579 171 564T129 549Q104 549 87 564T69 609ZM247 0Q232 3 143 3Q132 3 106 3T56 1L34 0H26V46H42Q70 46 91 49Q100 53 102 60T104 102V205V293Q104 345 102 359T88 378Q74 385 41 385H30V408Q30 431 32 431L42 432Q52 433 70 434T106 436Q123 437 142 438T171 441T182 442H185V62Q190 52 197 50T232 46H255V0H247Z" transform="translate(4438,0)"></path><path data-c="64" d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" transform="translate(4716,0)"></path><path data-c="61" d="M137 305T115 305T78 320T63 359Q63 394 97 421T218 448Q291 448 336 416T396 340Q401 326 401 309T402 194V124Q402 76 407 58T428 40Q443 40 448 56T453 109V145H493V106Q492 66 490 59Q481 29 455 12T400 -6T353 12T329 54V58L327 55Q325 52 322 49T314 40T302 29T287 17T269 6T247 -2T221 -8T190 -11Q130 -11 82 20T34 107Q34 128 41 147T68 188T116 225T194 253T304 268H318V290Q318 324 312 340Q290 411 215 411Q197 411 181 410T156 406T148 403Q170 388 170 359Q170 334 154 320ZM126 106Q126 75 150 51T209 26Q247 26 276 49T315 109Q317 116 318 175Q318 233 317 233Q309 233 296 232T251 223T193 203T147 166T126 106Z" transform="translate(5272,0)"></path><path data-c="64" d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" transform="translate(5772,0)"></path></g></g><g data-mml-node="mo" transform="translate(6605.8,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mrow" transform="translate(7661.6,0)"><g data-mml-node="mtext"><path data-c="4D" d="M132 622Q125 629 121 631T105 634T62 637H29V683H135Q221 683 232 682T249 675Q250 674 354 398L458 124L562 398Q666 674 668 675Q671 681 683 682T781 683H887V637H854Q814 636 803 634T785 622V61Q791 51 802 49T854 46H887V0H876Q855 3 736 3Q605 3 596 0H585V46H618Q660 47 669 49T688 61V347Q688 424 688 461T688 546T688 613L687 632Q454 14 450 7Q446 1 430 1T410 7Q409 9 292 316L176 624V606Q175 588 175 543T175 463T175 356L176 86Q187 50 261 46H278V0H269Q254 3 154 3Q52 3 37 0H29V46H46Q78 48 98 56T122 69T132 86V622Z"></path><path data-c="54" d="M36 443Q37 448 46 558T55 671V677H666V671Q667 666 676 556T685 443V437H645V443Q645 445 642 478T631 544T610 593Q593 614 555 625Q534 630 478 630H451H443Q417 630 414 618Q413 616 413 339V63Q420 53 439 50T528 46H558V0H545L361 3Q186 1 177 0H164V46H194Q264 46 283 49T309 63V339V550Q309 620 304 625T271 630H244H224Q154 630 119 601Q101 585 93 554T81 486T76 443V437H36V443Z" transform="translate(917,0)"></path><path data-c="54" d="M36 443Q37 448 46 558T55 671V677H666V671Q667 666 676 556T685 443V437H645V443Q645 445 642 478T631 544T610 593Q593 614 555 625Q534 630 478 630H451H443Q417 630 414 618Q413 616 413 339V63Q420 53 439 50T528 46H558V0H545L361 3Q186 1 177 0H164V46H194Q264 46 283 49T309 63V339V550Q309 620 304 625T271 630H244H224Q154 630 119 601Q101 585 93 554T81 486T76 443V437H36V443Z" transform="translate(1639,0)"></path><path data-c="46" d="M128 619Q121 626 117 628T101 631T58 634H25V680H582V676Q584 670 596 560T610 444V440H570V444Q563 493 561 501Q555 538 543 563T516 601T477 622T431 631T374 633H334H286Q252 633 244 631T233 621Q232 619 232 490V363H284Q287 363 303 363T327 364T349 367T372 373T389 385Q407 403 410 459V480H450V200H410V221Q407 276 389 296Q381 303 371 307T348 313T327 316T303 317T284 317H232V189L233 61Q240 54 245 52T270 48T333 46H360V0H348Q324 3 182 3Q51 3 36 0H25V46H58Q100 47 109 49T128 61V619Z" transform="translate(2361,0)"></path></g></g><g data-mml-node="mo" transform="translate(10897.8,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="mrow" transform="translate(11898,0)"><g data-mml-node="mtext"><path data-c="4D" d="M132 622Q125 629 121 631T105 634T62 637H29V683H135Q221 683 232 682T249 675Q250 674 354 398L458 124L562 398Q666 674 668 675Q671 681 683 682T781 683H887V637H854Q814 636 803 634T785 622V61Q791 51 802 49T854 46H887V0H876Q855 3 736 3Q605 3 596 0H585V46H618Q660 47 669 49T688 61V347Q688 424 688 461T688 546T688 613L687 632Q454 14 450 7Q446 1 430 1T410 7Q409 9 292 316L176 624V606Q175 588 175 543T175 463T175 356L176 86Q187 50 261 46H278V0H269Q254 3 154 3Q52 3 37 0H29V46H46Q78 48 98 56T122 69T132 86V622Z"></path><path data-c="54" d="M36 443Q37 448 46 558T55 671V677H666V671Q667 666 676 556T685 443V437H645V443Q645 445 642 478T631 544T610 593Q593 614 555 625Q534 630 478 630H451H443Q417 630 414 618Q413 616 413 339V63Q420 53 439 50T528 46H558V0H545L361 3Q186 1 177 0H164V46H194Q264 46 283 49T309 63V339V550Q309 620 304 625T271 630H244H224Q154 630 119 601Q101 585 93 554T81 486T76 443V437H36V443Z" transform="translate(917,0)"></path><path data-c="54" d="M36 443Q37 448 46 558T55 671V677H666V671Q667 666 676 556T685 443V437H645V443Q645 445 642 478T631 544T610 593Q593 614 555 625Q534 630 478 630H451H443Q417 630 414 618Q413 616 413 339V63Q420 53 439 50T528 46H558V0H545L361 3Q186 1 177 0H164V46H194Q264 46 283 49T309 63V339V550Q309 620 304 625T271 630H244H224Q154 630 119 601Q101 585 93 554T81 486T76 443V437H36V443Z" transform="translate(1639,0)"></path><path data-c="52" d="M130 622Q123 629 119 631T103 634T60 637H27V683H202H236H300Q376 683 417 677T500 648Q595 600 609 517Q610 512 610 501Q610 468 594 439T556 392T511 361T472 343L456 338Q459 335 467 332Q497 316 516 298T545 254T559 211T568 155T578 94Q588 46 602 31T640 16H645Q660 16 674 32T692 87Q692 98 696 101T712 105T728 103T732 90Q732 59 716 27T672 -16Q656 -22 630 -22Q481 -16 458 90Q456 101 456 163T449 246Q430 304 373 320L363 322L297 323H231V192L232 61Q238 51 249 49T301 46H334V0H323Q302 3 181 3Q59 3 38 0H27V46H60Q102 47 111 49T130 61V622ZM491 499V509Q491 527 490 539T481 570T462 601T424 623T362 636Q360 636 340 636T304 637H283Q238 637 234 628Q231 624 231 492V360H289Q390 360 434 378T489 456Q491 467 491 499Z" transform="translate(2361,0)"></path></g></g></g></g></g></svg>
+    </div>
+  </div>
+<div class="paragraph">
+<p>Si un sistema operativo no está bien diseñado puede llevar a que extensiones como plugins y drivers
+de terceros causen fallos. Debido principalmente a malas prácticas de diseño y programación, lo que
+obliga a los creadores del sistema operativo a implementar sistemas y políticas para verificar la calidad
+de software de terceros.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="seguridad-security"><a class="anchor" href="#seguridad-security"></a>Seguridad (Security)</h3>
+<div class="paragraph">
+<p>La seguridad se enfoca en minimizar las vulnerabilidades a los ataques. Agujeros de seguridad o bugs en el
+sistema operativo pueden llevar a la inestabilidad y vulneración de la privacidad.</p>
+</div>
+<div class="paragraph">
+<p>Se puede mencionar los siguientes conceptos claves:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Integridad: La operación de un sistema no debe ser comprometida por un usuario malicioso atacante.</p>
+</li>
+<li>
+<p>Privacidad: El acceso a los datos almacenados solo debe estar disponible para los usuarios autorizados.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Para lograr esto el sistema operativo tiene políticas:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Política de seguridad: ¿Qué está permitido?.</p>
+</li>
+<li>
+<p>Política de cumplimiento: ¿De qué forma el sistema operativo se asegura de que solamente las acciones permitidas y autorizadas sean realizadas?.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>¿Cuál es la diferencia entre mecanismo y política?</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Mecanismo: Son métodos y protocolos de bajo nivel que implementan una necesidad o funcionalidad específica.</p>
+</li>
+<li>
+<p>Política: Son algoritmos que permiten al sistema operativo tomar decisiones, utilizan a los mecanismos.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Ejemplo de un automóvil: Los frenos (mecanismo). Detenerse al ver un disco "Pare" (política).</p>
+</div>
+<div class="paragraph">
+<p><strong>Ejemplos</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://es.wikipedia.org/wiki/Meltdown_(vulnerabilidad)">Meltdown (2017)</a>: Extracción de datos del espacio protegido del kernel.</p>
+</li>
+<li>
+<p><a href="https://support.microsoft.com/es-es/topic/kb5042426-problema-de-crowdstrike-que-afecta-a-los-servidores-de-windows-que-provoca-un-mensaje-de-error-de-0x50-o-0x7e-en-una-pantalla-azul-0d7741f7-aca1-4487-8a54-bd431cb49455">CrowdStrike (2024)</a>: Servidores de Windows hospedados en local que ejecutan el agente CrowdStrike Falcon. Estos servidores pueden encontrar mensajes de error 0x50 o 0x7E en una pantalla azul y experimentar un estado de reinicio continuo.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="portabilidad-portability"><a class="anchor" href="#portabilidad-portability"></a>Portabilidad (Portability)</h3>
+<div class="paragraph">
+<p>Un sistema operativo debe implementar una abstracción que permita a los programas seguir funcionando,
+incluso cuando el hardware original cambie. Es decir una abstracción portable se mantiene igual independiente
+de cambios en el hardware, no existe la necesidad de cambiar la abstracción cuando el hardware cambia. Los sistemas operativos son difíciles de crear, requieren de mucho tiempo y esfuerzo en su elaboración, por lo que se deben diseñar incluso para hardware no existente que podría existir en el futuro.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="lectura"><a class="anchor" href="#lectura"></a>Lectura</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Operating Systems: Principles and Practice (Second Edition) by Thomas Anderson and Michael Dahlin ISBN 978-0-9856735-2-9. Secciones 1.1, 1.2 y 1.3</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="actividades"><a class="anchor" href="#actividades"></a>Actividades</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><em>Debian</em> es una distribución de GNU/Linux conocida por su estabilidad. En ésta actividad instalaremos la
+versión 13 disponible en <a href="https://www.debian.org/" class="bare">https://www.debian.org/</a>. Descargar la versión <a href="https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-13.0.0-amd64-netinst.iso">AMD x86_64 Net Install</a> para ser instalada
+en una máquina virtual usando <a href="https://www.virtualbox.org/">Virtual Box</a>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Si dispone de un computador que puede formatear, experimente instalando Debian</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Otras alternativas que pueden explorar son:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Fedora: <a href="https://fedoraproject.org/" class="bare">https://fedoraproject.org/</a></p>
+</li>
+<li>
+<p>Trisquel: <a href="https://trisquel.info/" class="bare">https://trisquel.info/</a></p>
+</li>
+<li>
+<p>Devuan: <a href="https://www.devuan.org/" class="bare">https://www.devuan.org/</a></p>
+</li>
+<li>
+<p>FreeBSD: <a href="https://www.freebsd.org/" class="bare">https://www.freebsd.org/</a></p>
+</li>
+<li>
+<p>Manjaro: <a href="https://manjaro.org/" class="bare">https://manjaro.org/</a></p>
+</li>
+<li>
+<p>Mint: <a href="https://linuxmint.com/" class="bare">https://linuxmint.com/</a></p>
+</li>
+<li>
+<p>Ubuntu: <a href="https://ubuntu.com/" class="bare">https://ubuntu.com/</a></p>
+</li>
+<li>
+<p>Rocky Linux: <a href="https://rockylinux.org/es-ES" class="bare">https://rockylinux.org/es-ES</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="foro-debate"><a class="anchor" href="#foro-debate"></a>Foro Debate</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>En un mínimo de 250 palabras y un máximo de 350 palabras. Responda lo siguiente:</p>
+</div>
+<div class="paragraph">
+<p>De un ejemplo sobre en que instancias un Sistema Operativo se comporta como:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>a) Un Réferi</p>
+</li>
+<li>
+<p>b) Un Ilusionista</p>
+</li>
+<li>
+<p>c) Un Pegamento</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Incluya introducción, desarrollo, conclusión y referencias bibliográficas (al menos 2) formato APA 7. Comente la respuesta de dos de sus compañeros (con referencias en APA 7).</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="history.html">Historia de los Sistemas Operativos</a></span>
+  <span class="next"><a href="../kernels-process/process.html">¿Qué es un Proceso?</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+  </body>
+</html>

@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Historia del lenguaje Ada :: Conceptos de Sistemas Operativos con Ada y Elixir</title>
-    <link rel="canonical" href="https://ninjascl.github.io/ada-libro/ada-basics/history.html">
+    <title>Historia del lenguaje Ada :: Conceptos de Sistemas Operativos</title>
+    <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/ada-basics/history.html">
     <link rel="prev" href="about.html">
     <link rel="next" href="hello.html">
     <meta name="generator" content="Antora 3.1.10">
@@ -14,7 +14,7 @@
 <header class="header">
   <nav class="navbar">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://ninjascl.github.io/ada-libro">Conceptos de Sistemas Operativos con Ada y Elixir</a>
+      <a class="navbar-item" href="https://ninjascl.github.io/sistemas-operativos">Conceptos de Sistemas Operativos</a>
       <div class="navbar-item search hide-for-print">
         <div id="search-field" class="field">
           <input id="search-input" type="text" placeholder="Buscar">
@@ -63,12 +63,29 @@
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
     <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
-    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></h3>
+    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Introducción</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
+    <a class="nav-link" href="../introduction/introduction.html">Introducción a los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/history.html">Historia de los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/roles.html">¿Qué Roles Tiene un Sistema Operativo?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Kernel y Procesos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kernels-process/process.html">¿Qué es un Proceso?</a>
   </li>
 </ul>
   </li>
@@ -92,10 +109,35 @@
     <a class="nav-link" href="temperature.html">Conversor de Temperatura</a>
   </li>
   <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="arrays.html">Arreglos y Listas</a>
+  </li>
+  <li class="nav-item" data-depth="1">
     <a class="nav-link" href="args.html">Argumentos de Línea de Comandos</a>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="strings.html">Strings</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="guess.html">Adivina el Número</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="process.html">Gatillar Procesos</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Proyectos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project1.html">Proyecto 1: Minishell</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
   </li>
 </ul>
   </li>
@@ -104,12 +146,12 @@
 </div>
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
-    <span class="title">Conceptos de Sistemas Operativos con Ada y Elixir</span>
+    <span class="title">Conceptos de Sistemas Operativos</span>
     <span class="version"></span>
   </div>
   <ul class="components">
     <li class="component is-current">
-      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></div>
+      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></div>
     </li>
   </ul>
 </div>
@@ -122,7 +164,7 @@
   <a href="../index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
-    <li><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></li>
+    <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
     <li>Programación en Ada</li>
     <li><a href="history.html">Historia del lenguaje Ada</a></li>
   </ul>
@@ -188,10 +230,10 @@
 <p>La estandarización por parte de <em>ANSI</em> tomó unos dos años y se le introdujeron algunos cambios a <em>Ada</em>. El manual de referencia del lenguaje estándar de la ANSI fue finalmente publicado en enero de 1983. A esta versión del lenguaje se le conoce como <em>Ada 83</em>.</p>
 </div>
 <div class="paragraph">
-<p>Tan pronto como se comenzó a utilizar el lenguaje se iniciaron los estudios para su mejora basada en la experiencia práctica de los usuarios con el lenguaje. A la nueva versión se le denominó <em>Ada 9X</em>, entre las principales mejoras hechas sobre la anterior se cuenta la incorporación de mecanismo de herencia en el manejo de tipos con que contaba <em>Ada 83</em>, el cual, a pesar de ser muy poderoso, al carecer de herencia herencia no se adecuaba al paradigma de Orientación a Objetos. A esta segunda versión de Ada se denomina como <em>Ada 95</em>.</p>
+<p>Tan pronto como se comenzó a utilizar el lenguaje se iniciaron los estudios para su mejora basada en la experiencia práctica de los usuarios con el lenguaje. A la nueva versión se le denominó <em>Ada 9X</em>, entre las principales mejoras hechas sobre la anterior se cuenta la incorporación de mecanismo de herencia en el manejo de tipos con que contaba <em>Ada 83</em>, el cual, a pesar de ser muy poderoso, al carecer de herencia herencia no se adecuaba al paradigma de Orientación a Objetos. A esta segunda versión de Ada se denomina como <em>Ada 95</em>. La previsión es que cada 10 años se publique una revisión del estándar ISO del lenguaje Ada.</p>
 </div>
 <div class="paragraph">
-<p>En el año 2007 se publica la versión <em>Ada 2005</em> de la norma ISO Ada. Entre sus diversas mejoras, <em>Ada 2005</em> introdujo tipos de interfaz abstractos similares a las interfaces de <em>Java</em>, integró las características de concurrencia con programación orientada a objetos y amplió la biblioteca predefinida con contenedores genéricos y otros paquetes.</p>
+<p>En el año 2007 se publica la versión <em>Ada 2005</em> de la norma ISO Ada. La publicación del estándar por parte de la ISO se produjo en enero de 2007. A pesar de ello la definición técnica terminó en 2005. Es por esto que los miembros del grupo dudaron si comenzar a llamar a la nueva versión Ada 2006, pero finalmente acordaron promover el nombre Ada 2005. Ada 2005 no es un nombre oficial, el nombre oficial continúa siendo simplemente <em>Ada programming language, ISO/IEC 8652:2005(E)</em>. Entre sus diversas mejoras, <em>Ada 2005</em> introdujo tipos de interfaz abstractos similares a las interfaces de <em>Java</em>, integró las características de concurrencia con programación orientada a objetos y amplió la biblioteca predefinida con contenedores genéricos y otros paquetes.</p>
 </div>
 <div class="paragraph">
 <p>Luego en el año 2012 se publica la versión 2012 de la norma ISO Ada. <em>Ada 2012</em> agregó soporte para programación basada en contratos (precondiciones, poscondiciones, invariantes de tipo) y una serie de otras características que incluyen mejoras en el área de programación en tiempo real y soporte multinúcleo.</p>

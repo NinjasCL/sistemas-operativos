@@ -3,7 +3,7 @@
 
 Los Strings o cadenas de caracteres en _Ada_ están condicionadas por la codificación de caracteres.
 
-- `String`: 256 caracteres disponibles en la codificación _Latin-1_ (8 bit).
+- `String`: 256 caracteres disponibles en la codificación https://es.wikipedia.org/wiki/ISO/IEC_8859-1[_Latin-1_] (8 bit).
 - `Wide_String`: 65536 caracteres disponibles (16 bit).
 - `Wide_Wide_String`: 1114112 caracteres disponibles (code points de 32 bit). Ideal para almacenar emojis (UTF-8).
 
@@ -135,7 +135,7 @@ La ventaja de un `Unbounded_String` es que puede crecer y decrecer sin límite (
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-procedure Ejemplo_Unbounded_String is
+procedure Ejemplo_Unbounded is
    -- Declaración de un Unbounded_String
    Mi_Cadena : Unbounded_String;
    Otra_Cadena : Unbounded_String;
@@ -162,7 +162,6 @@ begin
 
    --  Acceso a un caracter (necesita conversión a String)
    if Length(Mi_Cadena) > 0 then
-       Put_Line("Primer caracter de Mi_Cadena: " & Mi_Cadena'image(1));
        Put_Line("Primer caracter de Mi_Cadena (usando To_String): " & To_String(Mi_Cadena)(1));
    end if;
 
@@ -172,16 +171,10 @@ begin
    Put_Line("Mi_Cadena (después de reemplazar): " & To_String(Mi_Cadena));
 
    --  Extracción de una subcadena (Slice)
-   declare
-       Sub_Cadena : Unbounded_String := Slice(Mi_Cadena, 3, 6);
-   begin
-      Put_Line("Sub_Cadena: " & To_String(Sub_Cadena));
-   end;
+   Put_Line("Sub_Cadena: " & Slice(Mi_Cadena, 3, 6));
    
-end Ejemplo_Unbounded_String;
+end Ejemplo_Unbounded;
 ----
-
-
 
 == ¿Por qué tantos tipos de String?
 

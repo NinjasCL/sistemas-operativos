@@ -1,6 +1,9 @@
 name: ROOT
 version: ~
-title: Conceptos de Sistemas Operativos con Ada y Elixir
+title: Conceptos de Sistemas Operativos
 nav:
-  - modules/ROOT/nav.adoc
+  - modules/introduction/nav.adoc
+  - modules/kernels-process/nav.adoc
   - modules/ada-basics/nav.adoc
+  - modules/projects/nav.adoc
+  - modules/ROOT/nav.adoc

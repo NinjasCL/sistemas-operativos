@@ -1,0 +1,89 @@
+= Proyecto 1: Minishell
+
+Intérprete de Comandos o Mandatos (Minishell)
+
+En este proyecto individual o grupal donde se debe elaborar un programa que pueda ejecutar otros programas a través de una línea de comandos.
+
+Puede usar referencias y código de ejemplo disponible en internet. Pero debe ser correctamente referenciado el origen. 
+
+- Plazo Recomendado: 4 semanas.
+
+== Características
+
+El programa debe permitir ejecutar comandos simples de UNIX como: `echo, ls, cp, mv, rm, mkdir`, entre otros. Para encontrar el programa debe buscar en las rutas disponibles en la variable de entorno _PATH_.
+
+El programa debe permitir ejecutar comandos en secuencia (hasta 3 comandos) con el operador pipe `|`:
+
+- Ejemplo 1: `ls | wc -l`
+- Ejemplo 2: `ls | sort | wc -l`
+
+El programa debe permitir ejecutar comandos o secuencia de comandos en segundo plano background (El proceso padre no se bloquea esperando la finalización del proceso hijo) con el operador `&`.
+
+- Ejemplo 1: `ls &`
+- Ejemplo 2: `ls | sort | wc -l &`
+
+El programa debe redireccionar el resultado de un comando a la salida estándar usando el operador (`>`):
+
+- Ejemplo: `ls > archivos.txt`
+
+El programa debe redireccionar el resultado de un comando a la salida de error usando el operador (`2>`);
+
+- Ejemplo: `make install 2> salida_error`
+
+El programa debe redireccionar el contenido desde la entrada estándar usando el operador (`<`):
+
+- Ejemplo: `cat | more < archivo.txt`
+    
+El programa debe implementar dos comandos internos (cd y pwd) que deben ser obtenidos de una ruta interna y no desde PATH.
+
+- pwd: Permite mostrar el directorio actual de la minishell.
+- cd: Permite cambiar el directorio actual de la minishell.
+- cd (sin argumentos). Cambia el directorio a la ruta raíz de pwd.
+- cd . cambia el directorio a la ruta retornada por pwd
+- cd .. cambia el directorio a la ruta padre de la ruta actual retornada por pwd
+- cd <directorio> cambia el directorio a la ruta suministrada en <directorio>.
+
+== Recomendaciones
+
+- El desarrollo incremental de las funcionalidades facilitará la implementación de las características.
+- Primero partir con ejecutar los comandos simples como : ls, cp, mv, etc.
+- Luego añadir la capacidad de ejecutar los comandos simples en background como: ls &.
+- Siguiente es añadir la capacidad de ejecutar comandos en secuencia (pipes).
+- A continuación implementar los comandos en secuencia con background.
+- Añadir la capacidad de las redirecciones a las salida estándar, salida de error y entrada (>, <, 2>).
+- Añadir los comandos internos (cd, pwd).
+
+== Supuestos
+
+Para facilitar la implementación se puede asumir las siguientes características:
+
+- Solamente se tendrá un solo ampersand (`&`) al final de línea para los procesos en background y estará separado por espacios.
+- Solamente se tendrá un solo operador de redirección `>` por línea y estará separado por espacios (No existirá `>>`).
+- Solamente se tendrá un solo operador de redirección `2>` por línea y estará separado por espacios.
+- Solamente se tendrá un solo operador de redirección `<` por línea y estará separado por espacios.
+- No es necesario considerar saltos de línea ni texto entre comillas. Solamente habrá una línea.
+- El pipeline estará compuesto con máximo 3 pipes `|` y separado por espacios.
+- La redirección de pipes puede ser utilizando archivos temporales (no es necesario usar la llamada de https://man7.org/linux/man-pages/man2/pipe.2.html[sistema pipe], aunque su uso dará puntos extras).
+
+== Restricciones
+
+- Debe ser elaborado en uno de los siguientes lenguajes C, Python, Ada o Elixir. El utilizar Ada o Elixir tiene un punto base adicional ya que se consideran lenguaje nuevos y se premia la motivación por aprenderlos.
+
+- Debe ser elaborado de forma ordenada y lo más profesional posible. Pensando que es un proyecto para un cliente que les ha solicitado este programa.
+
+- El entorno de ejecución puede ser un sistema operativo Linux (Debian), MacOS o entorno https://frippery.org/busybox/[Busybox] o https://www.msys2.org/[Msys para Windows].
+
+Recomendación de investigar las alternativas: C, Python, Ada o Elixir y escoger según su predilección.
+
+Todas las alternativas pueden desarrollar el proyecto.
+
+Pueden comparar los lenguajes en ésta página que tiene ejemplos de código:
+
+- Ada: https://rosettacode.org/wiki/Category:Ada
+- Elixir: https://rosettacode.org/wiki/Category:Elixir
+- C: https://rosettacode.org/wiki/Category:C
+- Python: https://rosettacode.org/wiki/Category:Python
+
+== Referencias
+
+- Universidad Carlos III de Madrid. (s.f.). Sistemas Operativos: Prácticas. https://ocw.uc3m.es/mod/page/view.php?id=2795

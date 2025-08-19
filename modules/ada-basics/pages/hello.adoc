@@ -16,7 +16,7 @@ begin
 end Hola;
 ----
 
-_Ada_ no distingue mayúsculas y minúsculas. Por lo que el siguiente código es exactamente el mismo.
+_Ada_ no distingue mayúsculas y minúsculas (a excepción de las cadenas de caracteres y literales tipo carácter). Por lo que el siguiente código es exactamente el mismo.
 Sin embargo pueden salir advertencias al no seguir un formato consistente. Lo ideal es siempre
 ser consistente al programar y seguir las convenciones estandarizadas del lenguaje.
 

@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Hola mundo :: Conceptos de Sistemas Operativos con Ada y Elixir</title>
-    <link rel="canonical" href="https://ninjascl.github.io/ada-libro/ada-basics/hello.html">
+    <title>Hola mundo :: Conceptos de Sistemas Operativos</title>
+    <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/ada-basics/hello.html">
     <link rel="prev" href="history.html">
     <link rel="next" href="sqrt.html">
     <meta name="generator" content="Antora 3.1.10">
@@ -14,7 +14,7 @@
 <header class="header">
   <nav class="navbar">
     <div class="navbar-brand">
-      <a class="navbar-item" href="https://ninjascl.github.io/ada-libro">Conceptos de Sistemas Operativos con Ada y Elixir</a>
+      <a class="navbar-item" href="https://ninjascl.github.io/sistemas-operativos">Conceptos de Sistemas Operativos</a>
       <div class="navbar-item search hide-for-print">
         <div id="search-field" class="field">
           <input id="search-input" type="text" placeholder="Buscar">
@@ -63,12 +63,29 @@
 <div class="nav-panel-menu is-active" data-panel="menu">
   <nav class="nav-menu">
     <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
-    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></h3>
+    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></h3>
 <ul class="nav-list">
   <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Introducción</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
+    <a class="nav-link" href="../introduction/introduction.html">Introducción a los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/history.html">Historia de los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/roles.html">¿Qué Roles Tiene un Sistema Operativo?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Kernel y Procesos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kernels-process/process.html">¿Qué es un Proceso?</a>
   </li>
 </ul>
   </li>
@@ -92,10 +109,35 @@
     <a class="nav-link" href="temperature.html">Conversor de Temperatura</a>
   </li>
   <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="arrays.html">Arreglos y Listas</a>
+  </li>
+  <li class="nav-item" data-depth="1">
     <a class="nav-link" href="args.html">Argumentos de Línea de Comandos</a>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="strings.html">Strings</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="guess.html">Adivina el Número</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="process.html">Gatillar Procesos</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Proyectos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project1.html">Proyecto 1: Minishell</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
   </li>
 </ul>
   </li>
@@ -104,12 +146,12 @@
 </div>
 <div class="nav-panel-explore" data-panel="explore">
   <div class="context">
-    <span class="title">Conceptos de Sistemas Operativos con Ada y Elixir</span>
+    <span class="title">Conceptos de Sistemas Operativos</span>
     <span class="version"></span>
   </div>
   <ul class="components">
     <li class="component is-current">
-      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></div>
+      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></div>
     </li>
   </ul>
 </div>
@@ -122,7 +164,7 @@
   <a href="../index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
-    <li><a href="../index.html">Conceptos de Sistemas Operativos con Ada y Elixir</a></li>
+    <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
     <li>Programación en Ada</li>
     <li><a href="hello.html">Hola mundo</a></li>
   </ul>
@@ -155,7 +197,7 @@ end Hola;</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><em>Ada</em> no distingue mayúsculas y minúsculas. Por lo que el siguiente código es exactamente el mismo.
+<p><em>Ada</em> no distingue mayúsculas y minúsculas (a excepción de las cadenas de caracteres y literales tipo carácter). Por lo que el siguiente código es exactamente el mismo.
 Sin embargo pueden salir advertencias al no seguir un formato consistente. Lo ideal es siempre
 ser consistente al programar y seguir las convenciones estandarizadas del lenguaje.</p>
 </div>

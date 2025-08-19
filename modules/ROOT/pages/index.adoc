@@ -1,3 +1,13 @@
-= Conceptos de Sistemas Operativos con Ada y Elixir
+= Conceptos de Sistemas Operativos
+
+En el siguiente documento se presentan conceptos relacionados a Sistemas Operativos, 
+desde el enfoque práctico utilizando Ada y Elixir, con algunos ejemplos en Python y C cuando sea pertinente.
 
 
+.Lenguajes usados en el documento
+|====
+|Lenguaje | Alternativa | Justificación
+
+| C | Ada | Mayor estandarización y legibilidad del código.
+| Python | Elixir | Un lenguaje moderno que utiliza el paradigma funcional. Puede reemplazar a Python en la mayoría de los casos de uso, con enfoque en la inmutabilidad.
+|====
