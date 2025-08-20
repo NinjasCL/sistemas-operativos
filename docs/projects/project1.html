@@ -85,7 +85,10 @@
     <span class="nav-text">Kernel y Procesos</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../kernels-process/process.html">¿Qué es un Proceso?</a>
+    <a class="nav-link" href="../kernels-process/architecture.html">Conceptos de Arquitectura de Computadoras</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kernels-process/process.html">Procesos</a>
   </li>
 </ul>
   </li>
@@ -311,6 +314,42 @@
 </li>
 <li>
 <p>Añadir los comandos internos (cd, pwd).</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="supuestos"><a class="anchor" href="#supuestos"></a>Supuestos</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para facilitar la implementación se puede asumir las siguientes características:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Solamente se tendrá un solo ampersand (<code>&amp;</code>) al final de línea para los procesos en background y estará separado por espacios.</p>
+</li>
+<li>
+<p>Solamente se tendrá un solo operador de redirección <code>&gt;</code> por línea y estará separado por espacios (No existirá <code>&gt;&gt;</code>).</p>
+</li>
+<li>
+<p>Solamente se tendrá un solo operador de redirección <code>2&gt;</code> por línea y estará separado por espacios.</p>
+</li>
+<li>
+<p>Solamente se tendrá un solo operador de redirección <code>&lt;</code> por línea y estará separado por espacios.</p>
+</li>
+<li>
+<p>No es necesario considerar saltos de línea ni texto entre comillas. Solamente habrá una línea.</p>
+</li>
+<li>
+<p>El pipeline estará compuesto con máximo 3 pipes <code>|</code> y separado por espacios.</p>
+</li>
+<li>
+<p>La redirección de pipes puede ser utilizando archivos temporales (no es necesario usar la llamada de <a href="https://man7.org/linux/man-pages/man2/pipe.2.html">sistema pipe</a>, aunque su uso dará puntos extras).</p>
+</li>
+<li>
+<p>La implementación del parser de comandos puede ser utilizando condicionales (<code>ifs</code>) y separación de cadena de caracteres por palabras clave. No es necesario usar técnicas más avanzadas como regex o lenguajes formales.</p>
 </li>
 </ul>
 </div>

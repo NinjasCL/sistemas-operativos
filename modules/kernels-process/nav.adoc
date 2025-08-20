@@ -1,2 +1,3 @@
 .Kernel y Procesos
+* xref:architecture.adoc[]
 * xref:process.adoc[]

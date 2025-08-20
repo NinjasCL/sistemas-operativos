@@ -1,0 +1,93 @@
+= Conceptos de Arquitectura de Computadoras
+
+Para comprender mejor los conceptos de procesos e hilos, se debe dar un pequeño
+repaso a conceptos de arquitectura de computadoras y cómo un programa es ejecutado
+en el procesador.
+
+== ¿Por qué el tipo y tamaño de las variables es importante?
+
+En la actualidad existen lenguajes como _Javascript_, _Python_, _Elixir_, entre otros, donde no es necesario ser explícito
+para establecer el tipo de cada variable ni el tamaño que estas usan
+en memoria, ya que el intérprete de cada lenguaje es quien toma esa decisión.
+
+Al momento de utilizar lenguajes de programación de sistemas como
+_C_, _Ada_ o _Rust_, entre otros, se debe ser más explícito. Estos
+lenguajes obligan a declarar las variables incluyendo su tipo y permiten
+mayor granuralidad en el manejo de la memoria. A diferencia de los lenguajes interpretados donde solamente puede ser necesario un tipo llamado `"Number"`, en los lenguajes de sistemas existe la diferenciación
+entre enteros, punto flotante y punto fijo, además una granularización
+sobre cuánta memoria (8 bit, 16bit, 32bit, 64bit) cada tipo utilizará
+para almacenar los datos. Incluso estos lenguajes pueden permitir especificar si el número es positivo o negativo, aumentando el control sobre el uso de la memoria.
+
+La memoria de un computador es finita y el propósito de estos tipos
+es especificar exactamente cuánto espacio en memoria es necesario
+para representar la información que el programa utiliza. 
+
+Un bit es la unidad mínima de valor que puede tener dos estados 0 y 1. El computador representa los datos en una secuencia de ocho bits llamada byte (00000000 a 11111111 en binario, 00 a FF en hexadecimal, 0 a 255 en decimal). Es decir que un byte (255 valores posibles) es el mínimo de bits usado para almacenar algo y por eso es que se utilizan múltiplos de ocho (8, 16, 32, 64) para representar los números.
+
+El programador al delegar la gestión de memoria a un lenguaje interpretado, pierde la capacidad de optimizar la memoria usada, provocando que muchas veces un lenguaje interpretado utilice más memoria de la necesaria para la misma operación que en un lenguaje de sistemas. 
+Los lenguajes interpretados deben almacenar el dato y metadatos (tags) asociados para poder realizar su gestión de tipos y memoria interna. Esto no solo aumenta la cantidad de memoria necesaria, también aumenta la cantidad de operaciones (leer, escribir, comparar) que la CPU debe realizar. El intérprete entonces debe ejecutar todos esos pasos adicionales no relacionados al código del programador, lo que en contraste con lenguajes compilados no es necesario debido a que se ha dado la información de tipos y memoria con antelación.
+
+El compilador de un lenguaje de sistemas puede generar código máquina más eficiente, sin necesidad de validaciones adicionales. Ésta es una de las principales razones por la que los lenguajes de tipado dinámico son mucho más lentos y requieren mayor cantidad de recursos (memoria, CPU) que los lenguajes de sistemas. Sin embargo, los lenguajes de sistemas requieren de mayor cautela y rigurosidad en su programación, por ejemplo un arreglo que necesite de una cantidad variable de elementos (crecer o reducir su cantidad de elementos dinámicamente) debe usar estrategias de gestión de memoria (regiones de memoria como Heap y Stack, tamaño del arreglo).
+
+.Importancia del tamaño de variables
+++++
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/hwyRnHA54lI?si=vnQ1Pq2tyQXWGG6e" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+++++
+
+== Definiciones
+
+Se definirán los conceptos principales.
+
+=== Contador de Programa (Program Counter)
+
+El contador de programa, también conocido como puntero de instrucción o simplemente `PC`, es un componente fundamental de la unidad central de proceso (CPU) de un computador. Es un registro especial que lleva la cuenta de la dirección de memoria de la siguiente instrucción a ejecutar en un programa (Lenovo, s.f).
+
+=== Pila (Stack)
+
+Una pila (stack) es una estructura de datos donde el último elemento en entrar es el primero en salir (Last in - first out, LIFO). Es como una pila de platos; No se puede quitar una plato del medio sin interrumpir toda la pila. (Lenovo, s.f). En la informática una pila tiene un tamaño máximo y si se excede ocurre lo que se conoce como "saturación de pila" (stack overflow). 
+
+En términos de procesadores la pila corresponde a la "pila de ejecución" (execution stack), también conocida como "pila de programa" (program stack), incluso como "pila de hardware" (hardware stack). Cuando se ejecuta un programa, técnicamente no hay limitaciones donde se escribe dentro de la memoria, si bien se puede definir el tamaño, la ubicación en memoria puede ser totalmente aleatoria y arbitraria. Pero hacer esto es ineficiente, provocando que exista mucho espacio desperdiciado.
+
+El sistema operativo es el intermediario entre los programas y el hardware. Cuando un programa se ejecuta, el sistema operativo no permite que este almacene los datos en cualquier parte de la memoria, debido a que otros programas podrían estar utilizando ese espacio. El programa debe solicitar al sistema operativo un espacio de memoria y este buscará el espacio disponible para que el programa escriba y lea sus datos.
+
+Si un programa intenta leer un espacio de memoria que esta fuera de los límites que el sistema operativo le otorgó, el sistema operativo tiene la facultad de terminar el programa (por razones de seguridad), dándo origen a los errores conocidos como "Segmentation Fault, Core Dumped". Es por este motivo que el sistema operativo asigna la memoria en bloques (memory chunk) que los programas pueden usar para leer y escribir. 
+
+Si un programa no administra bien su memoria y almacena sus datos de forma desordenada, podría necesitar más bloques de memoria. Eventualmente esto podría causar lo que se conoce como "Fragmentación Externa" (external fragmentation) donde existe memoria libre suficiente, pero no se puede almacenar más datos debido a que no existe el suficiente espacio continuo para formar un nuevo bloque de memoria. El solicitar más memoria puede ser muy costoso en términos de desempeño, lo que da origen a la recomendación de usar el _Heap_ lo menos posible.
+
+El sistema operativo otorga bloques de memoria para los programas, pero no tiene control sobre cómo los programas usan la memoria asignada. Lo único que conoce es que la región de memoria está siendo utilizada por un programa y si otro programa necesita más bloques de memoria, el sistema operativo debe buscar un espacio libre en otro sector. Como la memoria disponible es un recurso limitado, los sistemas operativos modernos tienen mecanismos para abordar la falta de memoria y reemplazarla con espacio en el disco, como si fuera memoria adicional. Por ejemplo en sistemas Linux se conoce como partición "Swap". Este concepto se conoce como "Memoria Virtual" y es una ilusión creada por el sistema operativo para aparentar tener más memoria de la disponible físicamente. 
+
+Depender del almacenamiento como memoria adicional es más lento que utilizar la memoria _RAM_, por lo que se debe utilizar este mecanismo con cautela. A pesar de que actualmente existe una cantidad gigante de almacenamiento, en comparación con la década de los 90s, el criterio de desempeño sigue siendo importante. La memoria puede ser un cuello de botella, aún considerando el poder de las _CPU_ actuales, ya que obtener datos de la memoria tiene un costo de tiempo considerable, para esto los fabricantes de procesadores han elaborado lo que se conoce como _Cache_, el cual es como una memoria pequeña dedicada dentro del procesador, el cual tiene una copia de una región de la memoria, permitiendo a la _CPU_ obtener datos para sus operaciones sin pasar por la memoria principal, pero la memoria principal será utilizada si el dato no está presente en el _Cache_. La labor de decidir que región de la memoria se almacena en el _Cache_ depende del hardware y no del sistema operativo.
+
+El desarrollador tiene la responsabilidad de utilizar estructuras de datos y la memoria adecuadamente para tengan mayor probabilidad de ser transferidas a _Cache_, permitiendo mayor velocidad de lectura y escritura por que está más cerca de la _CPU_, lo que se conoce como localidad (locality).
+
+Entonces la pila es una estructura de datos adecuada para almacenar los datos de forma compacta y ordenada. Cada vez que un programa declara una variable, su valor es apilado en la región de memoria asignada. Un registro en la _CPU_ almacena el puntero de la pila que indica el dato superior (el registro permite obtener el puntero sin ir a buscar en memoria o cache). Esto hace que las operaciones en el _Stack_ sean muy rápidas gracias al puntero de direcciones. Comunmente solo basta con sumar uno a la posición y se tendrá el siguiente espacio de memoria disponible. Esta facilidad y velocidad de uso contratasta con el _Heap_, el cual no es tan rápido ni sencillo de utilizar.
+
+Las limitaciones de la pila (_Stack_) está en que no es muy flexible para crecer o reducir dinámicamente su tamaño, es por esto la importancia de tener una buena gestión de memoria, compactando los datos y especificando sus tipos adecuadamente para que los compiladores organicen los datos de forma eficiente y predecible en el _Stack_. Además el _Stack_ opera en un solo hilo, dando una limitación cuando se intenta compartir memoria entre hilos. Este tipo de limitaciones son solucionadas por el _Heap_.
+
+.Video sobre Stack
+++++
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/N3o5yHYLviQ?si=w6iHYaAtTPECO3qO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+++++
+
+=== Heap
+
+=== ALU
+
+=== Registros
+
+== El Ciclo de Instrucción
+
+Una instrucción en el procesador tiene un ciclo de obtener, decodificar y ejecutar.
+
+1. El procesador utiliza la posición de puntero almacenada en el `PC` (Program Counter) para leer la siguiente instrucción a procesar desde la memoria.
+2. Luego esta instrucción es decodificada. Obteniendo los registros correspondientes.
+3. Finalmente se envía a la cadena de ejecución, la cual depende de cada procesador (por ejemplo para arquitecturas https://es.wikipedia.org/wiki/RISC-V[RISC-V] son 5 etapas). Acá es utilizada la _ALU_ para obtener el resultado.
+4. El ciclo se repite modificando el `PC` para obtener la siguiente instrucción a procesar. Un procesador puede ejecutar millones de instrucciones por segundo.
+
+.Ciclo de Instrucción, fuente: John Kubiatowicz CS162 Lecture 2, 2020.
+image::instruction-cycle.png[]
+
+.Funcionamiento de un Procesador
+++++
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/-ZTekGoR8uQ?si=9yESp9wBXkL3UODs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+++++

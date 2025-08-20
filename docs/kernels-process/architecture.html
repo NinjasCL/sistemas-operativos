@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Conceptos de Arquitectura de Computadoras :: Conceptos de Sistemas Operativos</title>
+    <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/kernels-process/architecture.html">
+    <link rel="prev" href="../introduction/roles.html">
+    <link rel="next" href="process.html">
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://ninjascl.github.io/sistemas-operativos">Conceptos de Sistemas Operativos</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Introducción</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/introduction.html">Introducción a los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/history.html">Historia de los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/roles.html">¿Qué Roles Tiene un Sistema Operativo?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Kernel y Procesos</span>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="architecture.html">Conceptos de Arquitectura de Computadoras</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="process.html">Procesos</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación en Ada</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/about.html">Introducción al lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/history.html">Historia del lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/hello.html">Hola mundo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/sqrt.html">Raíz Cuadrada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/temperature.html">Conversor de Temperatura</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/arrays.html">Arreglos y Listas</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/args.html">Argumentos de Línea de Comandos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/strings.html">Strings</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/guess.html">Adivina el Número</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/process.html">Gatillar Procesos</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Proyectos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project1.html">Proyecto 1: Minishell</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Conceptos de Sistemas Operativos</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
+    <li>Kernel y Procesos</li>
+    <li><a href="architecture.html">Conceptos de Arquitectura de Computadoras</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///antora/./modules/kernels-process/pages/architecture.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Conceptos de Arquitectura de Computadoras</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para comprender mejor los conceptos de procesos e hilos, se debe dar un pequeño
+repaso a conceptos de arquitectura de computadoras y cómo un programa es ejecutado
+en el procesador.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="por-qué-el-tipo-y-tamaño-de-las-variables-es-importante"><a class="anchor" href="#por-qué-el-tipo-y-tamaño-de-las-variables-es-importante"></a>¿Por qué el tipo y tamaño de las variables es importante?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>En la actualidad existen lenguajes como <em>Javascript</em>, <em>Python</em>, <em>Elixir</em>, entre otros, donde no es necesario ser explícito
+para establecer el tipo de cada variable ni el tamaño que estas usan
+en memoria, ya que el intérprete de cada lenguaje es quien toma esa decisión.</p>
+</div>
+<div class="paragraph">
+<p>Al momento de utilizar lenguajes de programación de sistemas como
+<em>C</em>, <em>Ada</em> o <em>Rust</em>, entre otros, se debe ser más explícito. Estos
+lenguajes obligan a declarar las variables incluyendo su tipo y permiten
+mayor granuralidad en el manejo de la memoria. A diferencia de los lenguajes interpretados donde solamente puede ser necesario un tipo llamado <code>"Number"</code>, en los lenguajes de sistemas existe la diferenciación
+entre enteros, punto flotante y punto fijo, además una granularización
+sobre cuánta memoria (8 bit, 16bit, 32bit, 64bit) cada tipo utilizará
+para almacenar los datos. Incluso estos lenguajes pueden permitir especificar si el número es positivo o negativo, aumentando el control sobre el uso de la memoria.</p>
+</div>
+<div class="paragraph">
+<p>La memoria de un computador es finita y el propósito de estos tipos
+es especificar exactamente cuánto espacio en memoria es necesario
+para representar la información que el programa utiliza.</p>
+</div>
+<div class="paragraph">
+<p>Un bit es la unidad mínima de valor que puede tener dos estados 0 y 1. El computador representa los datos en una secuencia de ocho bits llamada byte (00000000 a 11111111 en binario, 00 a FF en hexadecimal, 0 a 255 en decimal). Es decir que un byte (255 valores posibles) es el mínimo de bits usado para almacenar algo y por eso es que se utilizan múltiplos de ocho (8, 16, 32, 64) para representar los números.</p>
+</div>
+<div class="paragraph">
+<p>El programador al delegar la gestión de memoria a un lenguaje interpretado, pierde la capacidad de optimizar la memoria usada, provocando que muchas veces un lenguaje interpretado utilice más memoria de la necesaria para la misma operación que en un lenguaje de sistemas.
+Los lenguajes interpretados deben almacenar el dato y metadatos (tags) asociados para poder realizar su gestión de tipos y memoria interna. Esto no solo aumenta la cantidad de memoria necesaria, también aumenta la cantidad de operaciones (leer, escribir, comparar) que la CPU debe realizar. El intérprete entonces debe ejecutar todos esos pasos adicionales no relacionados al código del programador, lo que en contraste con lenguajes compilados no es necesario debido a que se ha dado la información de tipos y memoria con antelación.</p>
+</div>
+<div class="paragraph">
+<p>El compilador de un lenguaje de sistemas puede generar código máquina más eficiente, sin necesidad de validaciones adicionales. Ésta es una de las principales razones por la que los lenguajes de tipado dinámico son mucho más lentos y requieren mayor cantidad de recursos (memoria, CPU) que los lenguajes de sistemas. Sin embargo, los lenguajes de sistemas requieren de mayor cautela y rigurosidad en su programación, por ejemplo un arreglo que necesite de una cantidad variable de elementos (crecer o reducir su cantidad de elementos dinámicamente) debe usar estrategias de gestión de memoria (regiones de memoria como Heap y Stack, tamaño del arreglo).</p>
+</div>
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/hwyRnHA54lI?si=vnQ1Pq2tyQXWGG6e" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+</div>
+<div class="sect1">
+<h2 id="definiciones"><a class="anchor" href="#definiciones"></a>Definiciones</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Se definirán los conceptos principales.</p>
+</div>
+<div class="sect2">
+<h3 id="contador-de-programa-program-counter"><a class="anchor" href="#contador-de-programa-program-counter"></a>Contador de Programa (Program Counter)</h3>
+<div class="paragraph">
+<p>El contador de programa, también conocido como puntero de instrucción o simplemente <code>PC</code>, es un componente fundamental de la unidad central de proceso (CPU) de un computador. Es un registro especial que lleva la cuenta de la dirección de memoria de la siguiente instrucción a ejecutar en un programa (Lenovo, s.f).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="pila-stack"><a class="anchor" href="#pila-stack"></a>Pila (Stack)</h3>
+<div class="paragraph">
+<p>Una pila (stack) es una estructura de datos donde el último elemento en entrar es el primero en salir (Last in - first out, LIFO). Es como una pila de platos; No se puede quitar una plato del medio sin interrumpir toda la pila. (Lenovo, s.f). En la informática una pila tiene un tamaño máximo y si se excede ocurre lo que se conoce como "saturación de pila" (stack overflow).</p>
+</div>
+<div class="paragraph">
+<p>En términos de procesadores la pila corresponde a la "pila de ejecución" (execution stack), también conocida como "pila de programa" (program stack), incluso como "pila de hardware" (hardware stack). Cuando se ejecuta un programa, técnicamente no hay limitaciones donde se escribe dentro de la memoria, si bien se puede definir el tamaño, la ubicación en memoria puede ser totalmente aleatoria y arbitraria. Pero hacer esto es ineficiente, provocando que exista mucho espacio desperdiciado.</p>
+</div>
+<div class="paragraph">
+<p>El sistema operativo es el intermediario entre los programas y el hardware. Cuando un programa se ejecuta, el sistema operativo no permite que este almacene los datos en cualquier parte de la memoria, debido a que otros programas podrían estar utilizando ese espacio. El programa debe solicitar al sistema operativo un espacio de memoria y este buscará el espacio disponible para que el programa escriba y lea sus datos.</p>
+</div>
+<div class="paragraph">
+<p>Si un programa intenta leer un espacio de memoria que esta fuera de los límites que el sistema operativo le otorgó, el sistema operativo tiene la facultad de terminar el programa (por razones de seguridad), dándo origen a los errores conocidos como "Segmentation Fault, Core Dumped". Es por este motivo que el sistema operativo asigna la memoria en bloques (memory chunk) que los programas pueden usar para leer y escribir.</p>
+</div>
+<div class="paragraph">
+<p>Si un programa no administra bien su memoria y almacena sus datos de forma desordenada, podría necesitar más bloques de memoria. Eventualmente esto podría causar lo que se conoce como "Fragmentación Externa" (external fragmentation) donde existe memoria libre suficiente, pero no se puede almacenar más datos debido a que no existe el suficiente espacio continuo para formar un nuevo bloque de memoria. El solicitar más memoria puede ser muy costoso en términos de desempeño, lo que da origen a la recomendación de usar el <em>Heap</em> lo menos posible.</p>
+</div>
+<div class="paragraph">
+<p>El sistema operativo otorga bloques de memoria para los programas, pero no tiene control sobre cómo los programas usan la memoria asignada. Lo único que conoce es que la región de memoria está siendo utilizada por un programa y si otro programa necesita más bloques de memoria, el sistema operativo debe buscar un espacio libre en otro sector. Como la memoria disponible es un recurso limitado, los sistemas operativos modernos tienen mecanismos para abordar la falta de memoria y reemplazarla con espacio en el disco, como si fuera memoria adicional. Por ejemplo en sistemas Linux se conoce como partición "Swap". Este concepto se conoce como "Memoria Virtual" y es una ilusión creada por el sistema operativo para aparentar tener más memoria de la disponible físicamente.</p>
+</div>
+<div class="paragraph">
+<p>Depender del almacenamiento como memoria adicional es más lento que utilizar la memoria <em>RAM</em>, por lo que se debe utilizar este mecanismo con cautela. A pesar de que actualmente existe una cantidad gigante de almacenamiento, en comparación con la década de los 90s, el criterio de desempeño sigue siendo importante. La memoria puede ser un cuello de botella, aún considerando el poder de las <em>CPU</em> actuales, ya que obtener datos de la memoria tiene un costo de tiempo considerable, para esto los fabricantes de procesadores han elaborado lo que se conoce como <em>Cache</em>, el cual es como una memoria pequeña dedicada dentro del procesador, el cual tiene una copia de una región de la memoria, permitiendo a la <em>CPU</em> obtener datos para sus operaciones sin pasar por la memoria principal, pero la memoria principal será utilizada si el dato no está presente en el <em>Cache</em>. La labor de decidir que región de la memoria se almacena en el <em>Cache</em> depende del hardware y no del sistema operativo.</p>
+</div>
+<div class="paragraph">
+<p>El desarrollador tiene la responsabilidad de utilizar estructuras de datos y la memoria adecuadamente para tengan mayor probabilidad de ser transferidas a <em>Cache</em>, permitiendo mayor velocidad de lectura y escritura por que está más cerca de la <em>CPU</em>, lo que se conoce como localidad (locality).</p>
+</div>
+<div class="paragraph">
+<p>Entonces la pila es una estructura de datos adecuada para almacenar los datos de forma compacta y ordenada. Cada vez que un programa declara una variable, su valor es apilado en la región de memoria asignada. Un registro en la <em>CPU</em> almacena el puntero de la pila que indica el dato superior (el registro permite obtener el puntero sin ir a buscar en memoria o cache). Esto hace que las operaciones en el <em>Stack</em> sean muy rápidas gracias al puntero de direcciones. Comunmente solo basta con sumar uno a la posición y se tendrá el siguiente espacio de memoria disponible. Esta facilidad y velocidad de uso contratasta con el <em>Heap</em>, el cual no es tan rápido ni sencillo de utilizar.</p>
+</div>
+<div class="paragraph">
+<p>Las limitaciones de la pila (<em>Stack</em>) está en que no es muy flexible para crecer o reducir dinámicamente su tamaño, es por esto la importancia de tener una buena gestión de memoria, compactando los datos y especificando sus tipos adecuadamente para que los compiladores organicen los datos de forma eficiente y predecible en el <em>Stack</em>. Además el <em>Stack</em> opera en un solo hilo, dando una limitación cuando se intenta compartir memoria entre hilos. Este tipo de limitaciones son solucionadas por el <em>Heap</em>.</p>
+</div>
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/N3o5yHYLviQ?si=w6iHYaAtTPECO3qO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+<div class="sect2">
+<h3 id="heap"><a class="anchor" href="#heap"></a>Heap</h3>
+
+</div>
+<div class="sect2">
+<h3 id="alu"><a class="anchor" href="#alu"></a>ALU</h3>
+
+</div>
+<div class="sect2">
+<h3 id="registros"><a class="anchor" href="#registros"></a>Registros</h3>
+
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="el-ciclo-de-instrucción"><a class="anchor" href="#el-ciclo-de-instrucción"></a>El Ciclo de Instrucción</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Una instrucción en el procesador tiene un ciclo de obtener, decodificar y ejecutar.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>El procesador utiliza la posición de puntero almacenada en el <code>PC</code> (Program Counter) para leer la siguiente instrucción a procesar desde la memoria.</p>
+</li>
+<li>
+<p>Luego esta instrucción es decodificada. Obteniendo los registros correspondientes.</p>
+</li>
+<li>
+<p>Finalmente se envía a la cadena de ejecución, la cual depende de cada procesador (por ejemplo para arquitecturas <a href="https://es.wikipedia.org/wiki/RISC-V">RISC-V</a> son 5 etapas). Acá es utilizada la <em>ALU</em> para obtener el resultado.</p>
+</li>
+<li>
+<p>El ciclo se repite modificando el <code>PC</code> para obtener la siguiente instrucción a procesar. Un procesador puede ejecutar millones de instrucciones por segundo.</p>
+</li>
+</ol>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/instruction-cycle.png" alt="instruction cycle">
+</div>
+<div class="title">Figure 1. Ciclo de Instrucción, fuente: John Kubiatowicz CS162 Lecture 2, 2020.</div>
+</div>
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/-ZTekGoR8uQ?si=9yESp9wBXkL3UODs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="../introduction/roles.html">¿Qué Roles Tiene un Sistema Operativo?</a></span>
+  <span class="next"><a href="process.html">Procesos</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+  </body>
+</html>

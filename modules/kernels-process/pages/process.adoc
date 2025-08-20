@@ -1,4 +1,4 @@
-= ¿Qué es un Proceso?
+= Procesos
 
 // https://www.youtube.com/watch?v=4FpG1DcvHzc
 

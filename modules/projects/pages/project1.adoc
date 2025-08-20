@@ -64,6 +64,7 @@ Para facilitar la implementación se puede asumir las siguientes característica
 - No es necesario considerar saltos de línea ni texto entre comillas. Solamente habrá una línea.
 - El pipeline estará compuesto con máximo 3 pipes `|` y separado por espacios.
 - La redirección de pipes puede ser utilizando archivos temporales (no es necesario usar la llamada de https://man7.org/linux/man-pages/man2/pipe.2.html[sistema pipe], aunque su uso dará puntos extras).
+- La implementación del parser de comandos puede ser utilizando condicionales (`ifs`) y separación de cadena de caracteres por palabras clave. No es necesario usar técnicas más avanzadas como regex o lenguajes formales.
 
 == Restricciones
 
