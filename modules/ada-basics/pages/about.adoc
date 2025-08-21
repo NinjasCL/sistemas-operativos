@@ -93,3 +93,9 @@ La siguiente tabla resume las características y comparación entre _Ada_, _C_ y
 | Retrocompatibilidad | Sí, pero con problemas de comportamiento no definido frecuentes. El mismo programa puede comportarse de forma distinta entre compiladores, o incluso cambiar de comportamiento al modificar una línea sin relación aparente.  | Al ser un lenguaje en evolución puede existir cambios que rompan código entre versiones. | Sí, sin romper código existente.
 | Ecosistema de herramientas | Fragmentado | Creciente | Maduro (Alire, GNAT, SPARK, GNATcheck).
 |====
+
+=== ¿Por qué Ada es Usada en Tecnología Aeroespacial?
+
+++++
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/OugrSqiVcp0?si=UUqDamrYG-9dskiC" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+++++

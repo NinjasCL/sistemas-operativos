@@ -225,15 +225,49 @@ Los lenguajes interpretados deben almacenar el dato y metadatos (tags) asociados
 </div>
 </div>
 <div class="sect1">
-<h2 id="definiciones"><a class="anchor" href="#definiciones"></a>Definiciones</h2>
+<h2 id="componentes-de-una-cpu"><a class="anchor" href="#componentes-de-una-cpu"></a>Componentes de una CPU</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Se definirán los conceptos principales.</p>
+<p>Una <em>CPU</em>, o unidad central de procesamiento, es un componente de hardware y la unidad computacional central de un servidor. La <em>CPU</em> es el componente principal que procesa las señales y hace posible la computación. Actúa como el cerebro de cualquier dispositivo de computación. Obtiene instrucciones de la memoria, realiza las tareas necesarias y envía la salida a la memoria. Maneja todo tipo de tareas de computación necesarias para que el sistema operativo y las aplicaciones se ejecuten. (AWS, 2024).</p>
 </div>
 <div class="sect2">
-<h3 id="contador-de-programa-program-counter"><a class="anchor" href="#contador-de-programa-program-counter"></a>Contador de Programa (Program Counter)</h3>
+<h3 id="reloj-clock"><a class="anchor" href="#reloj-clock"></a>Reloj (Clock)</h3>
+<div class="paragraph">
+<p>La <em>CPU</em> se basa en una señal de reloj para sincronizar sus operaciones internas. El reloj genera un pulso constante a una frecuencia específica y estos ciclos de reloj coordinan las operaciones de la <em>CPU</em>. La velocidad del reloj se mide en hercios (Hz) y determina cuántas instrucciones puede ejecutar la <em>CPU</em> por segundo. Las <em>CPU</em> modernas tienen velocidades de reloj variables que se ajustan en función de la carga de trabajo para equilibrar el rendimiento y el consumo de energía. (AWS, 2024).</p>
+</div>
+<div class="paragraph">
+<p>Por ejemplo el reloj necesario para el famoso procesador <a href="https://github.com/maarten-pennings/6502/blob/master/1clock/README.md">6502 requiere de 1Mhz</a> (Usado en sistemas como la Atari, Nintendo y Apple II). Mientras que procesadores modernos como el <a href="https://www.intel.com/content/www/us/en/products/sku/237504/intel-core-i9-processor-14900ks-36m-cache-up-to-6-20-ghz/specifications.html">i9 pueden llegar a los 6.20 Ghz</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="registros-registers"><a class="anchor" href="#registros-registers"></a>Registros (Registers)</h3>
+<div class="paragraph">
+<p>Los registros son pequeñas ubicaciones de almacenamiento de memoria de alta velocidad dentro de la <em>CPU</em>. Contienen datos en los que la <em>CPU</em> está trabajando en ese momento y facilitan un acceso rápido a los datos. Las <em>CPU</em> tienen varios tipos de registros, como:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Registros de uso general que contienen datos operativos</p>
+</li>
+<li>
+<p>Registros de instrucciones que contienen la instrucción actual que se está procesando</p>
+</li>
+<li>
+<p>Un contador de programas que contiene la dirección de memoria de la siguiente instrucción que se va a recuperar</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Los registros proporcionan tiempos de acceso más rápidos que otros niveles de memoria, como la RAM o la memoria caché (AWS, 2024).</p>
+</div>
+<div class="paragraph">
+<p>En palabras simples, los registros son como variables usadas por el procesador que guardan información necesaria para las tareas a realizar por el mismo, al estar más cercanas al <em>CPU</em> tienen mayor velocidad que la memoria o cache. Algunos registros pueden ser de uso general mientras que otros son de un uso específico como el <em>Program Counter</em>.</p>
+</div>
+<div class="sect3">
+<h4 id="contador-de-programa-program-counter"><a class="anchor" href="#contador-de-programa-program-counter"></a>Contador de Programa (Program Counter)</h4>
 <div class="paragraph">
 <p>El contador de programa, también conocido como puntero de instrucción o simplemente <code>PC</code>, es un componente fundamental de la unidad central de proceso (CPU) de un computador. Es un registro especial que lleva la cuenta de la dirección de memoria de la siguiente instrucción a ejecutar en un programa (Lenovo, s.f).</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -271,16 +305,109 @@ Los lenguajes interpretados deben almacenar el dato y metadatos (tags) asociados
 <iframe width="100%" height="415" src="https://www.youtube.com/embed/N3o5yHYLviQ?si=w6iHYaAtTPECO3qO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 <div class="sect2">
-<h3 id="heap"><a class="anchor" href="#heap"></a>Heap</h3>
+<h3 id="montículo-heap"><a class="anchor" href="#montículo-heap"></a>Montículo (Heap)</h3>
+<div class="paragraph">
+<p>El montículo (heap), también conocido como "almacenamiento libre". Es una estructura dinámica de datos o área de memoria para lograr asignación dinámica de memoria durante la ejecución de un programa. Permitiendo asignar memoria y liberarla de forma flexible, según sea necesario.</p>
+</div>
+<div class="paragraph">
+<p>La gestión de memoria dinámica requiere de dos tipos de operaciones; la petición y la liberación de memoria. El ciclo es sencillo, cuando se precisa almacenar un nuevo dato, se solicita tanta memoria en bytes como sea necesaria, y una vez que ese dato ya no se necesita la memoria se devuelve para poder ser reutilizada. Este esquema se conoce como "gestión explícita de memoria" pues requiere ejecutar una operación para pedir la memoria y otra para liberarla (Universidad Carlos III de Madrid, s.f.). En el lenguaje C estas funciones son: <code>malloc, calloc, free y realloc</code>.</p>
+</div>
+<div class="paragraph">
+<p>El <em>Heap</em> es necesario debido a que el <em>Stack</em> si bien permite almacenar los datos de forma compacta y mejorar el desempeño, tiene limitaciones debido a que el <em>Stack</em> no permite acomodar dinámicamente los datos. Por ejemplo en un arreglo con elementos definidos no permite añadir nuevos, solo sobre escribirlos. Esto significa que puede gatillar un error de desbordamiento (Stack Overflow) si se intenta añadir más elementos de lo originalmente definido. El <em>Heap</em> permite solicitar memoria virtualmente ilimitada, utilizando llamadas al sistema, lo que permite al <em>Heap</em> almacenar grandes cantidades de datos. Esto trae la necesidad de administrar manualmente la memoria asignada (en los lenguajes de programación de sistemas). Es común la estrategia de almacenar solamente los punteros de memoria (direcciones de memoria, memory addresses) en el <em>Stack</em> y los datos asociados a dichos punteros en el <em>Heap</em>. Un puntero solo representa una dirección de memoria y no contiene la información ni los datos del largo o tamaño de los datos.</p>
+</div>
+<div class="sect3">
+<h4 id="es-posible-la-fragmentación-en-el-heap"><a class="anchor" href="#es-posible-la-fragmentación-en-el-heap"></a>¿Es posible la fragmentación en el <em>Heap</em>?</h4>
+<div class="paragraph">
+<p>Con el <em>Stack</em> sabemos que existe la fragmentación externa, donde se requiere más bloques de memoria a pesar de que se tiene memoria disponible, debido a la no compactación y desorganización de los datos. La forma de organización del <em>Stack</em> (LIFO) permite mitigar la fragmentación si se utiliza una buena gestión de memoria. Con el <em>Heap</em> no es posible evitar la fragmentación debido a que no tiene un comportamiendo predecible que garantice que los datos estén compactados y ordenados. El <em>Heap</em> no hay garantías de que los elementos serán removidos en un orden específico ni que estén ordenados de forma compactada. Es decir el <em>Heap</em> requiere tiempo de procesamiento variable debido a que los datos almacenados pueden ser de distinto tamaño, necesitando de tiempos variables para su procesamiento.</p>
+</div>
+<div class="paragraph">
+<p>Para mitigar esta fragmentación, en el <em>Heap</em> es necesario verificar si existen agujeros en los bloques de memoria previamente asignados, para evitar realizar una llamada al sistema y reutilizar la memoria disponible. Para esto el <em>Heap</em> recurre a tres estrategias principales.</p>
+</div>
+<div class="paragraph">
+<p>Una estrategia encontrar el primer agujero disponible con la capacidad para almacenar el dato (first fit). Es la más rápida pero no reduce la fragmentación. La segunda es encontrar el agujero lo más pequeño posible que permita almacenar el valor (best fit) y finalmente encontrar cualquier agujero disponible con la capacidad más grande que permita almacenar el dato (worst fit). Ambas podrían reducir la fragmentación pero no son las más rápidas. El uso de estas estrategias no evitan la fragmentación y la elección depende de factores como la rapidez y los pros y contras de cada solución.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="listas-enlazadas-en-el-heap"><a class="anchor" href="#listas-enlazadas-en-el-heap"></a>Listas enlazadas en el Heap</h4>
+<div class="paragraph">
+<p>El <em>Heap</em> no resuelve el problema de sobre escribir elementos de un arreglo. Para esto se utilizan estructuras de datos como listas enlazadas de punteros. Donde se tienen nodos que mantienen un puntero asociado al siguiente nodo. Es decir se crea un nuevo nodo (asignando memoria en el <em>Heap</em>) y se añade a la lista, modificando el elemento anterior con el puntero al nuevo nodo. Lo que soluciona esta estrategia es que no se necesitan bloques continuos en la memoria. El principal problema es que los nodos distribuidos por la memoria tienen menos probabilidad de almacenamiento en caché del <em>CPU</em>. Por lo que se debe priorizar compactar los datos.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="llamadas-al-sistema"><a class="anchor" href="#llamadas-al-sistema"></a>Llamadas al Sistema</h4>
+<div class="paragraph">
+<p>Por temas de seguridad el sistema operativo no permite acceder directamente al hardware. Por lo que para solicitar recursos los programas deben realizar llamadas al sistema operativo.</p>
+</div>
+<div class="paragraph">
+<p>El siguiente programa en C muestra un "hola mundo" tradicional.</p>
+</div>
+<div class="listingblock">
+<div class="title">Hola mundo en C</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#include &lt;stdio.h&gt;
 
+int main() {
+
+    // Mostramos el mensaje con printf
+    printf("¡Sistemas Operativos!");
+
+    return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>La función <code>printf</code> (print format) es una abstracción, una capa a la llamada del sistema
+que le dice al sistema operativo que muestre el mensaje en la salida estándar. Esta función formatea el texto para ser finalmente invocada la función <a href="https://courses.cs.umbc.edu/undergraduate/313/spring05/burt_katz/lectures/Lect07/systemCalls.html">write</a> que eventualmente llama a la función <code>syscall</code> con los datos respectivos.</p>
+</div>
+<div class="paragraph">
+<p>Estos son mecanismos de bajo nivel utilizados para estandarizar el acceso a archivos, memoria y otros recursos del sistema, con el fin de permitir la interoperabilidad de forma controlada, lo que asegura la integridad del sistema. Debido a eso, el acceso a los recursos del sistema es lo que llamamos acceso privilegiado y solo puede ser realizado por el sistema operativo. El programa de usuario solicita que el sistema operativo proporcione ese acceso a través de un servicio bien definido. Entonces, asumiendo que el servicio se haya solicitado correctamente, se proporcionará dicho servicio (Burt K, s.f.).</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="coste-de-las-llamadas-a-sistema"><a class="anchor" href="#coste-de-las-llamadas-a-sistema"></a>Coste de las llamadas a sistema</h4>
+<div class="paragraph">
+<p>Lo importante a destacar de las llamadas al sistema es que tienen un costo en términos de desempeño. Cuando un programa se ejecuta el proceso asociado tiene un estado en los registros de la <em>CPU</em> (El Program Counter, entre otros). Como el sistema operativo debe administrar diferentes procesos, debe guardar el estado en memoria de cada uno. Es como si tomara una fotografía de la información (El contexto de ejecución, execution context) de cada proceso y lo almacenara en memoria para ser obtenido luego de ejecutar la operación solicitada. El constante cambio entre los diferentes contextos de proceso se conoce como "cambio de contexto" (context switch).</p>
+</div>
+<div class="paragraph">
+<p>Se podría resumir en las siguientes etapas:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>El proceso es iniciado.</p>
+</li>
+<li>
+<p>El proceso ejecuta una llamada al sistema (syscall).</p>
+</li>
+<li>
+<p>El sistema operativo guarda el estado en memoria del proceso.</p>
+</li>
+<li>
+<p>El sistema operativo ejecuta la llamada de sistema.</p>
+</li>
+<li>
+<p>El sistema operativo carga el proceso y le entrega el resultado de la llamada al sistema.</p>
+</li>
+<li>
+<p>El sistema operativo cambia de contexto a otro proceso que solicite otra llamada al sistema.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="el-heap-es-más-lento-que-el-stack"><a class="anchor" href="#el-heap-es-más-lento-que-el-stack"></a>¿El Heap es más lento que el Stack?</h4>
+<div class="paragraph">
+<p>Como se puede apreciar todas las etapas de gestión de procesos del sistema operativo toman tiempo, recursos y perjudican el desempeño. Cuando un proceso requiere más memoria, se debe utilizar una llamada al sistema. La memoria asignada al <em>Stack</em> está predefinida al iniciar el proceso, por lo que no requiere solicitar más memoria al sistema operativo utilizando llamadas de sistema. El sistema operativo puede necesitar más tiempo en encontrar secciones de memoria disponible para el <em>Heap</em>, por lo que puede haber penalizaciones de tiempo y en el peor de los casos disminuir el desempeño de los programas, causando lentitud en los mismos. Pero esto no significa que usar <em>Heap</em> sea más lento que usar el <em>Stack</em>. Lo que causa lentitud es todo el proceso de asignación de memoria, pero una vez que ya está asignada y con técnicas de gestión de recursos como el caché y estructuras de datos eficientes, utilizar el <em>Heap</em> puede ser tan rápido como usar el <em>Stack</em>.</p>
+</div>
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/ioJkA7Mw2-U?si=xfbbWP1fEZm_LIoy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 </div>
 <div class="sect2">
 <h3 id="alu"><a class="anchor" href="#alu"></a>ALU</h3>
-
+<div class="paragraph">
+<p>Una unidad aritmética lógica (Arithmetic Logic Unit) toma valores de entrada (OPERANDS) y códigos de operación (OP_CODES) y a través de circuitería (Adder, Subtracter, Incrementer, Decrementer, Decoder, entre otras) y compuertas lógicas (XOR, AND, OR, NOT, entre otras), determina la operación que se debe realizar con esos valores. Finalmente retorna el resultado (Result) de la operación junto a información adicional (Si fue negativo, cero o hubo un desbordamiento).</p>
 </div>
-<div class="sect2">
-<h3 id="registros"><a class="anchor" href="#registros"></a>Registros</h3>
-
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/HjneAhCy2N4?si=cYES5pjSdOP2DIln" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>
 </div>
 </div>
@@ -311,6 +438,10 @@ Los lenguajes interpretados deben almacenar el dato y metadatos (tags) asociados
 <img src="_images/instruction-cycle.png" alt="instruction cycle">
 </div>
 <div class="title">Figure 1. Ciclo de Instrucción, fuente: John Kubiatowicz CS162 Lecture 2, 2020.</div>
+</div>
+<div class="paragraph">
+<p>El siguiente video muestran el funcionamiento
+de las compuertas lógicas y la ALU.</p>
 </div>
 <iframe width="100%" height="415" src="https://www.youtube.com/embed/-ZTekGoR8uQ?si=9yESp9wBXkL3UODs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </div>

@@ -34,13 +34,32 @@ El compilador de un lenguaje de sistemas puede generar código máquina más efi
 <iframe width="100%" height="415" src="https://www.youtube.com/embed/hwyRnHA54lI?si=vnQ1Pq2tyQXWGG6e" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ++++
 
-== Definiciones
+== Componentes de una CPU
 
-Se definirán los conceptos principales.
+Una _CPU_, o unidad central de procesamiento, es un componente de hardware y la unidad computacional central de un servidor. La _CPU_ es el componente principal que procesa las señales y hace posible la computación. Actúa como el cerebro de cualquier dispositivo de computación. Obtiene instrucciones de la memoria, realiza las tareas necesarias y envía la salida a la memoria. Maneja todo tipo de tareas de computación necesarias para que el sistema operativo y las aplicaciones se ejecuten. (AWS, 2024).
 
-=== Contador de Programa (Program Counter)
+=== Reloj (Clock)
+
+La _CPU_ se basa en una señal de reloj para sincronizar sus operaciones internas. El reloj genera un pulso constante a una frecuencia específica y estos ciclos de reloj coordinan las operaciones de la _CPU_. La velocidad del reloj se mide en hercios (Hz) y determina cuántas instrucciones puede ejecutar la _CPU_ por segundo. Las _CPU_ modernas tienen velocidades de reloj variables que se ajustan en función de la carga de trabajo para equilibrar el rendimiento y el consumo de energía. (AWS, 2024).
+
+Por ejemplo el reloj necesario para el famoso procesador https://github.com/maarten-pennings/6502/blob/master/1clock/README.md[6502 requiere de 1Mhz] (Usado en sistemas como la Atari, Nintendo y Apple II). Mientras que procesadores modernos como el https://www.intel.com/content/www/us/en/products/sku/237504/intel-core-i9-processor-14900ks-36m-cache-up-to-6-20-ghz/specifications.html[i9 pueden llegar a los 6.20 Ghz]. 
+
+=== Registros (Registers)
+
+Los registros son pequeñas ubicaciones de almacenamiento de memoria de alta velocidad dentro de la _CPU_. Contienen datos en los que la _CPU_ está trabajando en ese momento y facilitan un acceso rápido a los datos. Las _CPU_ tienen varios tipos de registros, como:
+
+- Registros de uso general que contienen datos operativos
+- Registros de instrucciones que contienen la instrucción actual que se está procesando
+- Un contador de programas que contiene la dirección de memoria de la siguiente instrucción que se va a recuperar
+
+Los registros proporcionan tiempos de acceso más rápidos que otros niveles de memoria, como la RAM o la memoria caché (AWS, 2024).
+
+En palabras simples, los registros son como variables usadas por el procesador que guardan información necesaria para las tareas a realizar por el mismo, al estar más cercanas al _CPU_ tienen mayor velocidad que la memoria o cache. Algunos registros pueden ser de uso general mientras que otros son de un uso específico como el _Program Counter_.
+
+==== Contador de Programa (Program Counter)
 
 El contador de programa, también conocido como puntero de instrucción o simplemente `PC`, es un componente fundamental de la unidad central de proceso (CPU) de un computador. Es un registro especial que lleva la cuenta de la dirección de memoria de la siguiente instrucción a ejecutar en un programa (Lenovo, s.f).
+
 
 === Pila (Stack)
 
@@ -69,11 +88,81 @@ Las limitaciones de la pila (_Stack_) está en que no es muy flexible para crece
 <iframe width="100%" height="415" src="https://www.youtube.com/embed/N3o5yHYLviQ?si=w6iHYaAtTPECO3qO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ++++
 
-=== Heap
+=== Montículo (Heap)
+
+El montículo (heap), también conocido como "almacenamiento libre". Es una estructura dinámica de datos o área de memoria para lograr asignación dinámica de memoria durante la ejecución de un programa. Permitiendo asignar memoria y liberarla de forma flexible, según sea necesario.
+
+La gestión de memoria dinámica requiere de dos tipos de operaciones; la petición y la liberación de memoria. El ciclo es sencillo, cuando se precisa almacenar un nuevo dato, se solicita tanta memoria en bytes como sea necesaria, y una vez que ese dato ya no se necesita la memoria se devuelve para poder ser reutilizada. Este esquema se conoce como "gestión explícita de memoria" pues requiere ejecutar una operación para pedir la memoria y otra para liberarla (Universidad Carlos III de Madrid, s.f.). En el lenguaje C estas funciones son: `malloc, calloc, free y realloc`.
+
+El _Heap_ es necesario debido a que el _Stack_ si bien permite almacenar los datos de forma compacta y mejorar el desempeño, tiene limitaciones debido a que el _Stack_ no permite acomodar dinámicamente los datos. Por ejemplo en un arreglo con elementos definidos no permite añadir nuevos, solo sobre escribirlos. Esto significa que puede gatillar un error de desbordamiento (Stack Overflow) si se intenta añadir más elementos de lo originalmente definido. El _Heap_ permite solicitar memoria virtualmente ilimitada, utilizando llamadas al sistema, lo que permite al _Heap_ almacenar grandes cantidades de datos. Esto trae la necesidad de administrar manualmente la memoria asignada (en los lenguajes de programación de sistemas). Es común la estrategia de almacenar solamente los punteros de memoria (direcciones de memoria, memory addresses) en el _Stack_ y los datos asociados a dichos punteros en el _Heap_. Un puntero solo representa una dirección de memoria y no contiene la información ni los datos del largo o tamaño de los datos.
+
+==== ¿Es posible la fragmentación en el _Heap_? 
+
+Con el _Stack_ sabemos que existe la fragmentación externa, donde se requiere más bloques de memoria a pesar de que se tiene memoria disponible, debido a la no compactación y desorganización de los datos. La forma de organización del _Stack_ (LIFO) permite mitigar la fragmentación si se utiliza una buena gestión de memoria. Con el _Heap_ no es posible evitar la fragmentación debido a que no tiene un comportamiendo predecible que garantice que los datos estén compactados y ordenados. El _Heap_ no hay garantías de que los elementos serán removidos en un orden específico ni que estén ordenados de forma compactada. Es decir el _Heap_ requiere tiempo de procesamiento variable debido a que los datos almacenados pueden ser de distinto tamaño, necesitando de tiempos variables para su procesamiento.
+
+Para mitigar esta fragmentación, en el _Heap_ es necesario verificar si existen agujeros en los bloques de memoria previamente asignados, para evitar realizar una llamada al sistema y reutilizar la memoria disponible. Para esto el _Heap_ recurre a tres estrategias principales.
+
+Una estrategia encontrar el primer agujero disponible con la capacidad para almacenar el dato (first fit). Es la más rápida pero no reduce la fragmentación. La segunda es encontrar el agujero lo más pequeño posible que permita almacenar el valor (best fit) y finalmente encontrar cualquier agujero disponible con la capacidad más grande que permita almacenar el dato (worst fit). Ambas podrían reducir la fragmentación pero no son las más rápidas. El uso de estas estrategias no evitan la fragmentación y la elección depende de factores como la rapidez y los pros y contras de cada solución.
+
+==== Listas enlazadas en el Heap
+
+El _Heap_ no resuelve el problema de sobre escribir elementos de un arreglo. Para esto se utilizan estructuras de datos como listas enlazadas de punteros. Donde se tienen nodos que mantienen un puntero asociado al siguiente nodo. Es decir se crea un nuevo nodo (asignando memoria en el _Heap_) y se añade a la lista, modificando el elemento anterior con el puntero al nuevo nodo. Lo que soluciona esta estrategia es que no se necesitan bloques continuos en la memoria. El principal problema es que los nodos distribuidos por la memoria tienen menos probabilidad de almacenamiento en caché del _CPU_. Por lo que se debe priorizar compactar los datos.
+
+==== Llamadas al Sistema
+
+Por temas de seguridad el sistema operativo no permite acceder directamente al hardware. Por lo que para solicitar recursos los programas deben realizar llamadas al sistema operativo.
+
+El siguiente programa en C muestra un "hola mundo" tradicional.
+
+.Hola mundo en C
+[source, c]
+----
+#include <stdio.h>
+
+int main() {
+  
+    // Mostramos el mensaje con printf
+    printf("¡Sistemas Operativos!");
+
+    return 0;
+}
+----
+
+La función `printf` (print format) es una abstracción, una capa a la llamada del sistema
+que le dice al sistema operativo que muestre el mensaje en la salida estándar. Esta función formatea el texto para ser finalmente invocada la función https://courses.cs.umbc.edu/undergraduate/313/spring05/burt_katz/lectures/Lect07/systemCalls.html[write] que eventualmente llama a la función `syscall` con los datos respectivos.
+
+Estos son mecanismos de bajo nivel utilizados para estandarizar el acceso a archivos, memoria y otros recursos del sistema, con el fin de permitir la interoperabilidad de forma controlada, lo que asegura la integridad del sistema. Debido a eso, el acceso a los recursos del sistema es lo que llamamos acceso privilegiado y solo puede ser realizado por el sistema operativo. El programa de usuario solicita que el sistema operativo proporcione ese acceso a través de un servicio bien definido. Entonces, asumiendo que el servicio se haya solicitado correctamente, se proporcionará dicho servicio (Burt K, s.f.).
+
+==== Coste de las llamadas a sistema
+
+Lo importante a destacar de las llamadas al sistema es que tienen un costo en términos de desempeño. Cuando un programa se ejecuta el proceso asociado tiene un estado en los registros de la _CPU_ (El Program Counter, entre otros). Como el sistema operativo debe administrar diferentes procesos, debe guardar el estado en memoria de cada uno. Es como si tomara una fotografía de la información (El contexto de ejecución, execution context) de cada proceso y lo almacenara en memoria para ser obtenido luego de ejecutar la operación solicitada. El constante cambio entre los diferentes contextos de proceso se conoce como "cambio de contexto" (context switch).
+
+Se podría resumir en las siguientes etapas:
+
+. El proceso es iniciado.
+. El proceso ejecuta una llamada al sistema (syscall).
+. El sistema operativo guarda el estado en memoria del proceso.
+. El sistema operativo ejecuta la llamada de sistema.
+. El sistema operativo carga el proceso y le entrega el resultado de la llamada al sistema.
+. El sistema operativo cambia de contexto a otro proceso que solicite otra llamada al sistema.
+
+==== ¿El Heap es más lento que el Stack?
+
+Como se puede apreciar todas las etapas de gestión de procesos del sistema operativo toman tiempo, recursos y perjudican el desempeño. Cuando un proceso requiere más memoria, se debe utilizar una llamada al sistema. La memoria asignada al _Stack_ está predefinida al iniciar el proceso, por lo que no requiere solicitar más memoria al sistema operativo utilizando llamadas de sistema. El sistema operativo puede necesitar más tiempo en encontrar secciones de memoria disponible para el _Heap_, por lo que puede haber penalizaciones de tiempo y en el peor de los casos disminuir el desempeño de los programas, causando lentitud en los mismos. Pero esto no significa que usar _Heap_ sea más lento que usar el _Stack_. Lo que causa lentitud es todo el proceso de asignación de memoria, pero una vez que ya está asignada y con técnicas de gestión de recursos como el caché y estructuras de datos eficientes, utilizar el _Heap_ puede ser tan rápido como usar el _Stack_.
+
+
+++++
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/ioJkA7Mw2-U?si=xfbbWP1fEZm_LIoy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+++++
+
 
 === ALU
 
-=== Registros
+Una unidad aritmética lógica (Arithmetic Logic Unit) toma valores de entrada (OPERANDS) y códigos de operación (OP_CODES) y a través de circuitería (Adder, Subtracter, Incrementer, Decrementer, Decoder, entre otras) y compuertas lógicas (XOR, AND, OR, NOT, entre otras), determina la operación que se debe realizar con esos valores. Finalmente retorna el resultado (Result) de la operación junto a información adicional (Si fue negativo, cero o hubo un desbordamiento).
+
+++++
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/HjneAhCy2N4?si=cYES5pjSdOP2DIln" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+++++
 
 == El Ciclo de Instrucción
 
@@ -87,7 +176,11 @@ Una instrucción en el procesador tiene un ciclo de obtener, decodificar y ejecu
 .Ciclo de Instrucción, fuente: John Kubiatowicz CS162 Lecture 2, 2020.
 image::instruction-cycle.png[]
 
+El siguiente video muestran el funcionamiento
+de las compuertas lógicas y la ALU.
+
 .Funcionamiento de un Procesador
 ++++
 <iframe width="100%" height="415" src="https://www.youtube.com/embed/-ZTekGoR8uQ?si=9yESp9wBXkL3UODs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ++++
+
