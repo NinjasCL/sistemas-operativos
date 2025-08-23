@@ -187,11 +187,12 @@ de las compuertas lógicas y la ALU.
 
 == Actividades
 
-En esta actividad se practicará la creación de scripts con Bash.
+En esta actividad se practicará la creación de scripts con Bash, las diferencias entre root (administrador) y usuario común y la instalación de programas en Debian Linux con el gestor de paquetes `apt`.
 
-- Realizar los ejercicios resueltos de la sección 2.30 del libro Enrique Soriano.
-
-- Realizar los ejercicios no resueltos de la sección 2.31 del libro Enrique Soriano. Ejercicio 7 y Ejercicio 11.
+. Instalar Debian en una máquina virtual
+. Instalar editor _Gedit_ (`# apt install gedit -y`).
+. Seleccionar un ejercicio resuelto de la sección 2.30 del libro Enrique Soriano, crear un archivo y ejecutarlo con (`$ chmod +x`).
+. (Opcional) Realizar los ejercicios no resueltos de la sección 2.31 del libro Enrique Soriano. Ejercicio 7 y Ejercicio 11.
 
 
 == Foro
@@ -199,7 +200,7 @@ En esta actividad se practicará la creación de scripts con Bash.
 En un mínimo de 150 palabras y un máximo de 350 palabras. Responda lo siguiente:
 
 
-¿Por qué un Hilo (Thread) es una abstracción de una CPU?
+*¿Por qué un Hilo (Thread) es una abstracción de una CPU?*
 
 
 Incluya introducción, desarrollo, conclusión y referencias bibliográficas (al menos 2) formato APA 7. Comente la respuesta de dos de sus compañeros (con referencias en APA 7).
