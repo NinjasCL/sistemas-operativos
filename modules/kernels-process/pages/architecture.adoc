@@ -184,3 +184,22 @@ de las compuertas lógicas y la ALU.
 <iframe width="100%" height="415" src="https://www.youtube.com/embed/-ZTekGoR8uQ?si=9yESp9wBXkL3UODs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ++++
 
+
+== Actividades
+
+En esta actividad se practicará la creación de scripts con Bash.
+
+- Realizar los ejercicios resueltos de la sección 2.30 del libro Enrique Soriano.
+
+- Realizar los ejercicios no resueltos de la sección 2.31 del libro Enrique Soriano. Ejercicio 7 y Ejercicio 11.
+
+
+== Foro
+
+En un mínimo de 150 palabras y un máximo de 350 palabras. Responda lo siguiente:
+
+
+¿Por qué un Hilo (Thread) es una abstracción de una CPU?
+
+
+Incluya introducción, desarrollo, conclusión y referencias bibliográficas (al menos 2) formato APA 7. Comente la respuesta de dos de sus compañeros (con referencias en APA 7).

@@ -85,6 +85,16 @@ Pueden comparar los lenguajes en ésta página que tiene ejemplos de código:
 - C: https://rosettacode.org/wiki/Category:C
 - Python: https://rosettacode.org/wiki/Category:Python
 
+== Material Complementario
+
+- https://codingchallenges.fyi/challenges/challenge-shell/
+
+- https://ehoneahobed.hashnode.dev/building-a-simple-shell-in-c-part-1
+
+- https://www.cs.cornell.edu/courses/cs414/2004su/homework/shell/shell.html
+
+- https://brennan.io/2015/01/16/write-a-shell-in-c/
+
 == Referencias
 
 - Universidad Carlos III de Madrid. (s.f.). Sistemas Operativos: Prácticas. https://ocw.uc3m.es/mod/page/view.php?id=2795

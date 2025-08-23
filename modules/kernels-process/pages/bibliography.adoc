@@ -3,3 +3,4 @@
 - Lenovo. (s.f.). ¿Qué es un contador de programa (PC)? ¿Cómo funciona? Recuperado el 19 de agosto de 2025, de https://www.lenovo.com/es/es/glossary/program-counter/
 - AWS. (2024). ¿Qué es una unidad central de procesamiento (CPU)? https://aws.amazon.com/es/what-is/cpu/#:~:text=Los%20registros%20son%20peque%C3%B1as%20ubicaciones,velocidad%20dentro%20de%20la%20CPU.
 - Universidad Carlos III de Madrid. (s.f.). Memoria dinámica almacenada en el heap [Nota de curso]. https://www.it.uc3m.es/pbasanta/asng/course_notes/ch06s03.html
+- Burt, K. (s.f.). System Calls [Notas de clase]. Universidad de Maryland, Baltimore County. https://courses.cs.umbc.edu/undergraduate/313/spring05/burt_katz/lectures/Lect07/systemCalls.html
