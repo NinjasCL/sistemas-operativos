@@ -95,6 +95,10 @@ Pueden comparar los lenguajes en ésta página que tiene ejemplos de código:
 
 - https://brennan.io/2015/01/16/write-a-shell-in-c/
 
+++++
+<iframe width="100%" height="415" src="https://www.youtube.com/embed/55cohFUPZGY?si=vr5c-EzxIiUMtdn5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+++++
+
 == Referencias
 
 - Universidad Carlos III de Madrid. (s.f.). Sistemas Operativos: Prácticas. https://ocw.uc3m.es/mod/page/view.php?id=2795
