@@ -46,7 +46,7 @@ Por ejemplo el reloj necesario para el famoso procesador https://github.com/maar
 
 === Registros (Registers)
 
-Los registros son pequeñas ubicaciones de almacenamiento de memoria de alta velocidad dentro de la _CPU_. Contienen datos en los que la _CPU_ está trabajando en ese momento y facilitan un acceso rápido a los datos. Las _CPU_ tienen varios tipos de registros, como:
+Los registros son pequeñas ubicaciones de almacenamiento de memoria de alta velocidad dentro de la _CPU_. La cantidad de estos depende de cada procesador y su arquitectura. Contienen datos en los que la _CPU_ está trabajando en ese momento y facilitan un acceso rápido a los datos. Las _CPU_ tienen varios tipos de registros, como:
 
 - Registros de uso general que contienen datos operativos
 - Registros de instrucciones que contienen la instrucción actual que se está procesando
@@ -60,6 +60,9 @@ En palabras simples, los registros son como variables usadas por el procesador q
 
 El contador de programa, también conocido como puntero de instrucción o simplemente `PC`, es un componente fundamental de la unidad central de proceso (CPU) de un computador. Es un registro especial que lleva la cuenta de la dirección de memoria de la siguiente instrucción a ejecutar en un programa (Lenovo, s.f).
 
+=== Banderas de Ejecución (Execution Flags)
+
+Cuando el procesador realiza operaciones, tiende a retornar no solo el resultado de la operación. También retorna banderas (flags) de ejecución (execution) que permiten realizar condicionales. Por ejemplo si dos registros son substraidos, se da el resultado pero también el estado como si fue cero o es mayor o menor a cero. Esto permite programar condicionales dependiendo de estos estados. Es como si fueran registros de un bit que almacenan un resultado comparativo de la operación.
 
 === Pila (Stack)
 

@@ -6,7 +6,7 @@
     <title>Conceptos de Arquitectura de Computadoras :: Conceptos de Sistemas Operativos</title>
     <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/kernels-process/architecture.html">
     <link rel="prev" href="../introduction/roles.html">
-    <link rel="next" href="process.html">
+    <link rel="next" href="concepts.html">
     <meta name="generator" content="Antora 3.1.10">
     <link rel="stylesheet" href="../_/css/site.css">
     <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
@@ -86,6 +86,9 @@
 <ul class="nav-list">
   <li class="nav-item is-current-page" data-depth="1">
     <a class="nav-link" href="architecture.html">Conceptos de Arquitectura de Computadoras</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="concepts.html">Conceptos Principales</a>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="process.html">Procesos</a>
@@ -242,7 +245,7 @@ Los lenguajes interpretados deben almacenar el dato y metadatos (tags) asociados
 <div class="sect2">
 <h3 id="registros-registers"><a class="anchor" href="#registros-registers"></a>Registros (Registers)</h3>
 <div class="paragraph">
-<p>Los registros son pequeñas ubicaciones de almacenamiento de memoria de alta velocidad dentro de la <em>CPU</em>. Contienen datos en los que la <em>CPU</em> está trabajando en ese momento y facilitan un acceso rápido a los datos. Las <em>CPU</em> tienen varios tipos de registros, como:</p>
+<p>Los registros son pequeñas ubicaciones de almacenamiento de memoria de alta velocidad dentro de la <em>CPU</em>. La cantidad de estos depende de cada procesador y su arquitectura. Contienen datos en los que la <em>CPU</em> está trabajando en ese momento y facilitan un acceso rápido a los datos. Las <em>CPU</em> tienen varios tipos de registros, como:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -268,6 +271,12 @@ Los lenguajes interpretados deben almacenar el dato y metadatos (tags) asociados
 <div class="paragraph">
 <p>El contador de programa, también conocido como puntero de instrucción o simplemente <code>PC</code>, es un componente fundamental de la unidad central de proceso (CPU) de un computador. Es un registro especial que lleva la cuenta de la dirección de memoria de la siguiente instrucción a ejecutar en un programa (Lenovo, s.f).</p>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="banderas-de-ejecución-execution-flags"><a class="anchor" href="#banderas-de-ejecución-execution-flags"></a>Banderas de Ejecución (Execution Flags)</h3>
+<div class="paragraph">
+<p>Cuando el procesador realiza operaciones, tiende a retornar no solo el resultado de la operación. También retorna banderas (flags) de ejecución (execution) que permiten realizar condicionales. Por ejemplo si dos registros son substraidos, se da el resultado pero también el estado como si fue cero o es mayor o menor a cero. Esto permite programar condicionales dependiendo de estos estados. Es como si fueran registros de un bit que almacenan un resultado comparativo de la operación.</p>
 </div>
 </div>
 <div class="sect2">
@@ -486,7 +495,7 @@ de las compuertas lógicas y la ALU.</p>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="../introduction/roles.html">¿Qué Roles Tiene un Sistema Operativo?</a></span>
-  <span class="next"><a href="process.html">Procesos</a></span>
+  <span class="next"><a href="concepts.html">Conceptos Principales</a></span>
 </nav>
 </article>
   </div>

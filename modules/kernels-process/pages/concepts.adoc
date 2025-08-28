@@ -1,0 +1,106 @@
+= Conceptos Principales
+
+== Hilos (Threads)
+
+Un _Thread_ es un contexto de ejecución unico que tiene
+sus datos asociados como contador de programa, registros, banderas de ejecución (execution flags), stack, heap, y estados de la memoria.
+
+Un sistema operativo puede tener múltiples _Threads_
+pero solo uno a la vez es *residente* en los registros del procesador y es ejecutado.
+
+Que un _Thread_ sea *residente* quiere decir que el procesador almacena los datos raíz del _Thread_.
+Esto quiere decir que se almacenan el contador del programa del _Thread_ (PC) que es un puntero a la siguiente instrucción en memoria a ejecutar, la lista de instrucciones almacenadas en la memoria. El puntero del _Stack_ para saber la dirección del inicio del _Stack_ (que está en memoria). También esto incluye valores intermedios necesarios para realizar las operaciones (pueden ser valores numéricos o que apunten a una dirección de memoria). Todos los demás datos necesarios para el _Thread_ estarán almacenados en la memoria.
+
+Cuando un _Thread_ está suspendido (no se ejecuta) y
+su estado no es *residente* (cargado en el procesador). Quiere decir que el procesador está ocupado por otro _Thread_. El _PC_ del procesador apunta a las instrucciones del _Thread_ actual. Una copia de todos los registros y su último valor del _Thread_ suspendido es almacenada en memoria, lo que es conocido como _Thread Control Block (TCB)_ (Bloque de Control del Hilo), la información normalmente es el _stack_, _heap_, _datos_ e instrucciones de código a ejecutar en el _thread_. Cuando el procesador cambia de un _Thread_ a otro, se conoce como cambio de contexto (_Context Switch_).
+
+Un _Thread_ es como un núcleo (core) virtual del procesador. Es decir que cada núcleo del procesador puede tener un _Thread_ a la vez. Cada núcleo tiene un único hilo (_Thread_) de ejecución, lo que se conoce como hilo principal (_main thread_).
+
+Entonces los _Threads_ proporcionan la ilusión de tener múltiples núcleos de procesador (multiplexar el procesador) ejecutandose al mismo tiempo, asumiendo que un procesador sea de un solo núcleo, Los _threads_ proporcionan la ilusión de tener múltiples procesadores. Estos _Threads_ comparten la misma cantidad de memoria, comparten el mismo caché, mismos IO y todo lo demás del hardware , por lo que si ocurre un cambio de contexto muy rápido, quizás no se pueda obtener el beneficio del caché.
+
+*¿Qué pasa si el procesador cambia de un _Thread_ a otro?.*
+
+La respuesta rápida sería que ocurre un cambio de contexto (_Context Switch_). La respuesta detallada es que ocurre lo siguiente:
+
+. Ocurre un evento (temporizador, interrupciones de IO, pausa voluntaria del _thread_, entre otros) que provoca que el sistema operativo necesite cambiar de un _Thread A_ a un _Thread B_.
+. Se almacena toda la información del _Thread A_ dentro de la memoria en el _Thread Control Block_ (TCB).
+. Se carga toda la información del _Thead B_ (_TCB_ del _Thread B_) en los registros y _PC_ al procesador.
+
+Normalmente esta es una tarea que tarda microsegundos y un sistema operativo debe velar por que sea en tiempo reducido, si no se puede encontrar problemas de latencia o congelamiento de las operaciones.
+
+*¿Por qué es mejor usar cambio de contexto a esperar que se complete la tarea?.*
+
+Si bien esperar a que una operación o tarea termine antes de ejecutar otra puede ser eficiente. Se tendría que esperar mucho tiempo antes de iniciar la siguiente tarea, lo que rompería la ilusión de tener tareas en paralelo. Este tipo de problemas se resuelve con estrategias de cronograma y priorización (_Scheduling_).
+
+*¿Puede un _Thread_ acceder a la memoria de otro?*
+
+En los primeros sistemas operativos modernos (Windows 3.1, 95 - ME, MacOS 1 - 9, Aplicaciones de microcontroladores) si bien se podía dar la ilusión de múltiples procesadores. Existía el peligro de que un _Thread_ accediera y pudiera sobre escribir o acaparar la memoria de otro _Thread_. Por lo que era un contexto muy inseguro. Por ejemplo una programa podía ejecutar un ciclo infinito o calcular un número muy elevado (como dígitos de PI) y congelar todo el sistema operativo.Esta modalidad de multiplexión no tiene seguridad ni protecciones. 
+
+*Labor de un Sistema Operativo con los Threads*
+
+La labor de un sistema operativo es protegerse a si mismo de los programas ejecutados por sus usuarios. Debe cumplir con las características:
+
+- Confiabilidad: Si se compromete el sistema operativo puede llevar a congelamientos o fallas graves.
+- Seguridad: Debe limitar el alcance de lo que pueden hacer los _Threads_.
+- Privacidad: Debe limitar cada _Thread_ para que solamente pueda acceder a los datos que cuenta con permisos de leer y escribir.
+- Equilibrio: Cada _Thread_ debe tener los recursos justos y necesarios para su operación, sin agotarlos (CPU, memoria, IO, etc).
+
+*Protección*
+
+El sistema operativo también debe proteger los _Threads_ entre sí. Debe prevenir que un _Thread_ ejecutado por un usuario pueda perjudicar el _Thread_ ejecutado por otro (Por ejemplo prevenir acceder a datos secretos de un usuario)
+
+Una estrategia de protección son los límites de _Base_ (inicio) y _Bound_ (fin); Es almacenar dos direcciones que marquen los límites de la memoria utilizados por el programa. Uno que marque el inicio (_base_) y uno que marque el límite máximo o fin (bound). 
+
+Acá el hardware del CPU puede comparar entre estos dos límites y entregar un resultado booleano si está dentro o fuera de los límites (`>=` inicio, `<` fin). 
+
+Si está fuera de los límites el sistema operativo puede terminar el _Thread_. Esto es una protección de hardware simple y es usada para proteger que los programas puedan sobre escribir al sistema operativo.
+
+Es común que se utilice un componente de hardware (_Adder_) el cual suma al _PC_ la dirección _Base_ y con eso se puede asegurar que siempre estará dentro del espacio de memoria adecuado, protegiendo que el programa de usuario no pueda acceder a espacios de memoria del sistema operativo o de otros programas. 
+
+El sistema operativo es quien decide los límites según la estrategia `best fit` o la que sea factible.
+
+== Espacio de Direcciones (Address Space)
+
+El espacio de direcciones es un conjunto de direcciones disponibles y un estado asociado a ellas.
+Son las direcciones potenciales que un procesador puede utilizar.
+
+En un procesador de 32 bit tiene 
+
+[asciimath]
+++++
+2^32 = "4 miles de millones de direcciones" (10^9)
+++++
+
+Mientras que en uno de 64 bit tiene
+
+[asciimath]
+++++
+2^64 = "18 trillones de direcciones" (10^18)
+++++
+
+*¿Qué ocurre cuando se lee o se escribe una dirección?*
+
+. Puede que se lea como una memoria normal.
+. Puede que solo sea de lectura (ignore las escrituras).
+. Puede que gatille un evento (memoria asociada al IO).
+. Puede causar una excepción fatal.
+. Puede comunicar con otro programa.
+
+*¿Qué puede almacenar?*
+
+.Espacio de Direcciones, fuente: John Kubiatowicz CS162 Lecture 2, 2020.
+image::address-space.png[]
+
+- PC: Program Counter. La siguiente instrucción a ejecutar.
+- SP: Stack Pointer. La dirección del elemento superior en el _Stack_.
+- Instrucciones de Código: Las instrucciones que el procesador debe ejecutar.
+- Static Data:  Datos estáticos como variables estáticas o globales e strings constantes.
+- Stack: El contenido del stack, cuánto espacio necesita y cómo se debe dimensionar (normalmente variables locales). Puede estar separado por páginas.
+- Heap: El contenido del heap (espacio de memoria dinámico, estructuras, punteros, listas enlazadas). Puede ser aumentado dinámicamente según necesidad.
+
+=== Traducción del Espacio de Direcciones (Address Space Translation)
+
+Lo que ocurre normalmente es que el sistema operativo tiene un espacio virtual de direcciones, las cuales deben pasar por un proceso de traducción el cual entrega la dirección real de la memoria en hardware a utilizar.
+
+.Traducción del Espacio de Direcciones, fuente: John Kubiatowicz CS162 Lecture 2, 2020.
+image::address-space-translation.png[]
