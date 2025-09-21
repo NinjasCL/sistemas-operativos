@@ -2,7 +2,7 @@
 
 Intérprete de Comandos o Mandatos (Minishell)
 
-En este proyecto individual o grupal donde se debe elaborar un programa que pueda ejecutar otros programas a través de una línea de comandos.
+En este proyecto individual donde se debe elaborar un programa que pueda ejecutar otros programas a través de una línea de comandos.
 
 Puede usar referencias y código de ejemplo disponible en internet. Pero debe ser correctamente referenciado el origen. 
 
@@ -68,22 +68,9 @@ Para facilitar la implementación se puede asumir las siguientes característica
 
 == Restricciones
 
-- Debe ser elaborado en uno de los siguientes lenguajes C, Python, Ada o Elixir. El utilizar Ada o Elixir tiene un punto base adicional ya que se consideran lenguaje nuevos y se premia la motivación por aprenderlos.
-
+- Debe ser elaborado en uno de los siguientes lenguajes: C o Python.
 - Debe ser elaborado de forma ordenada y lo más profesional posible. Pensando que es un proyecto para un cliente que les ha solicitado este programa.
-
-- El entorno de ejecución puede ser un sistema operativo Linux (Debian), MacOS o entorno https://frippery.org/busybox/[Busybox] o https://www.msys2.org/[Msys para Windows].
-
-Recomendación de investigar las alternativas: C, Python, Ada o Elixir y escoger según su predilección.
-
-Todas las alternativas pueden desarrollar el proyecto.
-
-Pueden comparar los lenguajes en ésta página que tiene ejemplos de código:
-
-- Ada: https://rosettacode.org/wiki/Category:Ada
-- Elixir: https://rosettacode.org/wiki/Category:Elixir
-- C: https://rosettacode.org/wiki/Category:C
-- Python: https://rosettacode.org/wiki/Category:Python
+- El entorno de ejecución será el sistema operativo Linux (Debian).
 
 == Material Complementario
 

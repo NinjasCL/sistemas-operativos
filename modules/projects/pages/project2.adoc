@@ -1,0 +1,29 @@
+= Proyecto 2: Concurrencia
+
+Utilizando el proyecto base en _Elixir_ se debe generar un archivo de un millón de registros (1.000.000)
+con datos aleatorios separados por un símbolo `|`. 
+
+Los datos son:
+
+Teléfono (9 números incluyendo el prefixo 569), Nombre 1, Nombre 2, Apellido 1, Apellido 2, Email, RUT (DNI).
+
+La generación de este archivo debe tomar máximo 6 minutos más una desviación estándar de 60 segundos.
+
+Ejemplo: 
+
+[source, text]
+----
+56983728372|José|Miguel|Carrera|Verdugo|jmc@husares.chile|1-9
+----
+
+Luego se debe leer este archivo usando el proyecto base en _Ada_ y generar un archivo CSV ordenado
+de la siguiente forma: Nombre Completo, RUT (DNI), Email, Teléfono.
+
+Ejemplo: 
+
+[source, text]
+----
+José Miguel Carrera Verdugo,1-9,jmc@husares.chile,56983728372
+----
+
+Para ambos proyectos se debe utilizar las capacidades de concurrencia tanto de _Elixir_ como _Ada_.

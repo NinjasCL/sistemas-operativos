@@ -1,6 +1,6 @@
 .PHONY: install build server sh antora.build
 BUILD=docker
-CONTAINER_LABEL=local/antora:ada-libro
+CONTAINER_LABEL=local/antora:sistemas-operativos
 
 install i:
 	${BUILD} build -t ${CONTAINER_LABEL} .

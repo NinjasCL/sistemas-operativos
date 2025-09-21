@@ -97,6 +97,15 @@
   </li>
   <li class="nav-item" data-depth="0">
     <button class="nav-item-toggle"></button>
+    <span class="nav-text">Sincronización</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../sync/concurrency.html">Concurrencia y Exclusión Mutua</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
     <span class="nav-text">Programación en Ada</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
@@ -137,6 +146,12 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../projects/project1.html">Proyecto 1: Minishell</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project2.html">Proyecto 2: Concurrencia</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project3.html">Proyecto 3: Servidor de Videojuegos</a>
   </li>
 </ul>
   </li>
@@ -183,6 +198,66 @@
 </aside>
 <article class="doc">
 <h1 class="page">Conceptos Principales</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Existen cuatro conceptos principales en sistemas operativos:</p>
+</div>
+<div class="paragraph">
+<p><strong>Hilos</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Proporcionan el conexto de ejecución (tienen el contexto completo del programa).</p>
+</li>
+<li>
+<p>Tiene Program Counter, Registros, Flags de Ejecución, Stack.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Espacio de Direcciones</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Son direcciones de memoria disponibles para un programa (escribir y leer).</p>
+</li>
+<li>
+<p>Pueden ser virtuales al separar la memoria asignada a los programas de las direcciones físicas en el hardware (usando traductor).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Procesos</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Una instancia de ejecución de un programa.</p>
+</li>
+<li>
+<p>Tiene un espacio de direcciones protegido y uno o más hilos.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Modo de Operación Dual</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Solamente el kernel tiene acceso privilegiado a ciertos recursos y operaciones.</p>
+</li>
+<li>
+<p>Este modo combinado con el traductor del espacio de direcciones permite proteger al sistema operativo, aislando
+los programas del usuario de los programas y memoria del sistema operativo.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="hilos-threads"><a class="anchor" href="#hilos-threads"></a>Hilos (Threads)</h2>
 <div class="sectionbody">

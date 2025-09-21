@@ -3,10 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Historia de los Sistemas Operativos :: Conceptos de Sistemas Operativos</title>
-    <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/introduction/history.html">
-    <link rel="prev" href="introduction.html">
-    <link rel="next" href="roles.html">
+    <title>Untitled :: Conceptos de Sistemas Operativos</title>
+    <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/sync/monitors.html">
     <meta name="generator" content="Antora 3.1.10">
     <link rel="stylesheet" href="../_/css/site.css">
     <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
@@ -70,13 +68,13 @@
     <span class="nav-text">Introducción</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="introduction.html">Introducción a los Sistemas Operativos</a>
-  </li>
-  <li class="nav-item is-current-page" data-depth="1">
-    <a class="nav-link" href="history.html">Historia de los Sistemas Operativos</a>
+    <a class="nav-link" href="../introduction/introduction.html">Introducción a los Sistemas Operativos</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="roles.html">¿Qué Roles Tiene un Sistema Operativo?</a>
+    <a class="nav-link" href="../introduction/history.html">Historia de los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/roles.html">¿Qué Roles Tiene un Sistema Operativo?</a>
   </li>
 </ul>
   </li>
@@ -100,7 +98,7 @@
     <span class="nav-text">Sincronización</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../sync/concurrency.html">Concurrencia y Exclusión Mutua</a>
+    <a class="nav-link" href="concurrency.html">Concurrencia y Exclusión Mutua</a>
   </li>
 </ul>
   </li>
@@ -184,141 +182,15 @@
 <button class="nav-toggle"></button>
   <a href="../index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
-  <ul>
-    <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
-    <li>Introducción</li>
-    <li><a href="history.html">Historia de los Sistemas Operativos</a></li>
-  </ul>
 </nav>
-<div class="edit-this-page"><a href="file:///antora/./modules/introduction/pages/history.adoc">Edit this Page</a></div>
+<div class="edit-this-page"><a href="file:///antora/./modules/sync/pages/monitors.adoc">Edit this Page</a></div>
 </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Contenidos" data-levels="2">
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Historia de los Sistemas Operativos</h1>
-<div class="sect1">
-<h2 id="actividades"><a class="anchor" href="#actividades"></a>Actividades</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Utilizando un LLM como <em>Chatgpt</em> o <em>Copilot</em> simule una Shell y explore los comandos disponibles y sus parámetros.</p>
-</div>
-<div class="paragraph">
-<p>Pruebe los siguientes comandos:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">date
-cal
-ls
-pwd
-cd
-cat
-pipes |
-grep
-tail
-head
-more
-echo
-mkdir
-touch
-mv
-rm</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p><strong>Ejemplo</strong></p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">&gt; "Desde ahora simula ser una shell Unix"
-&gt; "ls -las"
-&gt; "Explica para que sirve el comando ls"</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="foro-de-debate"><a class="anchor" href="#foro-de-debate"></a>Foro de Debate</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>En un mínimo de 250 palabras y un máximo de 350 palabras. Responda la siguiente pregunta: ¿Cuál es la importancia de la Shell en los Sistemas Operativos?. Incluya introducción, desarrollo, conclusión y referencias bibliográficas (al menos 2) formato APA 7. Comente la respuesta de dos de sus compañeros (con referencias en APA 7).</p>
-</div>
-<div class="paragraph">
-<p><strong>Material de Referencia</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Libro de Enrique Soriano. Secciones 2.1 y 2.2</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="lectura-complementaria"><a class="anchor" href="#lectura-complementaria"></a>Lectura Complementaria</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Libro Gunnar Wolf (<a href="https://sistop.org/" class="bare">https://sistop.org/</a>). Secciones 1.1 a 1.5.1 (Páginas 17 a 31).</p>
-</li>
-<li>
-<p>Libro Enrique Soriano (<a href="https://honecomp.github.io/librossoo.html" class="bare">https://honecomp.github.io/librossoo.html</a>). Secciones 1.1 hasta 1.2.1 (Páginas 20 a 25).</p>
-</li>
-<li>
-<p>Libro Modern Operating Systems de Andrew S. Tanenbaum (5 edición, 2022, ISBN 978-0-13-761887-3). Secciones 1.1 a 1.2. (Páginas 4 a 19)</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="videos-complementarios"><a class="anchor" href="#videos-complementarios"></a>Videos Complementarios</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://www.youtube.com/watch?v=5nK_ft0Lf1s">Alan Turing and Bletchley Park</a>: Conducido por Charles Severance, presenta al equipo electromecánico BOMBE, construido para romper el cifrado de la máquina Enigma atacándolo con fuerza bruta, y del electrónico Colossus.</p>
-</li>
-<li>
-<p><a href="https://www.youtube.com/watch?v=BlUWg2nxCz0">Once upon a punched card</a>: Presenta la historia de las tarjetas perforadas, y cómo (en 1964) pueden ayudar a cualquier negocio.</p>
-</li>
-<li>
-<p><a href="https://www.youtube.com/watch?v=cO6asQjQmPM">Michigan Terminal System</a>: (Primeros 5 minutos). Instrucciones para el uso del sistema de terminales (teletipos) para la computadora de la Universidad de Michigan.</p>
-</li>
-<li>
-<p><a href="https://www.youtube.com/watch?v=yJDv-zdhzMY">The mother of all demos</a>: Revolucionaria presentación en que Douglas Engelbert presenta ventanas, hipertexto, gráficas, navegación eficiente, entrada de datos, video conferencia, el mouse, procesamiento de texto, ligado dinámico de archivos, control de versiones, y trabajo colaborativo, completamente funcional, en 1968.</p>
-</li>
-<li>
-<p><a href="https://www.youtube.com/watch?v=BZykunYYeQk">Altair 8800 Pong</a>: Presenta el juego Pong en la primera computadora personal, la Altair 8800. Muestra cómo se podía programar, cargar un programa desde cinta.</p>
-</li>
-<li>
-<p><a href="https://www.youtube.com/watch?v=uFQ3sajIdaM">The IBM 1401 compiles and runs FORTRAN II</a>: Muestra una computadora de 1959 restaurada en el Computer History Museum. Presenta muy bien el entorno de uso de este equipo, las frustraciones de echar a andar un programa, y la forma de recibir respuesta de una computadora de la era de programación por lotes.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Referencias</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://github.com/gwolf/sistop-2021-1/blob/master/ejemplos_en_clase/1._Introducci%C3%B3n/videos_introduccion.txt" class="bare">https://github.com/gwolf/sistop-2021-1/blob/master/ejemplos_en_clase/1._Introducci%C3%B3n/videos_introduccion.txt</a></p>
-</li>
-<li>
-<p><a href="https://github.com/gwolf/sistop-2019-2/tree/master/ejemplos_en_clase/1-Introducci%C3%B3n" class="bare">https://github.com/gwolf/sistop-2019-2/tree/master/ejemplos_en_clase/1-Introducci%C3%B3n</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<nav class="pagination">
-  <span class="prev"><a href="introduction.html">Introducción a los Sistemas Operativos</a></span>
-  <span class="next"><a href="roles.html">¿Qué Roles Tiene un Sistema Operativo?</a></span>
-</nav>
+
 </article>
   </div>
 </main>

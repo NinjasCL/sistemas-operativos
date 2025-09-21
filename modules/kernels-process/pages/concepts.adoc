@@ -1,5 +1,31 @@
 = Conceptos Principales
 
+// Completar con info de https://www.youtube.com/watch?v=4FpG1DcvHzc&t=3121s
+
+Existen cuatro conceptos principales en sistemas operativos:
+
+*Hilos*
+
+- Proporcionan el conexto de ejecución (tienen el contexto completo del programa).
+- Tiene Program Counter, Registros, Flags de Ejecución, Stack.
+
+*Espacio de Direcciones*
+
+- Son direcciones de memoria disponibles para un programa (escribir y leer).
+- Pueden ser virtuales al separar la memoria asignada a los programas de las direcciones físicas en el hardware (usando traductor).
+
+*Procesos*
+
+- Una instancia de ejecución de un programa.
+- Tiene un espacio de direcciones protegido y uno o más hilos.
+
+*Modo de Operación Dual*
+
+- Solamente el kernel tiene acceso privilegiado a ciertos recursos y operaciones.
+- Este modo combinado con el traductor del espacio de direcciones permite proteger al sistema operativo, aislando 
+los programas del usuario de los programas y memoria del sistema operativo.
+
+
 == Hilos (Threads)
 
 Un _Thread_ es un contexto de ejecución unico que tiene

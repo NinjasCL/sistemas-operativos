@@ -1,0 +1,4 @@
+.Sincronización
+* xref:concurrency.adoc[]
+// * xref:semaphores.adoc[]
+// * xref:monitors.adoc[]

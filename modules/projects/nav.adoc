@@ -1,2 +1,4 @@
 .Proyectos
 * xref:project1.adoc[]
+* xref:project2.adoc[]
+* xref:project3.adoc[]

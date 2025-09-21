@@ -4,6 +4,11 @@ title: Conceptos de Sistemas Operativos
 nav:
   - modules/introduction/nav.adoc
   - modules/kernels-process/nav.adoc
+  - modules/sync/nav.adoc
+  - modules/scheduling/nav.adoc
+  - modules/memory/nav.adoc
+  - modules/filesystems/nav.adoc
+  - modules/distributed-systems/nav.adoc
   - modules/ada-basics/nav.adoc
   - modules/projects/nav.adoc
   - modules/ROOT/nav.adoc

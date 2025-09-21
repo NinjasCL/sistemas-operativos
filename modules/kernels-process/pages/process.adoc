@@ -1,6 +1,6 @@
 = Procesos
 
-// https://www.youtube.com/watch?v=4FpG1DcvHzc
+// Completar con info de Threads y Procesos https://www.youtube.com/watch?v=4FpG1DcvHzc
 
 En éste capítulo se responderán las siguientes preguntas: ¿Cuáles son los requisitos de una buena abstracción de máquina virtual (VM)?, ¿Qué es un proceso?, ¿Cómo utiliza el kernel los procesos para hacer cumplir la protección?, ¿Cuándo se cambia del modo kernel al modo usuario y viceversa?.
 

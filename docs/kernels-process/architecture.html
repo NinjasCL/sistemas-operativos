@@ -97,6 +97,15 @@
   </li>
   <li class="nav-item" data-depth="0">
     <button class="nav-item-toggle"></button>
+    <span class="nav-text">Sincronización</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../sync/concurrency.html">Concurrencia y Exclusión Mutua</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
     <span class="nav-text">Programación en Ada</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
@@ -137,6 +146,12 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="../projects/project1.html">Proyecto 1: Minishell</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project2.html">Proyecto 2: Concurrencia</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project3.html">Proyecto 3: Servidor de Videojuegos</a>
   </li>
 </ul>
   </li>
@@ -366,7 +381,44 @@ int main() {
 </div>
 <div class="paragraph">
 <p>La función <code>printf</code> (print format) es una abstracción, una capa a la llamada del sistema
-que le dice al sistema operativo que muestre el mensaje en la salida estándar. Esta función formatea el texto para ser finalmente invocada la función <a href="https://courses.cs.umbc.edu/undergraduate/313/spring05/burt_katz/lectures/Lect07/systemCalls.html">write</a> que eventualmente llama a la función <code>syscall</code> con los datos respectivos.</p>
+que le dice al sistema operativo que muestre el mensaje en la salida estándar.
+Esta función formatea el texto para ser finalmente invocada la función <a href="https://courses.cs.umbc.edu/undergraduate/313/spring05/burt_katz/lectures/Lect07/systemCalls.html">write</a>
+que eventualmente llama a la función <code>syscall</code> con los datos respectivos.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#include &lt;unistd.h&gt;
+int main(void) {
+  write(1, "¡Sistemas Operativos!\n", 22);
+  return 0;
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">#include &lt;unistd.h&gt;
+#include &lt;sys/syscall.h&gt;
+int main(void) {
+  syscall(SYS_write, 1, "¡Sistemas Operativos!\n", 22);
+  return 0;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Lo que se traduce en código de bajo nivel similar al siguiente</p>
+</div>
+<div class="listingblock">
+<div class="title">fuente: <a href="https://jameshfisher.com/2018/02/19/how-to-syscall-in-c/" class="bare">https://jameshfisher.com/2018/02/19/how-to-syscall-in-c/</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">int main(void) {
+  register int    syscall_no  asm("rax") = 1;
+  register int    arg1        asm("rdi") = 1;
+  register char*  arg2        asm("rsi") = "¡Sistemas Operativos!\n";
+  register int    arg3        asm("rdx") = 22;
+  asm("syscall");
+  return 0;
+}</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>Estos son mecanismos de bajo nivel utilizados para estandarizar el acceso a archivos, memoria y otros recursos del sistema, con el fin de permitir la interoperabilidad de forma controlada, lo que asegura la integridad del sistema. Debido a eso, el acceso a los recursos del sistema es lo que llamamos acceso privilegiado y solo puede ser realizado por el sistema operativo. El programa de usuario solicita que el sistema operativo proporcione ese acceso a través de un servicio bien definido. Entonces, asumiendo que el servicio se haya solicitado correctamente, se proporcionará dicho servicio (Burt K, s.f.).</p>

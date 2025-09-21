@@ -132,7 +132,43 @@ int main() {
 ----
 
 La función `printf` (print format) es una abstracción, una capa a la llamada del sistema
-que le dice al sistema operativo que muestre el mensaje en la salida estándar. Esta función formatea el texto para ser finalmente invocada la función https://courses.cs.umbc.edu/undergraduate/313/spring05/burt_katz/lectures/Lect07/systemCalls.html[write] que eventualmente llama a la función `syscall` con los datos respectivos.
+que le dice al sistema operativo que muestre el mensaje en la salida estándar. 
+Esta función formatea el texto para ser finalmente invocada la función https://courses.cs.umbc.edu/undergraduate/313/spring05/burt_katz/lectures/Lect07/systemCalls.html[write] 
+que eventualmente llama a la función `syscall` con los datos respectivos.
+
+[source, c]
+----
+#include <unistd.h>
+int main(void) {
+  write(1, "¡Sistemas Operativos!\n", 22);
+  return 0;
+}
+----
+
+[source, c]
+----
+#include <unistd.h>
+#include <sys/syscall.h>
+int main(void) {
+  syscall(SYS_write, 1, "¡Sistemas Operativos!\n", 22);
+  return 0;
+}
+----
+
+Lo que se traduce en código de bajo nivel similar al siguiente
+
+.fuente: https://jameshfisher.com/2018/02/19/how-to-syscall-in-c/
+[source, c]
+----
+int main(void) {
+  register int    syscall_no  asm("rax") = 1;
+  register int    arg1        asm("rdi") = 1;
+  register char*  arg2        asm("rsi") = "¡Sistemas Operativos!\n";
+  register int    arg3        asm("rdx") = 22;
+  asm("syscall");
+  return 0;
+}
+----
 
 Estos son mecanismos de bajo nivel utilizados para estandarizar el acceso a archivos, memoria y otros recursos del sistema, con el fin de permitir la interoperabilidad de forma controlada, lo que asegura la integridad del sistema. Debido a eso, el acceso a los recursos del sistema es lo que llamamos acceso privilegiado y solo puede ser realizado por el sistema operativo. El programa de usuario solicita que el sistema operativo proporcione ese acceso a través de un servicio bien definido. Entonces, asumiendo que el servicio se haya solicitado correctamente, se proporcionará dicho servicio (Burt K, s.f.).
 

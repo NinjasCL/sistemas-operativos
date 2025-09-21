@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Proyecto 1: Minishell :: Conceptos de Sistemas Operativos</title>
-    <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/projects/project1.html">
-    <link rel="prev" href="../ada-basics/process.html">
-    <link rel="next" href="project2.html">
+    <title>Proyecto 3: Servidor de Videojuegos :: Conceptos de Sistemas Operativos</title>
+    <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/projects/project3.html">
+    <link rel="prev" href="project2.html">
+    <link rel="next" href="../bibliography.html">
     <meta name="generator" content="Antora 3.1.10">
     <link rel="stylesheet" href="../_/css/site.css">
     <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
@@ -144,13 +144,13 @@
     <button class="nav-item-toggle"></button>
     <span class="nav-text">Proyectos</span>
 <ul class="nav-list">
-  <li class="nav-item is-current-page" data-depth="1">
+  <li class="nav-item" data-depth="1">
     <a class="nav-link" href="project1.html">Proyecto 1: Minishell</a>
   </li>
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="project2.html">Proyecto 2: Concurrencia</a>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <a class="nav-link" href="project3.html">Proyecto 3: Servidor de Videojuegos</a>
   </li>
 </ul>
@@ -187,247 +187,233 @@
   <ul>
     <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
     <li>Proyectos</li>
-    <li><a href="project1.html">Proyecto 1: Minishell</a></li>
+    <li><a href="project3.html">Proyecto 3: Servidor de Videojuegos</a></li>
   </ul>
 </nav>
-<div class="edit-this-page"><a href="file:///antora/./modules/projects/pages/project1.adoc">Edit this Page</a></div>
+<div class="edit-this-page"><a href="file:///antora/./modules/projects/pages/project3.adoc">Edit this Page</a></div>
 </div>
   <div class="content">
 <aside class="toc sidebar" data-title="Contenidos" data-levels="2">
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Proyecto 1: Minishell</h1>
+<h1 class="page">Proyecto 3: Servidor de Videojuegos</h1>
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Intérprete de Comandos o Mandatos (Minishell)</p>
+<p>La empresa <em>Waripolo Games</em> le ha contratado para elaborar el servidor de su próximo videojuego
+multijugador. El juego es el conocido <em>Cachipún</em>, pero con la variante <em>RPSLS</em>.
+El servidor consiste en un programa que utiliza Sockets TCP para recibir peticiones. El cliente
+debe conectarse al servidor y enviar instrucciones, mostrando el resultado recibido desde el servidor.</p>
 </div>
 <div class="paragraph">
-<p>En este proyecto individual donde se debe elaborar un programa que pueda ejecutar otros programas a través de una línea de comandos.</p>
-</div>
-<div class="paragraph">
-<p>Puede usar referencias y código de ejemplo disponible en internet. Pero debe ser correctamente referenciado el origen.</p>
+<p>Las reglas son las siguientes:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Plazo Recomendado: 4 semanas.</p>
+<p>(0) Piedra: Destroza tijeras y aplasta al lagarto.</p>
+</li>
+<li>
+<p>(1) Papel: Cubre la piedra y refuta a Spock.</p>
+</li>
+<li>
+<p>(2) Tijeras: Corta el papel y decapita al lagarto.</p>
+</li>
+<li>
+<p>(3) Lagarto: Come papel y envenena a Spock.</p>
+</li>
+<li>
+<p>(4) Spock: Vaporiza la piedra y destroza las tijeras.</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Los estados del resultado son los siguientes:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>(0) Empate: Se debe jugar de nuevo.</p>
+</li>
+<li>
+<p>(1) X: Pierde</p>
+</li>
+<li>
+<p>(2) O: Gana</p>
+</li>
+</ul>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Tabla de Reglas</caption>
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.6666%;">
+<col style="width: 16.667%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Piedra</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Papel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tijeras</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lagarto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spock</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Piedra</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Papel</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tijeras</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lagarto</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empate</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spock</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">O</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">X</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Empate</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>Juego de ejemplo: <a href="https://juanma1313.github.io/spock-game/" class="bare">https://juanma1313.github.io/spock-game/</a></p>
+</div>
+<div class="paragraph">
+<p>Las reglas se pueden poner en un diccionario con un arreglo de opciones.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-elixir hljs" data-lang="elixir">reglas = %{
+  0 =&gt; [0, 1, 2, 2, 1],
+  1 =&gt; [2, 0, 1, 1, 2],
+  2 =&gt; [1, 2, 0, 2, 1],
+  3 =&gt; [1, 2, 1, 0, 2],
+  4 =&gt; [2, 1, 2, 1, 0]
+}
+
+jugador1 = 1
+jugador2 = 0
+
+resultado = reglas
+            |&gt; Map.get(jugador1)
+            |&gt; Enum.at(jugador2)
+
+case resultado do
+  0 -&gt; "Empate"
+  1 -&gt; "Gana Jugador 2"
+  2 -&gt; "Gana Jugador 1"
+end
+|&gt; IO.inspect()</code></pre>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="características"><a class="anchor" href="#características"></a>Características</h2>
+<h2 id="ejemplo-de-funcionamiento"><a class="anchor" href="#ejemplo-de-funcionamiento"></a>Ejemplo de Funcionamiento</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>El programa debe permitir ejecutar comandos simples de UNIX como: <code>echo, ls, cp, mv, rm, mkdir</code>, entre otros. Para encontrar el programa debe buscar en las rutas disponibles en la variable de entorno <em>PATH</em>.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>El servidor se inicia y espera instrucciones en un puerto determinado (6502).</p>
+</li>
+<li>
+<p>El cliente se conecta al servidor como jugador 1.</p>
+</li>
+<li>
+<p>Un nuevo cliente se conecta al servidor como jugador 2.</p>
+</li>
+<li>
+<p>El servidor solicita al jugador 1 su movimiento (número del 1 al 5).</p>
+</li>
+<li>
+<p>El servidor solicita al jugador 2 su movimiento (número del 1 al 5).</p>
+</li>
+<li>
+<p>Si se ingresa un valor no válido, se considera empate y el servidor vuelve a pedir los movimientos de cada jugador.</p>
+</li>
+<li>
+<p>El servidor anuncia que jugador ganó según las reglas y solicita nuevamente los movimientos de cada jugador.</p>
+</li>
+</ol>
 </div>
-<div class="paragraph">
-<p>El programa debe permitir ejecutar comandos en secuencia (hasta 3 comandos) con el operador pipe <code>|</code>:</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">$ ./server &amp;
+$ ./client 127.0.0.1 6502
+$ &gt; servidor: Bienvenido jugador 1
+$ &gt; servidor: Esperando a jugador 2
+$ &gt; servidor: Jugador 2 conectado
+$ &gt; servidor: Ingrese su movimiento (1 - 5)
+$ &gt; 1
+$ &gt; servidor: Haz ganado.
+$ &gt; servidor: Ingrese su movimiento (1 - 5)
+$ &gt; 2
+$ &gt; servidor: Empate
+$ &gt; servidor: Ingrese su movimiento (1 - 5)
+$ &gt; 6
+$ &gt; servidor: Empate
+$ &gt; servidor: Ingrese su movimiento (1 - 5)
+$ &gt; 3
+$ &gt; servidor: Perdiste
+$ &gt; servidor: Ingrese su movimiento (1 - 5)
+$ &gt; servidor: Jugador 2 desconectado
+$ &gt; servidor: Esperando a jugador 2
+...</code></pre>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Ejemplo 1: <code>ls | wc -l</code></p>
-</li>
-<li>
-<p>Ejemplo 2: <code>ls | sort | wc -l</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>El programa debe permitir ejecutar comandos o secuencia de comandos en segundo plano background (El proceso padre no se bloquea esperando la finalización del proceso hijo) con el operador <code>&amp;</code>.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Ejemplo 1: <code>ls &amp;</code></p>
-</li>
-<li>
-<p>Ejemplo 2: <code>ls | sort | wc -l &amp;</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>El programa debe redireccionar el resultado de un comando a la salida estándar usando el operador (<code>&gt;</code>):</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Ejemplo: <code>ls &gt; archivos.txt</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>El programa debe redireccionar el resultado de un comando a la salida de error usando el operador (<code>2&gt;</code>);</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Ejemplo: <code>make install 2&gt; salida_error</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>El programa debe redireccionar el contenido desde la entrada estándar usando el operador (<code>&lt;</code>):</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Ejemplo: <code>cat | more &lt; archivo.txt</code></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>El programa debe implementar dos comandos internos (cd y pwd) que deben ser obtenidos de una ruta interna y no desde PATH.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>pwd: Permite mostrar el directorio actual de la minishell.</p>
-</li>
-<li>
-<p>cd: Permite cambiar el directorio actual de la minishell.</p>
-</li>
-<li>
-<p>cd (sin argumentos). Cambia el directorio a la ruta raíz de pwd.</p>
-</li>
-<li>
-<p>cd . cambia el directorio a la ruta retornada por pwd</p>
-</li>
-<li>
-<p>cd .. cambia el directorio a la ruta padre de la ruta actual retornada por pwd</p>
-</li>
-<li>
-<p>cd &lt;directorio&gt; cambia el directorio a la ruta suministrada en &lt;directorio&gt;.</p>
-</li>
-</ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="recomendaciones"><a class="anchor" href="#recomendaciones"></a>Recomendaciones</h2>
+<h2 id="requisitos"><a class="anchor" href="#requisitos"></a>Requisitos</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p>El desarrollo incremental de las funcionalidades facilitará la implementación de las características.</p>
+<p>Servidor y Cliente hecho en Elixir</p>
 </li>
 <li>
-<p>Primero partir con ejecutar los comandos simples como : ls, cp, mv, etc.</p>
+<p>Proyecto Individual.</p>
 </li>
 <li>
-<p>Luego añadir la capacidad de ejecutar los comandos simples en background como: ls &amp;.</p>
-</li>
-<li>
-<p>Siguiente es añadir la capacidad de ejecutar comandos en secuencia (pipes).</p>
-</li>
-<li>
-<p>A continuación implementar los comandos en secuencia con background.</p>
-</li>
-<li>
-<p>Añadir la capacidad de las redirecciones a las salida estándar, salida de error y entrada (&gt;, &lt;, 2&gt;).</p>
-</li>
-<li>
-<p>Añadir los comandos internos (cd, pwd).</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="supuestos"><a class="anchor" href="#supuestos"></a>Supuestos</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Para facilitar la implementación se puede asumir las siguientes características:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>Solamente se tendrá un solo ampersand (<code>&amp;</code>) al final de línea para los procesos en background y estará separado por espacios.</p>
-</li>
-<li>
-<p>Solamente se tendrá un solo operador de redirección <code>&gt;</code> por línea y estará separado por espacios (No existirá <code>&gt;&gt;</code>).</p>
-</li>
-<li>
-<p>Solamente se tendrá un solo operador de redirección <code>2&gt;</code> por línea y estará separado por espacios.</p>
-</li>
-<li>
-<p>Solamente se tendrá un solo operador de redirección <code>&lt;</code> por línea y estará separado por espacios.</p>
-</li>
-<li>
-<p>No es necesario considerar saltos de línea ni texto entre comillas. Solamente habrá una línea.</p>
-</li>
-<li>
-<p>El pipeline estará compuesto con máximo 3 pipes <code>|</code> y separado por espacios.</p>
-</li>
-<li>
-<p>La redirección de pipes puede ser utilizando archivos temporales (no es necesario usar la llamada de <a href="https://man7.org/linux/man-pages/man2/pipe.2.html">sistema pipe</a>, aunque su uso dará puntos extras).</p>
-</li>
-<li>
-<p>La implementación del parser de comandos puede ser utilizando condicionales (<code>ifs</code>) y separación de cadena de caracteres por palabras clave. No es necesario usar técnicas más avanzadas como regex o lenguajes formales.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="restricciones"><a class="anchor" href="#restricciones"></a>Restricciones</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Debe ser elaborado en uno de los siguientes lenguajes: C o Python.</p>
-</li>
-<li>
-<p>Debe ser elaborado de forma ordenada y lo más profesional posible. Pensando que es un proyecto para un cliente que les ha solicitado este programa.</p>
-</li>
-<li>
-<p>El entorno de ejecución será el sistema operativo Linux (Debian).</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="material-complementario"><a class="anchor" href="#material-complementario"></a>Material Complementario</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://codingchallenges.fyi/challenges/challenge-shell/" class="bare">https://codingchallenges.fyi/challenges/challenge-shell/</a></p>
-</li>
-<li>
-<p><a href="https://ehoneahobed.hashnode.dev/building-a-simple-shell-in-c-part-1" class="bare">https://ehoneahobed.hashnode.dev/building-a-simple-shell-in-c-part-1</a></p>
-</li>
-<li>
-<p><a href="https://www.cs.cornell.edu/courses/cs414/2004su/homework/shell/shell.html" class="bare">https://www.cs.cornell.edu/courses/cs414/2004su/homework/shell/shell.html</a></p>
-</li>
-<li>
-<p><a href="https://brennan.io/2015/01/16/write-a-shell-in-c/" class="bare">https://brennan.io/2015/01/16/write-a-shell-in-c/</a></p>
-</li>
-</ul>
-</div>
-<iframe width="100%" height="415" src="https://www.youtube.com/embed/55cohFUPZGY?si=vr5c-EzxIiUMtdn5" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-</div>
-<div class="sect1">
-<h2 id="referencias"><a class="anchor" href="#referencias"></a>Referencias</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Universidad Carlos III de Madrid. (s.f.). Sistemas Operativos: Prácticas. <a href="https://ocw.uc3m.es/mod/page/view.php?id=2795" class="bare">https://ocw.uc3m.es/mod/page/view.php?id=2795</a></p>
+<p>El cliente debe poder interactuar con cualquier servidor que implemente el protocolo.</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="../ada-basics/process.html">Gatillar Procesos</a></span>
-  <span class="next"><a href="project2.html">Proyecto 2: Concurrencia</a></span>
+  <span class="prev"><a href="project2.html">Proyecto 2: Concurrencia</a></span>
+  <span class="next"><a href="../bibliography.html">Bibliografía</a></span>
 </nav>
 </article>
   </div>
