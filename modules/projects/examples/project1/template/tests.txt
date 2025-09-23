@@ -1,0 +1,17 @@
+Debe pasar las siguientes pruebas
+
+1. echo Hola
+2. echo Hola & (debe mostrar el pid)
+3. echo Hola > hola.out (debe crear el archivo con el contenido Hola)
+4. echo Hola > hola.out & (debe mostrar el pid)
+5. ls -las
+6. ls -las | tail -n 2
+7. ls -las | grep .py | head -n 1
+8. cd . (directorio actual)
+9. pwd (mostrar el directorio actual)
+10. cd .. (directorio padre)
+11. pwd (mostrar el directorio padre)
+12. cd <directorio> (ir a un directorio específico)
+13. pwd (mostrar directorio específico)
+14. sumar 1 2 (comando interno)
+15. abc1234 (debe manejar el error de comando no encontrado)

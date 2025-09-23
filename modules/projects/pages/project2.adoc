@@ -11,19 +11,55 @@ La generación de este archivo debe tomar máximo 6 minutos más una desviación
 
 Ejemplo: 
 
+[source, bash]
+----
+$ mix input
+----
+
 [source, text]
 ----
 56983728372|José|Miguel|Carrera|Verdugo|jmc@husares.chile|1-9
 ----
 
-Luego se debe leer este archivo usando el proyecto base en _Ada_ y generar un archivo CSV ordenado
-de la siguiente forma: Nombre Completo, RUT (DNI), Email, Teléfono.
+Luego se debe leer este archivo usando el proyecto base en _Elixir_ y generar un archivo CSV ordenado
+de la siguiente forma: Nombre Completo, RUT (DNI), Email, Teléfono. Este output puede tomar cerca de 60 minutos.
 
 Ejemplo: 
 
+[source, bash]
+----
+$ mix output
+----
+
 [source, text]
 ----
+Nombre Completo, RUT (DNI), Email, Teléfono
 José Miguel Carrera Verdugo,1-9,jmc@husares.chile,56983728372
 ----
 
-Para ambos proyectos se debe utilizar las capacidades de concurrencia tanto de _Elixir_ como _Ada_.
+Para ambos proyectos se debe utilizar las capacidades de concurrencia de _Elixir_.
+
+== Tips
+
+- Para obtener los elementos de una posición específica usar: `Enum.at(elementos, posicion)`
+- Usar las opciones de `max_concurrency` y `timeout: :infinity`
+- Al finalizar usar un Log que anuncie el término del proceso.
+
+[source, elixir]
+----
+|> then(fn _ ->
+  Logger.info("Generation Complete")
+end)
+----
+
+== Entrega
+
+Se debe elaborar un script en Python que lea el archivo _input.txt_  y genere el mismo _output.csv_ de forma secuencial.
+Evaluar ¿Cúanto tiempo demora en comparación?. ¿Qué dificultades se encontraron?
+Realizar un informe comparativo sobre la importancia de la concurrencia
+y como un lenguaje de programación concurrente ayuda en resolver problemas.
+
+. Elaborar creador del archivo input.txt
+. Elaborar creador del archivo output.csv en Elixir con Concurrencia.
+. Elaborar creador del archivo output.csv en Python sin Concurrencia (Secuencial).
+. Elaborar informe y presentación en video comparando ambas soluciones y presentando los descubrimientos.
