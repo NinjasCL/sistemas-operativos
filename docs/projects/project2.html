@@ -198,8 +198,10 @@
 </aside>
 <article class="doc">
 <h1 class="page">Proyecto 2: Concurrencia</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
-<p>Utilizando el proyecto base en <em>Elixir</em> se debe generar un archivo de un millón de registros (1.000.000)
+<p>Utilizando el <a href="https://github.com/NinjasCL/sistemas-operativos/tree/main/modules/projects/examples/project2/template">proyecto base en Elixir</a> (revisar github) se debe generar un archivo de un millón de registros (1.000.000)
 con datos aleatorios separados por un símbolo <code>|</code>.</p>
 </div>
 <div class="paragraph">
@@ -216,23 +218,88 @@ con datos aleatorios separados por un símbolo <code>|</code>.</p>
 </div>
 <div class="listingblock">
 <div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ mix input</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
 <pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">56983728372|José|Miguel|Carrera|Verdugo|jmc@husares.chile|1-9</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Luego se debe leer este archivo usando el proyecto base en <em>Ada</em> y generar un archivo CSV ordenado
-de la siguiente forma: Nombre Completo, RUT (DNI), Email, Teléfono.</p>
+<p>Luego se debe leer este archivo usando el proyecto base en <em>Elixir</em> y generar un archivo CSV ordenado
+de la siguiente forma: Nombre Completo, RUT (DNI), Email, Teléfono. Este output puede tomar cerca de 60 minutos.</p>
 </div>
 <div class="paragraph">
 <p>Ejemplo:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">José Miguel Carrera Verdugo,1-9,jmc@husares.chile,56983728372</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ mix output</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-text hljs" data-lang="text">Nombre Completo, RUT (DNI), Email, Teléfono
+José Miguel Carrera Verdugo,1-9,jmc@husares.chile,56983728372</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Para ambos proyectos se debe utilizar las capacidades de concurrencia tanto de <em>Elixir</em> como <em>Ada</em>.</p>
+<p>Para ambas tareas se debe utilizar las capacidades de concurrencia de <em>Elixir</em>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tips"><a class="anchor" href="#tips"></a>Tips</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>Para obtener los elementos de una posición específica usar: <code>Enum.at(elementos, posicion)</code></p>
+</li>
+<li>
+<p>Usar las opciones de <code>max_concurrency</code> y <code>timeout: :infinity</code></p>
+</li>
+<li>
+<p>Al finalizar usar un Log que anuncie el término del proceso.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-elixir hljs" data-lang="elixir">|&gt; then(fn _ -&gt;
+  Logger.info("Generation Complete")
+end)</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="evaluación"><a class="anchor" href="#evaluación"></a>Evaluación</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Se debe elaborar un script en Python que lea el archivo <em>input.txt</em>  y genere el archivo <em>output.py.csv</em> de forma secuencial.
+Evaluar ¿Cúanto tiempo demora en comparación?. ¿Qué dificultades se encontraron?. ¿Qué diferencias hay con el archivo generado con Elixir y Concurrencia?.
+Realizar un informe comparativo sobre la importancia de la concurrencia
+y como un lenguaje de programación concurrente ayuda en resolver problemas de alta escala.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Elaborar creador del archivo input.txt en Elixir con Concurrencia.</p>
+</li>
+<li>
+<p>Elaborar creador del archivo output.csv en Elixir con Concurrencia.</p>
+</li>
+<li>
+<p>Elaborar creador del archivo output.py.csv en Python sin Concurrencia (Secuencial).</p>
+</li>
+<li>
+<p>Elaborar informe y presentación en video comparando ambas soluciones y presentando los descubrimientos.</p>
+</li>
+</ol>
+</div>
+</div>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="project1.html">Proyecto 1: Minishell</a></span>

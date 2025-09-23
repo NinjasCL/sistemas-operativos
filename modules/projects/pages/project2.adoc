@@ -1,6 +1,6 @@
 = Proyecto 2: Concurrencia
 
-Utilizando el proyecto base en _Elixir_ se debe generar un archivo de un millón de registros (1.000.000)
+Utilizando el https://github.com/NinjasCL/sistemas-operativos/tree/main/modules/projects/examples/project2/template[proyecto base en Elixir] (revisar github) se debe generar un archivo de un millón de registros (1.000.000)
 con datos aleatorios separados por un símbolo `|`. 
 
 Los datos son:
@@ -37,7 +37,7 @@ Nombre Completo, RUT (DNI), Email, Teléfono
 José Miguel Carrera Verdugo,1-9,jmc@husares.chile,56983728372
 ----
 
-Para ambos proyectos se debe utilizar las capacidades de concurrencia de _Elixir_.
+Para ambas tareas se debe utilizar las capacidades de concurrencia de _Elixir_.
 
 == Tips
 
@@ -52,14 +52,14 @@ Para ambos proyectos se debe utilizar las capacidades de concurrencia de _Elixir
 end)
 ----
 
-== Entrega
+== Evaluación
 
-Se debe elaborar un script en Python que lea el archivo _input.txt_  y genere el mismo _output.csv_ de forma secuencial.
-Evaluar ¿Cúanto tiempo demora en comparación?. ¿Qué dificultades se encontraron?
+Se debe elaborar un script en Python que lea el archivo _input.txt_  y genere el archivo _output.py.csv_ de forma secuencial.
+Evaluar ¿Cúanto tiempo demora en comparación?. ¿Qué dificultades se encontraron?. ¿Qué diferencias hay con el archivo generado con Elixir y Concurrencia?.
 Realizar un informe comparativo sobre la importancia de la concurrencia
-y como un lenguaje de programación concurrente ayuda en resolver problemas.
+y como un lenguaje de programación concurrente ayuda en resolver problemas de alta escala.
 
-. Elaborar creador del archivo input.txt
+. Elaborar creador del archivo input.txt en Elixir con Concurrencia.
 . Elaborar creador del archivo output.csv en Elixir con Concurrencia.
-. Elaborar creador del archivo output.csv en Python sin Concurrencia (Secuencial).
+. Elaborar creador del archivo output.py.csv en Python sin Concurrencia (Secuencial).
 . Elaborar informe y presentación en video comparando ambas soluciones y presentando los descubrimientos.
