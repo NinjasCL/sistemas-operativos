@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Concurrencia y Exclusión Mutua :: Conceptos de Sistemas Operativos</title>
+    <title>Concurrencia :: Conceptos de Sistemas Operativos</title>
     <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/sync/concurrency.html">
     <link rel="prev" href="../kernels-process/process.html">
     <link rel="next" href="../ada-basics/about.html">
@@ -100,7 +100,7 @@
     <span class="nav-text">Sincronización</span>
 <ul class="nav-list">
   <li class="nav-item is-current-page" data-depth="1">
-    <a class="nav-link" href="concurrency.html">Concurrencia y Exclusión Mutua</a>
+    <a class="nav-link" href="concurrency.html">Concurrencia</a>
   </li>
 </ul>
   </li>
@@ -187,7 +187,7 @@
   <ul>
     <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
     <li>Sincronización</li>
-    <li><a href="concurrency.html">Concurrencia y Exclusión Mutua</a></li>
+    <li><a href="concurrency.html">Concurrencia</a></li>
   </ul>
 </nav>
 <div class="edit-this-page"><a href="file:///antora/./modules/sync/pages/concurrency.adoc">Edit this Page</a></div>
@@ -197,8 +197,444 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Concurrencia y Exclusión Mutua</h1>
+<h1 class="page">Concurrencia</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>El concepto de concurrencia fue considerado en las computadoras cuando los procesadores obtuvieron la capacidad de multiprogramación.
+La multiprogramación es una técnica de los sistemas operativos que permite que múltiples programas residan en la memoria principal y
+sean ejecutados por una única CPU de manera concurrente, alternándose en su uso a través de cambios de contexto.</p>
+</div>
+<div class="paragraph">
+<p>En la actualidad la concurrencia es tremendamente vigente y debe ser considerada para elaborar
+programas distribuidos, tolerantes a fallos, escalables y en tiempo real.
+El hardware actual tiene capacidades de paralelismo, la industria de procesadores añade más núcleos cada vez.
+Aumentando la velocidad de procesamiento cada año y las tecnologías, sobre todo los lenguajes de programación
+deben ser capaces de solucionar problemas de concurrencia, o se arriesgan a quedar obsoletos. La concurrencia
+es un problema que aparece en multitud de casos fuera de los sistemas operativos, como sistemas multi usuarios,
+sistemas de control de telecomunicaciones y en general sistemas que evolucionan en el tiempo.</p>
+</div>
+<div class="paragraph">
+<p>La programación con concurrencia es difícil. La concurrencia puede hacer que los programas sean más
+rápidos que los secuenciales, pero tener múltiples hilos que leen y actualizan variables
+compartidas simultáneamente y se sincronizan entre sí hace que los programas sean más complicados que
+aquellos donde solo ocurre una cosa a la vez.</p>
+</div>
+<div class="paragraph">
+<p>¿Por qué los programas concurrentes son más complicados que los secuenciales? Hay, al menos, dos razones:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>La ejecución de un programa secuencial suele ser determinista: si ejecutas el programa dos veces con
+la misma entrada, se producirá la misma salida. Los errores son reproducibles y, por lo tanto,
+fáciles de detectar, por ejemplo, mediante la instrumentación del programa. Estos se llaman <a href="https://es.wikipedia.org/wiki/Heisenbug#cite_note-:0-2">Bohrbugs</a><sup class="footnote">[<a id="_footnoteref_1" class="footnote" href="#_footnotedef_1" title="View footnote.">1</a>]</sup>.
+Sin embargo, la salida de ejecutar programas concurrentes depende de cómo se entrelacen las ejecuciones
+de los diferentes hilos. Algunos errores pueden ocurrir solo ocasionalmente y pueden no ocurrir nunca
+cuando el programa está instrumentado para encontrarlos. A estos los llamamos <a href="https://es.wikipedia.org/wiki/Heisenbug">Heisenbugs</a><sup class="footnote">[<a id="_footnoteref_2" class="footnote" href="#_footnotedef_2" title="View footnote.">2</a>]</sup>: la sobrecarga
+causada por la instrumentación provoca cambios en el tiempo que pueden hacer que estos errores sean menos
+propensos a causar problemas.</p>
+</li>
+<li>
+<p>En un programa secuencial, cada instrucción y cada función pueden considerarse atómicas (indivisibles)
+porque no hay otra actividad que interfiera con su ejecución. Aunque una instrucción o función pueda
+compilarse en múltiples instrucciones de máquina, se ejecutan consecutivamente hasta completarse.
+No ocurre así con un programa concurrente, donde otros hilos pueden actualizar ubicaciones de memoria
+mientras una instrucción o función se está ejecutando.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>La falta de determinismo y atomicidad en los programas concurrentes hace que no solo sean difíciles de
+entender, sino también difíciles de probar. Ejecutar la misma prueba de código concurrente dos veces
+probablemente producirá dos resultados diferentes. Más problemático aún, una prueba puede activar un
+error solo en ciertas ejecuciones "afortunadas". Debido a la naturaleza probabilística del código concurrente,
+algunos errores pueden ser muy poco probables de activarse incluso al ejecutar una prueba millones de veces.
+Y, aun si se activa un error, la fuente del mismo puede ser difícil de encontrar porque la ejecución
+incorrecta es difícil de reproducir.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="qué-es-el-determinismo-y-la-atomicidad"><a class="anchor" href="#qué-es-el-determinismo-y-la-atomicidad"></a>¿Qué es el determinismo y la atomicidad?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para profundizar un poco en lo que es determinismo y atomicidad debemos recurrir a las matemáticas
+discretas, en específico a la lógica proposicional.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Una proposición es una secuencia de afirmaciones, la última afirmación se llama conclusión y el resto se llama premisas.</p>
+</li>
+<li>
+<p>Una proposición es válida siempre y cuando la conclusión sea verdad y todas sus premisas sean verdaderas.</p>
+</li>
+<li>
+<p>Una proposición es inválida si su conclusión o alguna de sus premisas son falsas. Incluso esto puede pasar si todas sus premisas son verdad y solamente su conclusión es falsa.</p>
+</li>
+<li>
+<p>Una proposición es sólida y válida si todas sus premisas incluyendo la conclusión son verdaderas.</p>
+</li>
+<li>
+<p>Si los componentes de una proposición no pueden ser determinados en verdadero o falso, entonces no se puede deteminar la validez de la proposición. Ya que la validez describe la relación entre las premisas y la conclusión de una proposición.</p>
+</li>
+<li>
+<p>Una prueba de una afirmación es una proposición sólida cuya conclusión es la afirmación.</p>
+</li>
+<li>
+<p>Una afirmación es una frase declarativa que puede ser verdadera o falsa.</p>
+</li>
+<li>
+<p>Una afirmación puede ser molecular (puede subdividirse en más afirmaciones) o atómica (no puede subdividirse).</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="ejercicio-1-los-trolls-del-bosque"><a class="anchor" href="#ejercicio-1-los-trolls-del-bosque"></a>Ejercicio 1: Los trolls del bosque</h3>
+<div class="paragraph">
+<p>Estas en una aventura por un bosque encantado y encuentras tres trolls que bloquean el paso por un puente.
+Cada uno es un caballero (solo dice la verdad) o un bribón (solo dice mentiras).
+Los trolls no te dejarán pasar a menos que determines correctamente quien es caballero y quien es bribón.
+Para lo cual te dicen las siguientes proposiciones:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Troll 1: Si soy un bribón, entonces hay exactamente dos caballeros.</p>
+</li>
+<li>
+<p>Troll 2: El primer troll está mintiendo.</p>
+</li>
+<li>
+<p>Troll 3: O todos somos bribones o al menos uno es un caballero.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Preguntas</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>¿Qué troll es caballero o bribón?<sup class="footnote">[<a id="_footnoteref_3" class="footnote" href="#_footnotedef_3" title="View footnote.">3</a>]</sup></p>
+</li>
+<li>
+<p>¿Qué ocurre si sabemos que el primer troll es un bribón?.<sup class="footnote">[<a id="_footnoteref_4" class="footnote" href="#_footnotedef_4" title="View footnote.">4</a>]</sup></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ejercicio-2-el-postre"><a class="anchor" href="#ejercicio-2-el-postre"></a>Ejercicio 2: El postre</h3>
+<div class="paragraph">
+<p><strong>Proposición 1</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Si Eliana come todas sus verduras, ella podrá comer postre.</p>
+</li>
+<li>
+<p>Eliana comió todas sus verduras</p>
+</li>
+<li>
+<p>Por lo tanto Eliana puede comer postre.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Proposición 2</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Ernestina debe comer todas sus verduras para poder comer postre.</p>
+</li>
+<li>
+<p>Ernestina comió todas sus verduras.</p>
+</li>
+<li>
+<p>Por lo tanto Ernestina puede comer postre.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Preguntas</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>¿Cuál proposición es válida y cuál es inválida?, ¿Por qué?.<sup class="footnote">[<a id="_footnoteref_5" class="footnote" href="#_footnotedef_5" title="View footnote.">5</a>]</sup></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ejercicio-3-afirmación-o-no"><a class="anchor" href="#ejercicio-3-afirmación-o-no"></a>Ejercicio 3: ¿Afirmación o no?</h3>
+<div class="paragraph">
+<p>Deteminar si son afirmaciones o no:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>La luna esta hecha de queso.</p>
+</li>
+<li>
+<p><span class="steminline"> <svg style="vertical-align: -0.186ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="10.308ex" height="1.715ex" role="img" focusable="false" viewBox="0 -676 4556 758"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path></g><g data-mml-node="mo" transform="translate(722.2,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="mn" transform="translate(1722.4,0)"><path data-c="37" d="M55 458Q56 460 72 567L88 674Q88 676 108 676H128V672Q128 662 143 655T195 646T364 644H485V605L417 512Q408 500 387 472T360 435T339 403T319 367T305 330T292 284T284 230T278 162T275 80Q275 66 275 52T274 28V19Q270 2 255 -10T221 -22Q210 -22 200 -19T179 0T168 40Q168 198 265 368Q285 400 349 489L395 552H302Q128 552 119 546Q113 543 108 522T98 479L95 458V455H55V458Z"></path></g><g data-mml-node="mo" transform="translate(2500.2,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mn" transform="translate(3556,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g></g></svg> </span>.</p>
+</li>
+<li>
+<p>¿Te gustaría una sopaipilla?.</p>
+</li>
+<li>
+<p>La suma de dos cuadrados.</p>
+</li>
+<li>
+<p>¡Haz la tarea!.</p>
+</li>
+<li>
+<p><span class="steminline"> <svg style="vertical-align: -0.186ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="10.471ex" height="1.692ex" role="img" focusable="false" viewBox="0 -666 4628 748"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mn"><path data-c="33" d="M127 463Q100 463 85 480T69 524Q69 579 117 622T233 665Q268 665 277 664Q351 652 390 611T430 522Q430 470 396 421T302 350L299 348Q299 347 308 345T337 336T375 315Q457 262 457 175Q457 96 395 37T238 -22Q158 -22 100 21T42 130Q42 158 60 175T105 193Q133 193 151 175T169 130Q169 119 166 110T159 94T148 82T136 74T126 70T118 67L114 66Q165 21 238 21Q293 21 321 74Q338 107 338 175V195Q338 290 274 322Q259 328 213 329L171 330L168 332Q166 335 166 348Q166 366 174 366Q202 366 232 371Q266 376 294 413T322 525V533Q322 590 287 612Q265 626 240 626Q208 626 181 615T143 592T132 580H135Q138 579 143 578T153 573T165 566T175 555T183 540T186 520Q186 498 172 481T127 463Z"></path></g><g data-mml-node="mo" transform="translate(722.2,0)"><path data-c="2B" d="M56 237T56 250T70 270H369V420L370 570Q380 583 389 583Q402 583 409 568V270H707Q722 262 722 250T707 230H409V-68Q401 -82 391 -82H389H387Q375 -82 369 -68V230H70Q56 237 56 250Z"></path></g><g data-mml-node="mi" transform="translate(1722.4,0)"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g><g data-mml-node="mo" transform="translate(2572.2,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mn" transform="translate(3628,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z" transform="translate(500,0)"></path></g></g></g></g></svg> </span><sup class="footnote">[<a id="_footnoteref_6" class="footnote" href="#_footnotedef_6" title="View footnote.">6</a>]</sup></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="qué-es-la-concurrencia"><a class="anchor" href="#qué-es-la-concurrencia"></a>¿Qué es la concurrencia?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>En el mundo se puede ver distintas actividades sucediendo al mismo tiempo. Por ejemplo en una plaza
+puede haber personas caminando, perros ladrando, aves volando y cantando, autos tocando su bocina, entre muchas cosas.
+Todas estas actividades suceden en paralelo. En el mundo real las palabras como simultáneo, paralelo, concurrente
+podrían ser sinónimos, pero en informática se debe ser más preciso y se debe definir la diferencia entre paralelo y concurrente.</p>
+</div>
+<div class="paragraph">
+<p>Si solamente tuvieramos un procesador de un solo núcleo, no se puede ejecutar programas en paralelo.
+Esto es por que la CPU solo puede hacer una tarea a la vez. Pero se puede ejecutar programas concurrentes
+en una computadora con procesador mono núcleo. El sistema operativo permite agendar porciones de tiempo
+en el procesador a diferentes tareas, manteniendo la ilusión de que distintas tareas se ejecutan en paralelo.</p>
+</div>
+<div class="paragraph">
+<p>Tomemos por ejemplo el caso de la plaza con personas paseando perros.
+Cada persona y cada perro puede ser un hilo (thread) (tambien conocido como procesos ligeros en la antigüedad)
+que ejecutará tareas específicas. Las personas pueden caminar y los perros pueden ladrar.</p>
+</div>
+<div class="paragraph">
+<p>El siguiente código de <em>Erlang</em> demuestra la creación de hilos con la función <code>spawn</code>, la cual devuelve
+un identificador (pid) que puede ser usado en el futuro para interactuar con el hilo.
+Este hilo es manejado por la máquina virtual de <em>Erlang</em> la cual crea el hilo y comienza a
+evaluar el código especificado por los argumentos. En este caso se
+llama al modulo <code>person</code> con la función <code>init</code> y el argumento "Juan".</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-erlang hljs" data-lang="erlang">-module(plaza).
+-export([start/0]).
 
+start() -&gt;
+  Juan = spawn(person, init, ["Juan"]),
+  Cachupin = spawn(dog, init, ["Cachupin", Juan])</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Por lo tanto la principal diferencia entre paralelismo y concurrencia es que cuando algo es ejecutado en paralelo,
+se tienen garantías de que hay varias tareas procesandose al mismo tiempo, en varios procesadores o núcleos por separado.
+Mientras que cuando hay algo concurrente, se puede ejecutar en un solo procesador, pero no hay garantías (determinismo) de que
+las tareas sean evaluadas en el mismo orden, al mismo tiempo y demoren lo mismo o den el mismo resultado para los mismos parámetros.</p>
+</div>
+<div class="paragraph">
+<p>Puede parecer extraño requerir que los programadores asuman que el procesador virtual de un hilo
+funcione a una velocidad impredecible y que cualquier entrelazado (interleaving)
+con otros hilos suceda de manera no determinista.</p>
+</div>
+<div class="paragraph">
+<p>El modelo de programación con hilos adopta esta suposición como una forma de guiar a los programadores
+al razonar sobre la corrección. En lugar de asumir que un hilo se ejecuta a la misma velocidad que
+otro (o más rápido o más lento) e intentar escribir programas que coordinen los hilos
+basándose en su velocidad relativa de ejecución, los programas multihilo (concurrentes) no deben hacer
+suposiciones sobre el comportamiento del planificador de hilos (<em>Scheduler</em>). A su vez, las decisiones del kernel
+para asignar un hilo a un procesador y para interrumpirlo en favor de otro hilo pueden tomarse
+sin preocuparse de si afectan la corrección del programa.</p>
+</div>
+<div class="paragraph">
+<p>La variabilidad en la velocidad de ejecución también ocurre durante el funcionamiento normal. Acceder a la
+memoria puede detener el procesador
+durante cientos o miles de ciclos si ocurre un fallo de caché. Otros factores incluyen la frecuencia con
+la que el planificador interrumpe el hilo, la cantidad de procesadores físicos presentes en una máquina,
+el tamaño de las cachés, la velocidad de la memoria, cómo el firmware de ahorro de energía ajusta las
+velocidades de reloj de los procesadores, qué mensajes de red llegan o qué entrada se recibe del usuario.</p>
+</div>
+<div class="paragraph">
+<p>Las velocidades de ejecución de los diferentes hilos de un programa son difíciles de predecir, pueden
+variar en hardware diferente e incluso pueden variar de una ejecución a otra en el mismo hardware.</p>
+</div>
+<div class="paragraph">
+<p>Como resultado, debemos coordinar las acciones de los hilos mediante sincronización
+explícita en lugar de intentar razonar sobre su velocidad relativa.</p>
+</div>
+<div class="sect2">
+<h3 id="beneficios-de-la-concurrencia"><a class="anchor" href="#beneficios-de-la-concurrencia"></a>Beneficios de la Concurrencia</h3>
+<div class="paragraph">
+<p>La programación concurrente puede usarse para mejorar el rendimiento, crear sistemas escalables y
+tolerantes a fallos, y para escribir programas claros y comprensibles que controlen aplicaciones del mundo real.
+Permite aprovechar mejor los procesadores multinúcleo, ya que múltiples tareas pueden ejecutarse
+simultáneamente, aumentando la velocidad de ejecución.</p>
+</div>
+<div class="paragraph">
+<p>También facilita la solución de problemas que son inherentemente concurrentes, como los sistemas de
+control con múltiples sensores y procesos actuando simultáneamente.</p>
+</div>
+<div class="paragraph">
+<p>Además, la concurrencia mejora la utilización de recursos al evitar tiempos de inactividad mientras
+otras tareas esperan, contribuye a la capacidad de respuesta de las aplicaciones, y es fundamental para
+diseñar sistemas que deben manejar múltiples solicitudes o procesos a la vez. Por estas razones,
+la programación concurrente es crucial para el desarrollo de software moderno, especialmente en hardware
+con múltiples núcleos y en sistemas distribuidos.</p>
+</div>
+<div class="sect3">
+<h4 id="rendimiento"><a class="anchor" href="#rendimiento"></a>Rendimiento</h4>
+<div class="paragraph">
+<p>Imagina que tienes dos tareas: A, que tarda diez segundos en realizarse, y B, que tarda quince segundos.
+En una sola CPU haciendo ambas, A y B tardarán veinticinco segundos. En una computadora con dos CPUs que
+operan independientemente,
+hacer A y B tomará solo quince segundos. Para lograr esta mejora en el rendimiento, debemos escribir un
+programa concurrente.</p>
+</div>
+<div class="paragraph">
+<p>Hasta hace poco, las computadoras paralelas eran raras y costosas, pero hoy las computadoras multicore
+son comunes. Un procesador de alta gama tiene sesenta y cuatro núcleos, y se espera que el número de núcleos
+por chip aumente de forma constante en el futuro previsible. Si tienes un problema adecuado y un hardware
+que lo permita, la concurrencia puede aprovechar estos múltiples núcleos para ejecutar tareas simultáneamente,
+mejorando significativamente el desempeño y reduciendo el tiempo total de ejecución en comparación con los
+programas secuenciales que usan un solo núcleo.</p>
+</div>
+<div class="paragraph">
+<p>Esta mejora en el rendimiento es una de las principales razones para utilizar la programación concurrente,
+especialmente en el contexto del hardware moderno multicore, donde aprovechar al máximo los recursos
+disponibles es esencial para obtener eficiencia y velocidad.</p>
+</div>
+<div class="paragraph">
+<p>Una computadora con sesenta y cuatro núcleos podría hacer que tu programa sea sesenta y cuatro
+veces más rápido al ejecutarse en ella, pero solo si escribes un programa concurrente.</p>
+</div>
+<div class="paragraph">
+<p>Uno de los problemas más urgentes en la industria informática es la dificultad de paralelizar
+código secuencial legado para que pueda ejecutarse en una computadora multicore. Sin embargo, no existe
+tal problema en Erlang. Los programas Erlang escritos hace veinte años para una máquina secuencial
+simplemente se ejecutan más rápido cuando los corremos en multicore modernos.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="escalabilidad"><a class="anchor" href="#escalabilidad"></a>Escalabilidad</h4>
+<div class="paragraph">
+<p>Los programas concurrentes están formados por pequeños procesos independientes. Debido a esto,
+podemos escalar fácilmente el sistema aumentando el número de procesos y agregando más CPUs.
+En tiempo de ejecución, la máquina virtual de
+Erlang distribuye automáticamente la ejecución de procesos entre las CPUs disponibles.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="tolerancia-a-fallos"><a class="anchor" href="#tolerancia-a-fallos"></a>Tolerancia a fallos</h4>
+<div class="paragraph">
+<p>La tolerancia a fallos es similar a la escalabilidad. Las claves para la tolerancia a fallos son la
+independencia y la redundancia del hardware. Los programas en Erlang están compuestos por muchos
+pequeños procesos independientes. Los errores en un proceso no pueden causar accidentalmente que otro
+proceso falle. Para protegerse contra la falla de una computadora completa (o centro de datos), se necesita
+detectar fallas en computadoras remotas. Tanto la independencia de los procesos como la detección remota de
+fallos están integradas en la máquina virtual de Erlang.</p>
+</div>
+<div class="paragraph">
+<p>Erlang fue diseñado para construir sistemas de telecomunicaciones tolerantes a fallos, pero la misma
+tecnología puede aplicarse igualmente para construir sistemas web escalables y tolerantes a fallos o
+servicios en la nube.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="claridad"><a class="anchor" href="#claridad"></a>Claridad</h4>
+<div class="paragraph">
+<p>En el mundo real las cosas suceden en paralelo, pero en la mayoría de los lenguajes de programación
+las cosas suceden de manera secuencial. La discrepancia entre el paralelismo del mundo real y la
+secuencialidad de nuestros lenguajes de programación hace que escribir problemas de control del
+mundo real en un lenguaje secuencial sea artificialmente difícil.</p>
+</div>
+<div class="paragraph">
+<p>En Erlang, podemos mapear el paralelismo del mundo real sobre la concurrencia de Erlang de manera
+directa. Esto resulta en un código claro y fácil de entender.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="programas-concurrentes"><a class="anchor" href="#programas-concurrentes"></a>Programas Concurrentes</h3>
+<div class="paragraph">
+<p>Un programa concurrente es un programa escrito en un lenguaje de programación concurrente.
+Escribimos programas concurrentes por razones de rendimiento, escalabilidad o tolerancia a fallos.</p>
+</div>
+<div class="paragraph">
+<p>Un lenguaje de programación concurrente es un lenguaje que tiene construcciones explícitas para
+escribir programas concurrentes. Estas construcciones son una parte integral del lenguaje y se
+comportan igual en todos los sistemas operativos.</p>
+</div>
+<div class="paragraph">
+<p>Una computadora paralela es una computadora que tiene varias unidades de procesamiento (CPUs o núcleos)
+que funcionan al mismo tiempo.</p>
+</div>
+<div class="paragraph">
+<p>Habiendo escrito un programa concurrente, podemos ejecutarlo en una computadora paralela.
+Podemos ejecutarlo en una computadora multicore, en un conjunto de computadoras en red o en la nube.</p>
+</div>
+<div class="paragraph">
+<p>En una computadora multicore, el sistema operativo podría decidir apagar un núcleo para ahorrar energía.
+En la nube, una computación podría ser suspendida y trasladada a una nueva computadora. Estas son cosas
+fuera de nuestro control.</p>
+</div>
+<div class="paragraph">
+<p>Hemos visto la diferencia entre un programa concurrente y una computadora paralela.
+La concurrencia tiene que ver con la estructura del software; el paralelismo
+tiene que ver con el hardware.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="referencias"><a class="anchor" href="#referencias"></a>Referencias</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://harmony.cs.cornell.edu/book/" class="bare">https://harmony.cs.cornell.edu/book/</a></p>
+</li>
+<li>
+<p><a href="https://discrete.openmathbooks.org/dmoi4.html" class="bare">https://discrete.openmathbooks.org/dmoi4.html</a></p>
+</li>
+<li>
+<p><a href="https://es.wikipedia.org/wiki/Multiprogramaci%C3%B3n" class="bare">https://es.wikipedia.org/wiki/Multiprogramaci%C3%B3n</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<hr>
+<div class="footnote" id="_footnotedef_1">
+<a href="#_footnoteref_1">1</a>. Niels Henrik David Bohr, fue un físico danés que contribuyó en la comprensión del átomo y la mecánica cuántica. La denominación incluye como parte inicial del nombre al átomo de Bohr porque representa un error sólido y fácilmente detectable.
+</div>
+<div class="footnote" id="_footnotedef_2">
+<a href="#_footnoteref_2">2</a>. Werner Karl Heisenberg , el físico que dedujo el efecto de observación de la mecánica cuántica, según el cual el mero hecho de observar un sistema de una manera determinada altera el estado de este.
+</div>
+<div class="footnote" id="_footnotedef_3">
+<a href="#_footnoteref_3">3</a>. Troll 1: Caballero, Troll 2: Bribón, Troll 3: Caballero
+</div>
+<div class="footnote" id="_footnotedef_4">
+<a href="#_footnoteref_4">4</a>. Troll 1: Bribón, Troll 2: Caballero, Troll 3: Caballero, Pero esto hace que la afirmación de Troll 1 sea verdadera y no puede ser por que el troll es bribón, por lo que este caso no es válido.
+</div>
+<div class="footnote" id="_footnotedef_5">
+<a href="#_footnoteref_5">5</a>. La primera proposición es válida, la segunda no lo es. Ya que no sabemos que otras condiciones tiene Ernestina para conseguir comer postre, por ejemplo que deba hacer su tarea o limpiar su cuarto. Lo que hace que la proposición no se pueda determinar por falta de información.
+</div>
+<div class="footnote" id="_footnotedef_6">
+<a href="#_footnoteref_6">6</a>. No es una afirmación por que tiene una variable, dependiendo del valor de <span class="steminline"> <svg style="vertical-align: -0.025ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="1.294ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 572 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g></g></g></g></svg> </span> la afirmación puede ser verdadera o falsa.
+</div>
+</div>
 <nav class="pagination">
   <span class="prev"><a href="../kernels-process/process.html">Procesos</a></span>
   <span class="next"><a href="../ada-basics/about.html">Introducción al lenguaje Ada</a></span>

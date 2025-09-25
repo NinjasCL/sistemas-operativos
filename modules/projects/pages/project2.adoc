@@ -63,3 +63,10 @@ y como un lenguaje de programación concurrente ayuda en resolver problemas de a
 . Elaborar creador del archivo output.csv en Elixir con Concurrencia.
 . Elaborar creador del archivo output.py.csv en Python sin Concurrencia (Secuencial).
 . Elaborar informe y presentación en video comparando ambas soluciones y presentando los descubrimientos.
+
+== Objetivos de Aprendizaje
+
+Al realizar este proyecto el alumno podrá profundizar en la programación 
+de sistemas concurrentes y abordar problemas de alta escala.
+
+Permitirá conocer las diferencias entre programación secuencial y programación concurrente.

@@ -89,3 +89,8 @@ Para facilitar la implementación se puede asumir las siguientes característica
 == Referencias
 
 - Universidad Carlos III de Madrid. (s.f.). Sistemas Operativos: Prácticas. https://ocw.uc3m.es/mod/page/view.php?id=2795
+
+== Objetivos de Aprendizaje
+
+Al elaborar este proyecto el alumno podrá aprender conceptos
+como llamadas al sistema, creación de subprocesos y uso de línea de comandos.

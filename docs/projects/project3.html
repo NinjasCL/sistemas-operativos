@@ -100,7 +100,7 @@
     <span class="nav-text">Sincronización</span>
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../sync/concurrency.html">Concurrencia y Exclusión Mutua</a>
+    <a class="nav-link" href="../sync/concurrency.html">Concurrencia</a>
   </li>
 </ul>
   </li>
@@ -321,17 +321,17 @@ debe conectarse al servidor y enviar instrucciones, mostrando el resultado recib
   4 =&gt; [2, 1, 2, 1, 0]
 }
 
-jugador1 = 1
-jugador2 = 0
+jugador1 = 0
+jugador2 = 1
 
 resultado = reglas
-            |&gt; Map.get(jugador1)
-            |&gt; Enum.at(jugador2)
+            |&gt; Map.get(jugador2)
+            |&gt; Enum.at(jugador1)
 
 case resultado do
   0 -&gt; "Empate"
-  1 -&gt; "Gana Jugador 2"
-  2 -&gt; "Gana Jugador 1"
+  1 -&gt; "Gana Jugador 1"
+  2 -&gt; "Gana Jugador 2"
 end
 |&gt; IO.inspect()</code></pre>
 </div>
@@ -407,7 +407,19 @@ $ &gt; servidor: Esperando a jugador 2
 <li>
 <p>El cliente debe poder interactuar con cualquier servidor que implemente el protocolo.</p>
 </li>
+<li>
+<p>El servidor debe poder interactuar con cualquier cliente que implemente el protocolo.</p>
+</li>
 </ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="objetivos-de-aprendizaje"><a class="anchor" href="#objetivos-de-aprendizaje"></a>Objetivos de Aprendizaje</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Al realizar este proyecto el alumno podrá profundizar en sistemas de comunicación
+inter procesos (IPC) como el uso de sockets, programación concurrente y patrón de productor-consumidor.</p>
 </div>
 </div>
 </div>
