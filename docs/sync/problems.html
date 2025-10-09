@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Problemas de la Concurrencia :: Conceptos de Sistemas Operativos</title>
+    <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/sync/problems.html">
+    <link rel="prev" href="concurrency.html">
+    <link rel="next" href="semaphores.html">
+    <meta name="generator" content="Antora 3.1.10">
+    <link rel="stylesheet" href="../_/css/site.css">
+    <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://ninjascl.github.io/sistemas-operativos">Conceptos de Sistemas Operativos</a>
+      <div class="navbar-item search hide-for-print">
+        <div id="search-field" class="field">
+          <input id="search-input" type="text" placeholder="Buscar">
+        </div>
+      </div>
+      <button class="navbar-burger" aria-controls="topbar-nav" aria-expanded="false" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!--
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+    -->
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="ROOT" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <button class="nav-menu-toggle" aria-label="Toggle expand/collapse all" style="display: none"></button>
+    <h3 class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Introducción</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/introduction.html">Introducción a los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/history.html">Historia de los Sistemas Operativos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../introduction/roles.html">¿Qué Roles Tiene un Sistema Operativo?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Kernel y Procesos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kernels-process/architecture.html">Conceptos de Arquitectura de Computadoras</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kernels-process/concepts.html">Conceptos Principales</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../kernels-process/process.html">Procesos</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Sincronización</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="concurrency.html">Concurrencia</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="problems.html">Problemas de la Concurrencia</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="semaphores.html">Semáforos y Mutex</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Programación en Ada</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/about.html">Introducción al lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/history.html">Historia del lenguaje Ada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/hello.html">Hola mundo</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/sqrt.html">Raíz Cuadrada</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/temperature.html">Conversor de Temperatura</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/arrays.html">Arreglos y Listas</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/args.html">Argumentos de Línea de Comandos</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/strings.html">Strings</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/guess.html">Adivina el Número</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../ada-basics/process.html">Gatillar Procesos</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+    <button class="nav-item-toggle"></button>
+    <span class="nav-text">Proyectos</span>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project1.html">Proyecto 1: Minishell</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project2.html">Proyecto 2: Concurrencia</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../projects/project3.html">Proyecto 3: Servidor de Videojuegos</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../bibliography.html">Bibliografía</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">Conceptos de Sistemas Operativos</span>
+    <span class="version"></span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <div class="title"><a href="../index.html">Conceptos de Sistemas Operativos</a></div>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
+    <li>Sincronización</li>
+    <li><a href="problems.html">Problemas de la Concurrencia</a></li>
+  </ul>
+</nav>
+<div class="edit-this-page"><a href="file:///antora/./modules/sync/pages/problems.adoc">Edit this Page</a></div>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contenidos" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Problemas de la Concurrencia</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para obtener los beneficios de la concurrencia, primero hay que solucionar
+algunos problemas que ocurren al tener distintos hilos que deben acceder a datos compartidos (secciones críticas).</p>
+</div>
+<iframe width="100%" height="515" src="https://www.youtube.com/embed/8KFvrgbuWxY?si=dHwrBNQEVZVX5dzM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sección-crítica"><a class="anchor" href="#sección-crítica"></a>Sección Crítica</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Una sección crítica es una operación o memoria que requiere ser accedida o ejecutada
+por múltiples hilos (threads), es decir, es compartida y es mutable (puede ser modificada).
+Se llama sección crítica debido a que un mal manejo de la concurrencia, es decir, un acceso mal controlado
+en utilizar esta sección puede llevar a resultados inesperados, duplicados y/o erróneos.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="exclusión-mutua"><a class="anchor" href="#exclusión-mutua"></a>Exclusión Mutua</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Para administrar el acceso a la sección crítica, un hilo debe ser capaz de acceder a ella
+de forma exclusiva. Solamente un hilo a la vez, excluyendose mututamente.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="bloqueos-locks"><a class="anchor" href="#bloqueos-locks"></a>Bloqueos (Locks)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Un bloqueo es una estrategia para lograr la exclusión mutua. Consiste en verificar un valor
+y esperar a un estado viable para proceder. Es decir, el hilo estará "bloqueado" de continuar
+a menos que se cumpla alguna condición específica que permita continuar con las operaciones
+y acceder a la sección crítica. Una vez completadas las operaciones el hilo debe liberar el bloqueo
+para permitir que otro hilo acceda a la sección crítica.</p>
+</div>
+<div class="sect2">
+<h3 id="interbloqueo-e-inanición"><a class="anchor" href="#interbloqueo-e-inanición"></a>Interbloqueo e Inanición</h3>
+<div class="paragraph">
+<p>El interbloqueo ocurre cuando dos o más hilos se bloquean entre si, impidiendo el avance del algoritmo,
+quedando en un estado pausado por un tiempo largo o incluso infinito. También puede ocurrir la inanición
+de un hilo (no acceder a la sección crítica) debido a nunca poder realizar un bloqueo para acceder a ella.</p>
+</div>
+<div class="sect3">
+<h4 id="bloqueo-muerto-deadlock"><a class="anchor" href="#bloqueo-muerto-deadlock"></a>Bloqueo Muerto (Deadlock)</h4>
+<div class="paragraph">
+<p>El bloqueo muerto o <em>deadlock</em> ocurre cuando un hilo no libera su acceso a la sección crítica, aún cuando ya
+terminó sus operaciones. Se denomina "bloqueo muerto" debido a que el bloqueo impide el total
+funcionamiento del algoritmo, dejandolo "muerto" en un estado de espera "infinita" (irresoluble) de los otros hilos
+para acceder a la sección crítica.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="bloqueo-vivo-livelock"><a class="anchor" href="#bloqueo-vivo-livelock"></a>Bloqueo Vivo (Livelock)</h4>
+<div class="paragraph">
+<p>El bloqueo vivo o <em>livelock</em> a diferencia del <em>deadlock</em> puede ser eventualmente liberado el bloqueo,
+pero puede tardar mucho tiempo en hacerlo, lo que causa que el algoritmo tenga un rendimiento menor
+a lo esperado y aumente el consumo de recursos o ciclos de <em>CPU</em> con operaciones innecesarias.</p>
+</div>
+<div class="paragraph">
+<p>Este bloqueo ocurre cuando los hilos ceden prematuramente su acceso a la sección crítica, causando
+de que esperen y cedan su turno constantemente hasta que un hilo sea más rápido y pueda acceder a la sección crítica.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="inanición-starvation"><a class="anchor" href="#inanición-starvation"></a>Inanición (Starvation)</h3>
+<div class="paragraph">
+<p>La inanición (starvation) ocurre cuando un hilo nunca le es permitido acceder a la sección crítica
+ya que los otros hilos son más rápidos y realizan un bloqueo antes de que el hilo pueda realizar el suyo.
+Para abarcar este problema el algoritmo de solución debe considerar un protocolo de priorización que permita
+que todos los hilos tengan derecho y posibilidad de acceder a la sección crítica, independiente de que tan
+rápido pueda ser un hilo en ejecutarse.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="condiciones-de-coffman"><a class="anchor" href="#condiciones-de-coffman"></a>Condiciones de Coffman</h3>
+<div class="paragraph">
+<p><a href="https://es.wikipedia.org/wiki/E._G._Coffman">Edward G. Coffman</a> estableció una serie de condiciones que si se cumplen
+pueden garantizar la <a href="https://1984.lsi.us.es/wiki-ssoo/index.php/Condiciones_para_el_interbloqueo_y_estrategias_de_resoluci%C3%B3n">existencia del riesgo de interbloqueo</a>.
+Si una de ellas no se cumple, entonces no existirá interbloqueo.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Exclusión mutua: Cada recurso está asignado a un único hilo de manera exclusiva.</p>
+</li>
+<li>
+<p>Retención y espera: Los hilos que tienen, en un momento dado, recursos asignados con anterioridad,
+pueden solicitar nuevos recursos y esperar a que se le asignen sin liberar antes alguno de los recursos
+que ya tenía asignados.</p>
+</li>
+<li>
+<p>No apropiación o expulsión: Los recursos otorgados con anterioridad no pueden ser forzados a dejar un hilo.
+El hilo que los posee debe liberarlos en forma explícita, es decir solamente su dueño, quien los solicitó
+incialmente puede liberar los recursos asignados. Ni siquiera el sistema operativo puede expropiárselo.</p>
+</li>
+<li>
+<p>Espera circular: Debe existir una cadena circular de dos o más hilos, cada uno de los cuales
+espera un recurso poseído por el siguiente miembro de la cadena. Esta condición es una consecuencia
+potencial de las tres primeras, es decir, dado que se producen las tres primeras condiciones,
+puede ocurrir una secuencia de eventos que desemboque en un círculo vicioso de espera irresoluble (deadlock).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Las tres primeras condiciones son necesarias, pero no suficientes para que exista interbloqueo.
+Sólo las cuatro condiciones en conjunto constituyen una condición necesaria y suficiente para el interbloqueo.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="condiciones-de-carrera-race-conditions"><a class="anchor" href="#condiciones-de-carrera-race-conditions"></a>Condiciones de Carrera (Race Conditions)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Una condición de carrera ocurre cuando dos o más hilos (threads) pueden acceder a datos compartidos (sección crítica) e
+intentan modificarlos al mismo tiempo. Debido a que el algoritmo de planificación de hilos puede cambiar
+entre hilos en cualquier momento (planificador del sistema operativo), no se puede saber en qué orden intentarán acceder a los datos compartidos.
+Por lo tanto, el resultado del cambio en los datos depende del algoritmo de planificación de hilos, es decir,
+ambos hilos están "compitiendo en una carrera" para acceder/modificar los datos.</p>
+</div>
+<div class="paragraph">
+<p>Los problemas suelen ocurrir cuando un hilo hace una operación de "verificar y luego actuar"
+(por ejemplo, "verificar" si el valor es <span class="steminline"> <svg style="vertical-align: -0.025ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="1.294ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 572 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g></g></g></g></svg> </span>,
+luego "actuar" haciendo algo que depende de que el valor sea <span class="steminline"> <svg style="vertical-align: -0.025ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="1.294ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 572 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g></g></g></g></svg> </span>),
+y otro hilo cambia ese valor entre la "verificación" y la "acción". Por ejemplo:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">if (x == 5) // La "verificación"
+{
+   y = x * 2; // La "acción"
+
+   // Si otro hilo cambió x entre "if (x == 5)" y "y = x * 2" arriba,
+   // entonces y no será igual a 10.
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>El punto es que <span class="steminline"> <svg style="vertical-align: -0.464ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="1.109ex" height="1.464ex" role="img" focusable="false" viewBox="0 -442 490 647"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mi"><path data-c="1D466" d="M21 287Q21 301 36 335T84 406T158 442Q199 442 224 419T250 355Q248 336 247 334Q247 331 231 288T198 191T182 105Q182 62 196 45T238 27Q261 27 281 38T312 61T339 94Q339 95 344 114T358 173T377 247Q415 397 419 404Q432 431 462 431Q475 431 483 424T494 412T496 403Q496 390 447 193T391 -23Q363 -106 294 -155T156 -205Q111 -205 77 -183T43 -117Q43 -95 50 -80T69 -58T89 -48T106 -45Q150 -45 150 -87Q150 -107 138 -122T115 -142T102 -147L99 -148Q101 -153 118 -160T152 -167H160Q177 -167 186 -165Q219 -156 247 -127T290 -65T313 -9T321 21L315 17Q309 13 296 6T270 -6Q250 -11 231 -11Q185 -11 150 11T104 82Q103 89 103 113Q103 170 138 262T173 379Q173 380 173 381Q173 390 173 393T169 400T158 404H154Q131 404 112 385T82 344T65 302T57 280Q55 278 41 278H27Q21 284 21 287Z"></path></g></g></g></g></svg> </span> podría ser <span class="steminline"> <svg style="vertical-align: -0.05ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="2.262ex" height="1.557ex" role="img" focusable="false" viewBox="0 -666 1000 688"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mn"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path><path data-c="30" d="M96 585Q152 666 249 666Q297 666 345 640T423 548Q460 465 460 320Q460 165 417 83Q397 41 362 16T301 -15T250 -22Q224 -22 198 -16T137 16T82 83Q39 165 39 320Q39 494 96 585ZM321 597Q291 629 250 629Q208 629 178 597Q153 571 145 525T137 333Q137 175 145 125T181 46Q209 16 250 16Q290 16 318 46Q347 76 354 130T362 333Q362 478 354 524T321 597Z" transform="translate(500,0)"></path></g></g></g></g></svg> </span>, o podría ser cualquier otro valor,
+dependiendo de si otro hilo cambió <span class="steminline"> <svg style="vertical-align: -0.025ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="1.294ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 572 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mi"><path data-c="1D465" d="M52 289Q59 331 106 386T222 442Q257 442 286 424T329 379Q371 442 430 442Q467 442 494 420T522 361Q522 332 508 314T481 292T458 288Q439 288 427 299T415 328Q415 374 465 391Q454 404 425 404Q412 404 406 402Q368 386 350 336Q290 115 290 78Q290 50 306 38T341 26Q378 26 414 59T463 140Q466 150 469 151T485 153H489Q504 153 504 145Q504 144 502 134Q486 77 440 33T333 -11Q263 -11 227 52Q186 -10 133 -10H127Q78 -10 57 16T35 71Q35 103 54 123T99 143Q142 143 142 101Q142 81 130 66T107 46T94 41L91 40Q91 39 97 36T113 29T132 26Q168 26 194 71Q203 87 217 139T245 247T261 313Q266 340 266 352Q266 380 251 392T217 404Q177 404 142 372T93 290Q91 281 88 280T72 278H58Q52 284 52 289Z"></path></g></g></g></g></svg> </span> entre la verificación y la acción.
+No hay forma real de saberlo.</p>
+</div>
+<div class="paragraph">
+<p>Para evitar que ocurran condiciones de carrera, normalmente se coloca un bloqueo (lock)
+alrededor de los datos compartidos (sección crítica) para asegurar que solo un hilo pueda acceder a
+esos datos a la vez. Esto sería algo así:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">// Obtener bloqueo para x
+if (x == 5)
+{
+   y = x * 2; // Ahora, nada puede cambiar x hasta que se libere el bloqueo.
+              // Por lo tanto, y = 10
+}
+// Liberar el bloqueo para x</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="ejemplo-de-transacción-bancaria"><a class="anchor" href="#ejemplo-de-transacción-bancaria"></a>Ejemplo de Transacción Bancaria</h3>
+<div class="paragraph">
+<p>Un ejemplo seria una cuenta bancaria que tiene unos fondos que intentan ser sacados por dos transacciones.</p>
+</div>
+<div class="paragraph">
+<p>En un programa secuencial esta operación no arrojaría problemas, siempre rechazaría sacar fondos
+si el total se ha disminuido menos de lo que se quiere retirar.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">int fondos = 100;
+int sacar_fondos(retiro)
+{
+  if (retiro &lt;= fondos) {
+    fondos = fondos - retiro;
+    return true;
+  }
+
+  return false;
+}
+
+sacar_fondos(80); // fondos = 20
+sacar_fondos(70); // false</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>En un programa concurrente (demostrado con la palabra <code>spawn</code>) se puede encontrar una situación con que los fondos
+dan <code>-50</code> (un valor no válido), debido a que la verificación de los fondos disponibles se realizó antes de ejecutar la
+operación de resta de fondos, es decir, ambos llegaron casi al mismo tiempo y comprobaron casi al mismo tiempo si
+existian fondos disponibles (ambos encuentran fondos = 100) antes de retirar los fondos, esta situación
+puede ocurrir si no hay coordinación sobre el orden de ejecución de los hilos al acceder a la sección crítica.
+Esta situación se conoce como "Situación de Concurso", lo que nos indica poder resolver ¿Cómo pueden coordinarse
+distintos hilos de modo que se evite las situaciones de concurso?. Para poder eso cada hilo debe "pedir permiso"
+para acceder a la sección crítica, esto se logra con bloqueos para tener exclusión mutua.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">int fondos = 100;
+int sacar_fondos(retiro)
+{
+  if (retiro &lt;= fondos) {
+    fondos = fondos - retiro;
+    return true;
+  }
+
+  return false;
+}
+
+spawn(sacar_fondos(80)); // fondos = 20
+spawn(sacar_fondos(70)); // fondos = -50</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="intentos-de-solución-por-software"><a class="anchor" href="#intentos-de-solución-por-software"></a>Intentos de Solución por Software</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Existen distintas formas de solucionar los problemas de concurrencia, soluciones por software (algoritmos),
+soluciones por hardware y soluciones a nivel de sistemas operativos.</p>
+</div>
+<div class="paragraph">
+<p>Se plantea el siguiente problema que representa dos hilos tratando de acceder a la sección crítica.</p>
+</div>
+<div class="paragraph">
+<p>En una cafetería dos personas están tomando café y desean ir al baño que permite solo una persona a la vez.
+Lo único que hacen estos parroquianos es tomar café e ir al baño (w.c).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">void persona1()
+{
+  while(1)
+  {
+    tomar_cafe();
+    usar_wc();
+  }
+}
+
+void persona2()
+{
+  while(1)
+  {
+    tomar_cafe();
+    usar_wc();
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Si ambos intentan ir al baño al mismo tiempo ocurrirá un problema. Entonces se debe
+encontrar una solución que permita priorizar quien accede al baño y en qué momento.</p>
+</div>
+<div class="sect2">
+<h3 id="primer-intento"><a class="anchor" href="#primer-intento"></a>Primer Intento</h3>
+<div class="paragraph">
+<p>Este es un primer intento para resolver el problema de la exclusión mutua.
+En este algoritmo se da un turno a cada persona para ir al baño.
+El problema de este algoritmo es que existe un bloqueo muerto (<em>deadlock</em>)
+debido a que nunca se intercalará entre las distintas personas despúes de cambiar el valor de <code>turno</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">int i = 0; // persona 1
+int j = 1; // persona 2
+
+int turno = 0;
+Process P:
+repeat
+  while(turno != i){}; // bloqueo del hilo hasta cumplir la condición
+  &lt;Sección Crítica&gt; // Inicio de la sección crítica
+  turno = j;  // levantar el bloqueo y dar turno al siguiente hilo
+  &lt;Fin Sección Crítica&gt;
+forever</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="segundo-intento"><a class="anchor" href="#segundo-intento"></a>Segundo Intento</h3>
+<div class="paragraph">
+<p>El segundo intento tiene unas banderas (flags) que permiten determinar si el otro hilo está usando la sección crítica,
+pero tiene el problema de que no garantiza la exclusión mutua. Es decir ambos procesos pueden acceder a la sección crítica.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">int i = 0; // persona 1
+int j = 1; // persona 2
+
+boolean flag[2];
+
+Process P:
+repeat
+  while(flag[j]){}; // Bloqueo del hilo hasta cumplir la condición, esperando que el otro hilo cambie su flag a false
+  flag[i] := true; // Se anuncia el uso de la sección crítica
+  &lt;Sección Crítica&gt; // Inicio de la sección crítica
+  flag[i] := false;  // Levantar el bloqueo y dar turno al siguiente hilo
+  &lt;Fin Sección Crítica&gt;
+forever</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="tercer-intento"><a class="anchor" href="#tercer-intento"></a>Tercer Intento</h3>
+<div class="paragraph">
+<p>El problema del segundo intento es que cambia su <code>flag</code> de acceso a la sección critica despúes de iniciar el bloqueo. Por lo que
+el tercer intento hace que cambie la <code>flag</code> antes de iniciar el bloqueo.</p>
+</div>
+<div class="paragraph">
+<p>El problema de este intento es que se puede generar una espera no determinista,
+dando paso a una situación de interbloqueo.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">int i = 0; // persona 1
+int j = 1; // persona 2
+
+boolean flag[2];
+
+Process P:
+repeat
+  flag[i] := true; // Se anuncia el uso de la sección crítica.
+
+  while(flag[j]){}; // Bloqueo del hilo hasta cumplir la condición, esperando que el otro hilo cambie su flag a false
+
+  &lt;Sección Crítica&gt; // Inicio de la sección crítica
+  flag[i] := false;  // Levantar el bloqueo y dar turno al siguiente hilo
+  &lt;Fin Sección Crítica&gt;
+forever</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="cuarto-intento"><a class="anchor" href="#cuarto-intento"></a>Cuarto Intento</h3>
+<div class="paragraph">
+<p>Este cuarto intento si permite exclusión mutua y eventualmente se resolverá el interbloqueo. Sin embargo
+existe el problema del <em>livelock</em> donde se realizarán operaciones no necesarias para determinar que hilo
+debe acceder a la sección crítica, tomando más tiempo y recursos de lo estimado.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">int i = 0; // persona 1
+int j = 1; // persona 2
+
+boolean flag[2];
+
+Process P:
+repeat
+  flag[i] := true; // Se anuncia el uso de la sección crítica.
+
+  while(flag[j]) // Bloqueo del hilo hasta cumplir la condición, esperando que el otro hilo cambie su flag a false
+  {
+    flag[i] := false;
+    wait(random()); // Esperar un tiempo aleatorio
+    flag[i] := true;
+  }
+
+  &lt;Sección Crítica&gt; // Inicio de la sección crítica
+  flag[i] := false;  // Levantar el bloqueo y dar turno al siguiente hilo
+  &lt;Fin Sección Crítica&gt;
+forever</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="soluciones"><a class="anchor" href="#soluciones"></a>Soluciones</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Las siguientes soluciones son válidas, aunque solamente consideran el caso de
+dos hilos a la vez.</p>
+</div>
+<div class="sect2">
+<h3 id="algoritmo-de-dekker"><a class="anchor" href="#algoritmo-de-dekker"></a>Algoritmo de Dekker</h3>
+<div class="paragraph">
+<p>El algoritmo de <em>Dekker</em> toma los conceptos vistos en los intentos anteriores combinando
+el Intento 1 con el Intento 4, creando una solución viable.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">boolean flag[2] = {false, false};
+int turno = 0;
+int i = 0; // persona 1
+int j = 1; // persona 2
+
+Process Pi:
+Repeat
+  flag[i] = true;
+  while(flag[j])
+  {
+    flag[i] = false;
+    while(turno != i) // Espero el turno hasta que se cumpla la condición antes de continuar, evitando el _livelock_.
+    flag[i] = true;
+  }
+  &lt;Sección Crítica&gt;
+  turno = j; // Libera el turno para el siguiente
+  flag[i] = false; // Pone su bandera en falso
+  &lt;Fin de Sección Crítica&gt;
+Forever</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="algoritmo-de-peterson"><a class="anchor" href="#algoritmo-de-peterson"></a>Algoritmo de Peterson</h3>
+<div class="paragraph">
+<p>El algoritmo de <em>Peterson</em> es una mejora del algoritmo de <em>Dekker</em>, simplificando un poco más su implementación.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">boolean flag[2] = {false, false};
+int turno = 0;
+int i = 0; // persona 1
+int j = 1; // persona 2
+
+Process Pi:
+Repeat
+  flag[i] = true;
+  turno = j; // Establece el turno de la siguiente persona
+  while(flag[j] &amp;&amp; turno == j) {}; // Si la bandera de la otra persona es verdadera y es su turno entonces se tiene que esperar
+
+  &lt;Sección Crítica&gt;
+  flag[i] = false; // Pone su bandera en falso
+  &lt;Fin de Sección Crítica&gt;
+Forever</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="algoritmo-de-panadería"><a class="anchor" href="#algoritmo-de-panadería"></a>Algoritmo de Panadería</h3>
+<div class="paragraph">
+<p>Éste algoritmo permite abordar la concurrencia para múltiples hilos.
+Se nombra como "Algoritmo de Panadería" por que simula ser una "Panadería"
+donde cada hilo debe solicitar un "ticket" con un número de posición, el número más pequeño
+será quien pueda acceder a la sección crítica. Por lo que cada hilo comprueba
+su número y lo compara con los demás números asignados, si es el más pequeño accede
+y luego elimina su posición y solicita un nuevo "ticket".</p>
+</div>
+<div class="paragraph">
+<p>Para otras soluciones de <span class="steminline"> <svg style="vertical-align: -0.025ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="1.357ex" height="1.025ex" role="img" focusable="false" viewBox="0 -442 600 453"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mi"><path data-c="1D45B" d="M21 287Q22 293 24 303T36 341T56 388T89 425T135 442Q171 442 195 424T225 390T231 369Q231 367 232 367L243 378Q304 442 382 442Q436 442 469 415T503 336T465 179T427 52Q427 26 444 26Q450 26 453 27Q482 32 505 65T540 145Q542 153 560 153Q580 153 580 145Q580 144 576 130Q568 101 554 73T508 17T439 -10Q392 -10 371 17T350 73Q350 92 386 193T423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 180T152 343Q153 348 153 366Q153 405 129 405Q91 405 66 305Q60 285 60 284Q58 278 41 278H27Q21 284 21 287Z"></path></g></g></g></g></svg> </span> hilos se debe ver
+conceptos adicionales como los semáforos.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">int numero[n]; // N corresponde al número de hilos, si es 0 no entra a la sección crítica. Si es mayor a cero es que debe entrar a la sección crítica.
+boolean seleccionado[n];
+
+Proceso Pi:
+repeat
+  seleccionado[i] := true;
+  numero[i] := max(numero[0]..numero[n - 1]) + 1 // El número de "ticket" será siguiente número más grande, puede pasar de que dos hilos tengan el mismo número
+  seleccionado[i] := false;
+  for (j := 0 to n - 1) // recorremos todos los hilos
+  {
+    // se espera a que todos los hilos tengan un número asignado antes de seguir
+    while(seleccionado[j]){};
+
+    // si el número es 0, entonces no entramos a la sección crítica
+    // si el número de este hilo es mayor al número del hilo anterior entonces tampoco entramos a la sección crítica
+    // también consideramos el caso de que dos hilos tengan el mismo número
+    // en esa situación toma relevancia el identificador del hilo, si es menor al actual
+    // entonces se espera a que el anterior termine
+    while(numero[j] != 0 &amp;&amp; (numero[j] &lt; numero[i] || numero[i] == numero[j] &amp;&amp; j &lt; i)){};
+  }
+  &lt;Sección Crítica&gt;
+  // ya entramos a la sección crítica, por lo que reiniciamos nuestro número hasta la siguiente iteración
+  numero[i] := 0;
+  &lt;Fin de Sección Crítica&gt;
+forever</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="referencias"><a class="anchor" href="#referencias"></a>Referencias</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://stackoverflow.com/a/34550" class="bare">https://stackoverflow.com/a/34550</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="concurrency.html">Concurrencia</a></span>
+  <span class="next"><a href="semaphores.html">Semáforos y Mutex</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script id="site-script" src="../_/js/site.js" data-ui-root-path="../_"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+<script src="../_/js/vendor/lunr.js"></script>
+<script src="../_/js/search-ui.js" id="search-ui-script" data-site-root-path=".." data-snippet-length="100" data-stylesheet="../_/css/search.css"></script>
+<script async src="../search-index.js"></script>
+  </body>
+</html>

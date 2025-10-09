@@ -1,0 +1,411 @@
+= Problemas de la Concurrencia
+
+Para obtener los beneficios de la concurrencia, primero hay que solucionar
+algunos problemas que ocurren al tener distintos hilos que deben acceder a datos compartidos (secciones críticas).
+
+++++
+<iframe width="100%" height="515" src="https://www.youtube.com/embed/8KFvrgbuWxY?si=dHwrBNQEVZVX5dzM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+++++
+
+== Sección Crítica
+
+Una sección crítica es una operación o memoria que requiere ser accedida o ejecutada
+por múltiples hilos (threads), es decir, es compartida y es mutable (puede ser modificada).
+Se llama sección crítica debido a que un mal manejo de la concurrencia, es decir, un acceso mal controlado 
+en utilizar esta sección puede llevar a resultados inesperados, duplicados y/o erróneos.
+
+== Exclusión Mutua
+
+Para administrar el acceso a la sección crítica, un hilo debe ser capaz de acceder a ella
+de forma exclusiva. Solamente un hilo a la vez, excluyendose mututamente.
+
+== Bloqueos (Locks)
+
+Un bloqueo es una estrategia para lograr la exclusión mutua. Consiste en verificar un valor 
+y esperar a un estado viable para proceder. Es decir, el hilo estará "bloqueado" de continuar
+a menos que se cumpla alguna condición específica que permita continuar con las operaciones
+y acceder a la sección crítica. Una vez completadas las operaciones el hilo debe liberar el bloqueo 
+para permitir que otro hilo acceda a la sección crítica.
+
+=== Interbloqueo e Inanición
+
+El interbloqueo ocurre cuando dos o más hilos se bloquean entre si, impidiendo el avance del algoritmo,
+quedando en un estado pausado por un tiempo largo o incluso infinito. También puede ocurrir la inanición 
+de un hilo (no acceder a la sección crítica) debido a nunca poder realizar un bloqueo para acceder a ella.
+
+==== Bloqueo Muerto (Deadlock)
+
+El bloqueo muerto o _deadlock_ ocurre cuando un hilo no libera su acceso a la sección crítica, aún cuando ya 
+terminó sus operaciones. Se denomina "bloqueo muerto" debido a que el bloqueo impide el total 
+funcionamiento del algoritmo, dejandolo "muerto" en un estado de espera "infinita" (irresoluble) de los otros hilos
+para acceder a la sección crítica. 
+
+==== Bloqueo Vivo (Livelock)
+
+El bloqueo vivo o _livelock_ a diferencia del _deadlock_ puede ser eventualmente liberado el bloqueo, 
+pero puede tardar mucho tiempo en hacerlo, lo que causa que el algoritmo tenga un rendimiento menor 
+a lo esperado y aumente el consumo de recursos o ciclos de _CPU_ con operaciones innecesarias.
+
+Este bloqueo ocurre cuando los hilos ceden prematuramente su acceso a la sección crítica, causando
+de que esperen y cedan su turno constantemente hasta que un hilo sea más rápido y pueda acceder a la sección crítica.
+
+=== Inanición (Starvation)
+
+La inanición (starvation) ocurre cuando un hilo nunca le es permitido acceder a la sección crítica 
+ya que los otros hilos son más rápidos y realizan un bloqueo antes de que el hilo pueda realizar el suyo.
+Para abarcar este problema el algoritmo de solución debe considerar un protocolo de priorización que permita 
+que todos los hilos tengan derecho y posibilidad de acceder a la sección crítica, independiente de que tan 
+rápido pueda ser un hilo en ejecutarse.
+
+=== Condiciones de Coffman
+
+https://es.wikipedia.org/wiki/E._G._Coffman[Edward G. Coffman] estableció una serie de condiciones que si se cumplen
+pueden garantizar la https://1984.lsi.us.es/wiki-ssoo/index.php/Condiciones_para_el_interbloqueo_y_estrategias_de_resoluci%C3%B3n[existencia del riesgo de interbloqueo].
+Si una de ellas no se cumple, entonces no existirá interbloqueo.
+
+- Exclusión mutua: Cada recurso está asignado a un único hilo de manera exclusiva.
+
+- Retención y espera: Los hilos que tienen, en un momento dado, recursos asignados con anterioridad, 
+pueden solicitar nuevos recursos y esperar a que se le asignen sin liberar antes alguno de los recursos 
+que ya tenía asignados.
+
+- No apropiación o expulsión: Los recursos otorgados con anterioridad no pueden ser forzados a dejar un hilo. 
+El hilo que los posee debe liberarlos en forma explícita, es decir solamente su dueño, quien los solicitó 
+incialmente puede liberar los recursos asignados. Ni siquiera el sistema operativo puede expropiárselo.
+
+- Espera circular: Debe existir una cadena circular de dos o más hilos, cada uno de los cuales 
+espera un recurso poseído por el siguiente miembro de la cadena. Esta condición es una consecuencia 
+potencial de las tres primeras, es decir, dado que se producen las tres primeras condiciones, 
+puede ocurrir una secuencia de eventos que desemboque en un círculo vicioso de espera irresoluble (deadlock). 
+
+Las tres primeras condiciones son necesarias, pero no suficientes para que exista interbloqueo. 
+Sólo las cuatro condiciones en conjunto constituyen una condición necesaria y suficiente para el interbloqueo. 
+
+== Condiciones de Carrera (Race Conditions)
+
+Una condición de carrera ocurre cuando dos o más hilos (threads) pueden acceder a datos compartidos (sección crítica) e 
+intentan modificarlos al mismo tiempo. Debido a que el algoritmo de planificación de hilos puede cambiar 
+entre hilos en cualquier momento (planificador del sistema operativo), no se puede saber en qué orden intentarán acceder a los datos compartidos. 
+Por lo tanto, el resultado del cambio en los datos depende del algoritmo de planificación de hilos, es decir, 
+ambos hilos están "compitiendo en una carrera" para acceder/modificar los datos.
+
+Los problemas suelen ocurrir cuando un hilo hace una operación de "verificar y luego actuar" 
+(por ejemplo, "verificar" si el valor es asciimath:[x], 
+luego "actuar" haciendo algo que depende de que el valor sea asciimath:[x]), 
+y otro hilo cambia ese valor entre la "verificación" y la "acción". Por ejemplo:
+
+[source, c]
+----
+if (x == 5) // La "verificación"
+{
+   y = x * 2; // La "acción"
+
+   // Si otro hilo cambió x entre "if (x == 5)" y "y = x * 2" arriba,
+   // entonces y no será igual a 10.
+}
+----
+
+El punto es que asciimath:[y] podría ser asciimath:[10], o podría ser cualquier otro valor, 
+dependiendo de si otro hilo cambió asciimath:[x] entre la verificación y la acción. 
+No hay forma real de saberlo.
+
+Para evitar que ocurran condiciones de carrera, normalmente se coloca un bloqueo (lock) 
+alrededor de los datos compartidos (sección crítica) para asegurar que solo un hilo pueda acceder a 
+esos datos a la vez. Esto sería algo así:
+
+[source, c]
+----
+// Obtener bloqueo para x
+if (x == 5)
+{
+   y = x * 2; // Ahora, nada puede cambiar x hasta que se libere el bloqueo.
+              // Por lo tanto, y = 10
+}
+// Liberar el bloqueo para x
+----
+
+=== Ejemplo de Transacción Bancaria
+
+Un ejemplo seria una cuenta bancaria que tiene unos fondos que intentan ser sacados por dos transacciones.
+
+En un programa secuencial esta operación no arrojaría problemas, siempre rechazaría sacar fondos 
+si el total se ha disminuido menos de lo que se quiere retirar.
+
+[source, c]
+----
+int fondos = 100;
+int sacar_fondos(retiro)
+{
+  if (retiro <= fondos) {
+    fondos = fondos - retiro;
+    return true;
+  }
+  
+  return false;
+}
+
+sacar_fondos(80); // fondos = 20
+sacar_fondos(70); // false
+----
+
+En un programa concurrente (demostrado con la palabra `spawn`) se puede encontrar una situación con que los fondos 
+dan `-50` (un valor no válido), debido a que la verificación de los fondos disponibles se realizó antes de ejecutar la 
+operación de resta de fondos, es decir, ambos llegaron casi al mismo tiempo y comprobaron casi al mismo tiempo si 
+existian fondos disponibles (ambos encuentran fondos = 100) antes de retirar los fondos, esta situación
+puede ocurrir si no hay coordinación sobre el orden de ejecución de los hilos al acceder a la sección crítica. 
+Esta situación se conoce como "Situación de Concurso", lo que nos indica poder resolver ¿Cómo pueden coordinarse
+distintos hilos de modo que se evite las situaciones de concurso?. Para poder eso cada hilo debe "pedir permiso"
+para acceder a la sección crítica, esto se logra con bloqueos para tener exclusión mutua.
+
+[source, c]
+----
+int fondos = 100;
+int sacar_fondos(retiro)
+{
+  if (retiro <= fondos) {
+    fondos = fondos - retiro;
+    return true;
+  }
+  
+  return false;
+}
+
+spawn(sacar_fondos(80)); // fondos = 20
+spawn(sacar_fondos(70)); // fondos = -50
+----
+
+== Intentos de Solución por Software
+
+Existen distintas formas de solucionar los problemas de concurrencia, soluciones por software (algoritmos), 
+soluciones por hardware y soluciones a nivel de sistemas operativos.
+
+Se plantea el siguiente problema que representa dos hilos tratando de acceder a la sección crítica.
+
+En una cafetería dos personas están tomando café y desean ir al baño que permite solo una persona a la vez. 
+Lo único que hacen estos parroquianos es tomar café e ir al baño (w.c).
+
+[source, c]
+----
+void persona1()
+{
+  while(1)
+  {
+    tomar_cafe();
+    usar_wc();
+  }
+}
+
+void persona2()
+{
+  while(1)
+  {
+    tomar_cafe();
+    usar_wc();
+  }
+}
+----
+
+Si ambos intentan ir al baño al mismo tiempo ocurrirá un problema. Entonces se debe 
+encontrar una solución que permita priorizar quien accede al baño y en qué momento.
+
+=== Primer Intento
+
+Este es un primer intento para resolver el problema de la exclusión mutua. 
+En este algoritmo se da un turno a cada persona para ir al baño.
+El problema de este algoritmo es que existe un bloqueo muerto (_deadlock_)
+debido a que nunca se intercalará entre las distintas personas despúes de cambiar el valor de `turno`.
+
+[source, pascal]
+----
+int i = 0; // persona 1
+int j = 1; // persona 2
+
+int turno = 0;
+Process P:
+repeat
+  while(turno != i){}; // bloqueo del hilo hasta cumplir la condición
+  <Sección Crítica> // Inicio de la sección crítica
+  turno = j;  // levantar el bloqueo y dar turno al siguiente hilo
+  <Fin Sección Crítica>
+forever
+----
+
+=== Segundo Intento
+
+El segundo intento tiene unas banderas (flags) que permiten determinar si el otro hilo está usando la sección crítica, 
+pero tiene el problema de que no garantiza la exclusión mutua. Es decir ambos procesos pueden acceder a la sección crítica.
+
+[source, pascal]
+----
+int i = 0; // persona 1
+int j = 1; // persona 2
+
+boolean flag[2];
+
+Process P:
+repeat
+  while(flag[j]){}; // Bloqueo del hilo hasta cumplir la condición, esperando que el otro hilo cambie su flag a false
+  flag[i] := true; // Se anuncia el uso de la sección crítica
+  <Sección Crítica> // Inicio de la sección crítica
+  flag[i] := false;  // Levantar el bloqueo y dar turno al siguiente hilo
+  <Fin Sección Crítica>
+forever
+----
+
+=== Tercer Intento
+
+El problema del segundo intento es que cambia su `flag` de acceso a la sección critica despúes de iniciar el bloqueo. Por lo que 
+el tercer intento hace que cambie la `flag` antes de iniciar el bloqueo.
+
+El problema de este intento es que se puede generar una espera no determinista, 
+dando paso a una situación de interbloqueo.
+
+[source, pascal]
+----
+int i = 0; // persona 1
+int j = 1; // persona 2
+
+boolean flag[2];
+
+Process P:
+repeat
+  flag[i] := true; // Se anuncia el uso de la sección crítica.
+  
+  while(flag[j]){}; // Bloqueo del hilo hasta cumplir la condición, esperando que el otro hilo cambie su flag a false
+
+  <Sección Crítica> // Inicio de la sección crítica
+  flag[i] := false;  // Levantar el bloqueo y dar turno al siguiente hilo
+  <Fin Sección Crítica>
+forever
+----
+
+=== Cuarto Intento
+
+Este cuarto intento si permite exclusión mutua y eventualmente se resolverá el interbloqueo. Sin embargo
+existe el problema del _livelock_ donde se realizarán operaciones no necesarias para determinar que hilo 
+debe acceder a la sección crítica, tomando más tiempo y recursos de lo estimado.
+
+[source, pascal]
+----
+int i = 0; // persona 1
+int j = 1; // persona 2
+
+boolean flag[2];
+
+Process P:
+repeat
+  flag[i] := true; // Se anuncia el uso de la sección crítica.
+  
+  while(flag[j]) // Bloqueo del hilo hasta cumplir la condición, esperando que el otro hilo cambie su flag a false
+  {
+    flag[i] := false;
+    wait(random()); // Esperar un tiempo aleatorio
+    flag[i] := true;
+  }
+
+  <Sección Crítica> // Inicio de la sección crítica
+  flag[i] := false;  // Levantar el bloqueo y dar turno al siguiente hilo
+  <Fin Sección Crítica>
+forever
+----
+
+== Soluciones
+
+Las siguientes soluciones son válidas, aunque solamente consideran el caso de
+dos hilos a la vez.
+
+=== Algoritmo de Dekker
+
+El algoritmo de _Dekker_ toma los conceptos vistos en los intentos anteriores combinando
+el Intento 1 con el Intento 4, creando una solución viable.
+
+[source, pascal]
+----
+boolean flag[2] = {false, false};
+int turno = 0;
+int i = 0; // persona 1
+int j = 1; // persona 2
+
+Process Pi:
+Repeat
+  flag[i] = true;
+  while(flag[j]) 
+  {
+    flag[i] = false;
+    while(turno != i) // Espero el turno hasta que se cumpla la condición antes de continuar, evitando el _livelock_.
+    flag[i] = true;
+  }
+  <Sección Crítica>
+  turno = j; // Libera el turno para el siguiente
+  flag[i] = false; // Pone su bandera en falso
+  <Fin de Sección Crítica>
+Forever
+----
+
+=== Algoritmo de Peterson
+
+El algoritmo de _Peterson_ es una mejora del algoritmo de _Dekker_, simplificando un poco más su implementación.
+
+[source, pascal]
+----
+boolean flag[2] = {false, false};
+int turno = 0;
+int i = 0; // persona 1
+int j = 1; // persona 2
+
+Process Pi:
+Repeat
+  flag[i] = true;
+  turno = j; // Establece el turno de la siguiente persona
+  while(flag[j] && turno == j) {}; // Si la bandera de la otra persona es verdadera y es su turno entonces se tiene que esperar
+  
+  <Sección Crítica>
+  flag[i] = false; // Pone su bandera en falso
+  <Fin de Sección Crítica>
+Forever
+----
+
+=== Algoritmo de Panadería
+
+Éste algoritmo permite abordar la concurrencia para múltiples hilos.
+Se nombra como "Algoritmo de Panadería" por que simula ser una "Panadería" 
+donde cada hilo debe solicitar un "ticket" con un número de posición, el número más pequeño 
+será quien pueda acceder a la sección crítica. Por lo que cada hilo comprueba 
+su número y lo compara con los demás números asignados, si es el más pequeño accede 
+y luego elimina su posición y solicita un nuevo "ticket".
+
+Para otras soluciones de asciimath:[n] hilos se debe ver 
+conceptos adicionales como los semáforos.
+
+[source, pascal]
+----
+int numero[n]; // N corresponde al número de hilos, si es 0 no entra a la sección crítica. Si es mayor a cero es que debe entrar a la sección crítica.
+boolean seleccionado[n];
+
+Proceso Pi:
+repeat
+  seleccionado[i] := true;
+  numero[i] := max(numero[0]..numero[n - 1]) + 1 // El número de "ticket" será siguiente número más grande, puede pasar de que dos hilos tengan el mismo número
+  seleccionado[i] := false;
+  for (j := 0 to n - 1) // recorremos todos los hilos
+  {
+    // se espera a que todos los hilos tengan un número asignado antes de seguir
+    while(seleccionado[j]){}; 
+    
+    // si el número es 0, entonces no entramos a la sección crítica
+    // si el número de este hilo es mayor al número del hilo anterior entonces tampoco entramos a la sección crítica
+    // también consideramos el caso de que dos hilos tengan el mismo número
+    // en esa situación toma relevancia el identificador del hilo, si es menor al actual
+    // entonces se espera a que el anterior termine
+    while(numero[j] != 0 && (numero[j] < numero[i] || numero[i] == numero[j] && j < i)){};
+  }
+  <Sección Crítica>
+  // ya entramos a la sección crítica, por lo que reiniciamos nuestro número hasta la siguiente iteración
+  numero[i] := 0; 
+  <Fin de Sección Crítica>
+forever
+----
+
+== Referencias
+
+- https://stackoverflow.com/a/34550
