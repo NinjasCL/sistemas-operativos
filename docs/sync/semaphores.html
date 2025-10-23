@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Semáforos y Mutex :: Conceptos de Sistemas Operativos</title>
+    <title>Semáforos :: Conceptos de Sistemas Operativos</title>
     <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/sync/semaphores.html">
     <link rel="prev" href="problems.html">
     <link rel="next" href="../ada-basics/about.html">
@@ -106,7 +106,7 @@
     <a class="nav-link" href="problems.html">Problemas de la Concurrencia</a>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
-    <a class="nav-link" href="semaphores.html">Semáforos y Mutex</a>
+    <a class="nav-link" href="semaphores.html">Semáforos</a>
   </li>
 </ul>
   </li>
@@ -193,7 +193,7 @@
   <ul>
     <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
     <li>Sincronización</li>
-    <li><a href="semaphores.html">Semáforos y Mutex</a></li>
+    <li><a href="semaphores.html">Semáforos</a></li>
   </ul>
 </nav>
 <div class="edit-this-page"><a href="file:///antora/./modules/sync/pages/semaphores.adoc">Edit this Page</a></div>
@@ -203,8 +203,877 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
-<h1 class="page">Semáforos y Mutex</h1>
+<h1 class="page">Semáforos</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>En este capítulo se verán conceptos para la gestión de la concurrencia
+a nivel de sistema operativo. Los semáforos son una herramienta
+de sincronización que provee el sistema operativo.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="operaciones"><a class="anchor" href="#operaciones"></a>Operaciones</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Un semáforo utiliza
+dos operaciones atómicas y mutuamente exclusivas.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>wait</code>: La operación de esperar, también conocida como <code>p</code>, <code>down</code> o <code>hold</code>.</p>
+</li>
+<li>
+<p><code>signal</code>: La operación de lanzar una señal, también conocida como <code>v</code>, <code>up</code> o <code>release</code>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>La ventaja de estas operaciones frente a las soluciones de software
+es que no tienen el problema de la "espera ocupada", es decir
+los procesos no utilizan ciclos de CPU mientras estén en estado de <code>wait</code>.</p>
+</div>
+<div class="paragraph">
+<p>Se trabaja principalmente con dos colas:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Cola de espera (wait list): Los procesos que esperan ser ejecutados.</p>
+</li>
+<li>
+<p>Cola de resultados o listos (ready list): Los procesos que ya han sido ejecutados.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="wait"><a class="anchor" href="#wait"></a>Wait</h3>
+<div class="paragraph">
+<p>Cuando es el turno de un proceso de entrar a la sección crítica,
+este llama a la operación <code>wait</code>, esto hace que todos los otros procesos
+esperen su turno.</p>
+</div>
+<div class="paragraph">
+<p>Al momento de recibir un estado de <code>wait</code> los procesos se añaden
+a una cola de espera del tipo <em>FIFO</em> (First In First Out, Primero en llegar, primero en salir).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">struct SEMAPHORE {
+  int count;
+  queue waitlist;
+} S;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Si el proceso debe esperar al semáforo <code>S</code>, entonces
+se añade a la cola del semáforo.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="signal"><a class="anchor" href="#signal"></a>Signal</h3>
+<div class="paragraph">
+<p>Una vez que el proceso que usa la sección crítica termina su
+ejecución, utiliza la operación <code>signal</code> la cual prioriza
+al siguiente proceso en la cola <em>FIFO</em> y envía el proceso actual
+a la cola de espera para su próxima ejecución.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="tipos-de-semáforo"><a class="anchor" href="#tipos-de-semáforo"></a>Tipos de Semáforo</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Hay diferentes tipos de semáforo, entre los cuales los más utilizados
+son los semáforos binarios (conocidos como Mutex en Windows) que solo pueden recibir dos estados
+y semáforos generales que pueden tener muchos valores positivos.</p>
+</div>
+<div class="sect2">
+<h3 id="semáforos-binarios"><a class="anchor" href="#semáforos-binarios"></a>Semáforos Binarios</h3>
+<div class="paragraph">
+<p>Son aquellos que pueden tener dos valores, 0 y 1.
+Utiliza las operaciones <code>wait</code> y la operación <code>signal</code>
+de una forma binaria. Se debe recordar que estas operaciones
+son garantizadas por el sistema operativo
+de ser atómicas y mutuamente exclusivas.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">struct SEMAPHORE {
+  int value; // (0, 1)
+  queue waitlist;
+} S;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>La operación <code>wait</code> verifica que el valor sea 1.</p>
+</div>
+<div class="paragraph">
+<p>En la operación <code>wait</code> es la que permite que el proceso
+entre a la sección crítica. Si el valor es 1 significa
+que puede ingresar y vuelve su valor a 0.
+Caso contrario se añade el proceso a la cola de espera
+y se bloquea.</p>
+</div>
+<div class="listingblock">
+<div class="title">wait</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">WaitB(s):
+  if s.value = 1 {
+    s.value = 0;
+  } else {
+    // Añadir proceso a la cola de s (s.waitlist)
+    // bloquear el proceso
+  }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>La operación <code>signal</code> libera el uso de la sección crítica,
+enviando una señal al siguiente proceso en la cola para que
+"despierte" y haga uso de la sección crítica.
+Finalmente añade al proceso a la cola de resultados.</p>
+</div>
+<div class="listingblock">
+<div class="title">signal</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">SignalB(s):
+  // Si la cola está vacía entonces volver a 1
+  if s.waitlist = [] {
+    s.value = 1
+  } else {
+    // Quitar un proceso P de la cola de s.waitlist
+    // Poner al proceso P en la cola de procesos ya ejecutados (resultados)
+  }</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="semáforos-generales"><a class="anchor" href="#semáforos-generales"></a>Semáforos Generales</h3>
+<div class="paragraph">
+<p>Son semáforos que pueden tomar más valores que los semáforos
+binarios (0 y 1).</p>
+</div>
+<div class="sect3">
+<h4 id="semáforos-enteros"><a class="anchor" href="#semáforos-enteros"></a>Semáforos Enteros</h4>
+<div class="paragraph">
+<p>A diferencia de un semáforo binario que solo almacena
+1 y 0 (verdadero y falso). Este semáforo cuenta con
+un contador (count) que puede tomar valores positivos
+o negativos.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">struct SEMAPHORE {
+  int count;
+  queue waitlist;
+} S;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Las operaciones <code>wait</code> y <code>signal</code> son definidas
+como lo siguiente:</p>
+</div>
+<div class="paragraph">
+<p><code>wait</code> reduce el contador en uno y si el contador
+tiene un valor negativo, entonces el proceso pasa
+a la cola de espera y se bloquea.</p>
+</div>
+<div class="listingblock">
+<div class="title">wait</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">Wait(s):
+  s.count--;
+  if (s.count &lt; 0) {
+    // poner el proceso en s.waitlist
+    // bloquear proceso
+  }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>signal</code> incrementa el contador en uno y si el contador
+tiene un valor negativo o igual a cero, entonces
+se debe ejecutar el siguiente proceso en la cola de espera (mandar una señal).</p>
+</div>
+<div class="listingblock">
+<div class="title">signal</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">Signal(s):
+  s.count++;
+  if (s.count &lt;= 0) {
+    // obtener y ejecutar un proceso desde s.waitlist
+    // poner proceso en la cola de resultados
+  }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>En el caso de que el contador sea mayor o igual a cero
+quiere decir que el número de procesos que pueden acceder
+a la sección crítica sin que haya interbloqueo es el
+mismo número del contador.</p>
+</div>
+<div class="paragraph">
+<p>En el caso de que el contador sea menor a cero, quiere decir
+que existe una cantidad de procesos esperando a ser ejecutados
+con el valor absoluto del contador <span class="steminline"> <svg style="vertical-align: -0.564ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="9.939ex" height="2.26ex" role="img" focusable="false" viewBox="0 -749.5 4393 999"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mrow"><g data-mml-node="mo" transform="translate(0 -0.5)"><path data-c="7C" d="M139 -249H137Q125 -249 119 -235V251L120 737Q130 750 139 750Q152 750 159 735V-235Q151 -249 141 -249H139Z"></path></g><g data-mml-node="mrow" transform="translate(278,0)"><g data-mml-node="mtext"><path data-c="63" d="M370 305T349 305T313 320T297 358Q297 381 312 396Q317 401 317 402T307 404Q281 408 258 408Q209 408 178 376Q131 329 131 219Q131 137 162 90Q203 29 272 29Q313 29 338 55T374 117Q376 125 379 127T395 129H409Q415 123 415 120Q415 116 411 104T395 71T366 33T318 2T249 -11Q163 -11 99 53T34 214Q34 318 99 383T250 448T370 421T404 357Q404 334 387 320Z"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(444,0)"></path><path data-c="6E" d="M41 46H55Q94 46 102 60V68Q102 77 102 91T102 122T103 161T103 203Q103 234 103 269T102 328V351Q99 370 88 376T43 385H25V408Q25 431 27 431L37 432Q47 433 65 434T102 436Q119 437 138 438T167 441T178 442H181V402Q181 364 182 364T187 369T199 384T218 402T247 421T285 437Q305 442 336 442Q450 438 463 329Q464 322 464 190V104Q464 66 466 59T477 49Q498 46 526 46H542V0H534L510 1Q487 2 460 2T422 3Q319 3 310 0H302V46H318Q379 46 379 62Q380 64 380 200Q379 335 378 343Q372 371 358 385T334 402T308 404Q263 404 229 370Q202 343 195 315T187 232V168V108Q187 78 188 68T191 55T200 49Q221 46 249 46H265V0H257L234 1Q210 2 183 2T145 3Q42 3 33 0H25V46H41Z" transform="translate(944,0)"></path><path data-c="74" d="M27 422Q80 426 109 478T141 600V615H181V431H316V385H181V241Q182 116 182 100T189 68Q203 29 238 29Q282 29 292 100Q293 108 293 146V181H333V146V134Q333 57 291 17Q264 -10 221 -10Q187 -10 162 2T124 33T105 68T98 100Q97 107 97 248V385H18V422H27Z" transform="translate(1500,0)"></path><path data-c="61" d="M137 305T115 305T78 320T63 359Q63 394 97 421T218 448Q291 448 336 416T396 340Q401 326 401 309T402 194V124Q402 76 407 58T428 40Q443 40 448 56T453 109V145H493V106Q492 66 490 59Q481 29 455 12T400 -6T353 12T329 54V58L327 55Q325 52 322 49T314 40T302 29T287 17T269 6T247 -2T221 -8T190 -11Q130 -11 82 20T34 107Q34 128 41 147T68 188T116 225T194 253T304 268H318V290Q318 324 312 340Q290 411 215 411Q197 411 181 410T156 406T148 403Q170 388 170 359Q170 334 154 320ZM126 106Q126 75 150 51T209 26Q247 26 276 49T315 109Q317 116 318 175Q318 233 317 233Q309 233 296 232T251 223T193 203T147 166T126 106Z" transform="translate(1889,0)"></path><path data-c="64" d="M376 495Q376 511 376 535T377 568Q377 613 367 624T316 637H298V660Q298 683 300 683L310 684Q320 685 339 686T376 688Q393 689 413 690T443 693T454 694H457V390Q457 84 458 81Q461 61 472 55T517 46H535V0Q533 0 459 -5T380 -11H373V44L365 37Q307 -11 235 -11Q158 -11 96 50T34 215Q34 315 97 378T244 442Q319 442 376 393V495ZM373 342Q328 405 260 405Q211 405 173 369Q146 341 139 305T131 211Q131 155 138 120T173 59Q203 26 251 26Q322 26 373 103V342Z" transform="translate(2389,0)"></path><path data-c="6F" d="M28 214Q28 309 93 378T250 448Q340 448 405 380T471 215Q471 120 407 55T250 -10Q153 -10 91 57T28 214ZM250 30Q372 30 372 193V225V250Q372 272 371 288T364 326T348 362T317 390T268 410Q263 411 252 411Q222 411 195 399Q152 377 139 338T126 246V226Q126 130 145 91Q177 30 250 30Z" transform="translate(2945,0)"></path><path data-c="72" d="M36 46H50Q89 46 97 60V68Q97 77 97 91T98 122T98 161T98 203Q98 234 98 269T98 328L97 351Q94 370 83 376T38 385H20V408Q20 431 22 431L32 432Q42 433 60 434T96 436Q112 437 131 438T160 441T171 442H174V373Q213 441 271 441H277Q322 441 343 419T364 373Q364 352 351 337T313 322Q288 322 276 338T263 372Q263 381 265 388T270 400T273 405Q271 407 250 401Q234 393 226 386Q179 341 179 207V154Q179 141 179 127T179 101T180 81T180 66V61Q181 59 183 57T188 54T193 51T200 49T207 48T216 47T225 47T235 46T245 46H276V0H267Q249 3 140 3Q37 3 28 0H20V46H36Z" transform="translate(3445,0)"></path></g></g><g data-mml-node="mo" transform="translate(4115,0) translate(0 -0.5)"><path data-c="7C" d="M139 -249H137Q125 -249 119 -235V251L120 737Q130 750 139 750Q152 750 159 735V-235Q151 -249 141 -249H139Z"></path></g></g></g></g></g></svg> </span>.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="semáforos-positivos"><a class="anchor" href="#semáforos-positivos"></a>Semáforos Positivos</h4>
+<div class="paragraph">
+<p>Este semáforo a diferencia del anterior, permite solamente
+valores positivos. Por lo que se tiene una estructura adicional
+para almacenar la cantidad de procesos bloqueados.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">struct SEMAPHORE {
+  unsigned int count;
+  unsigned int locked;
+  queue waitlist;
+} S;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>El contador (count) es el número de procesos que pueden
+ingresar a la sección crítica (ejecutar la primitiva <code>wait</code>)
+sin que exista interbloqueo.</p>
+</div>
+<div class="paragraph">
+<p>Y la lista de bloqueados (locked) es el número de procesos
+que están esperando en el semáforo.</p>
+</div>
+<div class="paragraph">
+<p><code>wait</code> verifica que el contador sea cero,
+caso contrario lo disminuye en uno.</p>
+</div>
+<div class="paragraph">
+<p>Si es cero entonces aumenta la cantidad de bloqueados.</p>
+</div>
+<div class="listingblock">
+<div class="title">wait</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">Wait(s):
+  if (s.count == 0) {
+     s.locked++;
+    // poner el proceso en s.waitlist
+    // bloquear proceso
+  } else {
+    s.count--;
+  }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><code>signal</code> evalua la cantidad de bloqueados,
+Si es cero entonces aumenta el contador en uno,
+Si es distinto a cero entonces envía la señal para ejecutar el siguiente proceso.</p>
+</div>
+<div class="listingblock">
+<div class="title">signal</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-pascal hljs" data-lang="pascal">Signal(s):
 
+  if (s.locked == 0) {
+    s.count++;
+  } else {
+    // obtener y ejecutar un proceso desde s.waitlist
+    // poner proceso en la cola de resultados
+    s.locked--;
+  }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="para-qué-sirven-los-semáforos"><a class="anchor" href="#para-qué-sirven-los-semáforos"></a>¿Para qué sirven los semáforos?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Los semáforos pueden ser usados en distintos escenarios,
+incluso fuera del ámbito de los sistemas operativos.</p>
+</div>
+<div class="sect2">
+<h3 id="distribución-de-recursos"><a class="anchor" href="#distribución-de-recursos"></a>Distribución de Recursos</h3>
+<div class="paragraph">
+<p>Los semáforos sirven para limitar una cantidad <span class="steminline"> <svg style="vertical-align: -0.025ex; overflow: visible;" xmlns="http://www.w3.org/2000/svg" width="1.179ex" height="1.595ex" role="img" focusable="false" viewBox="0 -694 521 705"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mstyle"><g data-mml-node="mi"><path data-c="1D458" d="M121 647Q121 657 125 670T137 683Q138 683 209 688T282 694Q294 694 294 686Q294 679 244 477Q194 279 194 272Q213 282 223 291Q247 309 292 354T362 415Q402 442 438 442Q468 442 485 423T503 369Q503 344 496 327T477 302T456 291T438 288Q418 288 406 299T394 328Q394 353 410 369T442 390L458 393Q446 405 434 405H430Q398 402 367 380T294 316T228 255Q230 254 243 252T267 246T293 238T320 224T342 206T359 180T365 147Q365 130 360 106T354 66Q354 26 381 26Q429 26 459 145Q461 153 479 153H483Q499 153 499 144Q499 139 496 130Q455 -11 378 -11Q333 -11 305 15T277 90Q277 108 280 121T283 145Q283 167 269 183T234 206T200 217T182 220H180Q168 178 159 139T145 81T136 44T129 20T122 7T111 -2Q98 -11 83 -11Q66 -11 57 -1T48 16Q48 26 85 176T158 471L195 616Q196 629 188 632T149 637H144Q134 637 131 637T124 640T121 647Z"></path></g></g></g></g></svg> </span>
+de procesos para acceder a la sección crítica.</p>
+</div>
+<div class="paragraph">
+<p>Por ejemplo si se tiene una memoria (o recurso) limitada, los semáforos
+pueden ser usados para distribuir el uso de memoria entre los procesos
+de forma equitativa. Enviando una señal de bloqueo (wait) o liberación (signal)
+a los procesos y mantener el uso de la memoria dentro de los límites
+y necesidades de cada proceso.</p>
+</div>
+<div class="listingblock">
+<div class="title">Ejemplo de Procesos y Recursos</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">semaphore sem;
+
+process p(int i) {
+  while(true) {
+    wait(sem);
+    // usar sección crítica
+    signal(sem);
+  }
+}
+
+void main() {
+  // Solo 1 proceso puede acceder a la sección crítica a la vez
+  init_semaphore(sem, 1);
+
+  spawn p(0);
+  spawn p(1);
+  spawn p(2);
+  // ... spawn p(n);
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sincronización-de-procesos"><a class="anchor" href="#sincronización-de-procesos"></a>Sincronización de Procesos</h3>
+<div class="paragraph">
+<p>Los semáforos permiten sincronizar varios procesos que deben
+realizar una operación en conjunto.</p>
+</div>
+<div class="paragraph">
+<p>El siguiente ejemplo muestra un restaurante
+donde el cocinero y el mesero son procesos que inician
+concurrentemente (al mismo tiempo) y son interdependientes,
+es decir que el resultado de cocinero es necesario para el proceso
+del mesero.</p>
+</div>
+<div class="paragraph">
+<p>Por lo que el proceso de mesero debe ser ejecutado siempre
+después del proceso cocinero.</p>
+</div>
+<div class="listingblock">
+<div class="title">Ejemplo de Restaurante</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">process cocinero() {
+  preparar_comida();
+}
+
+process mesero() {
+  servir_comida();
+}
+
+process restaurante() {
+  spawn cocinero();
+  spawn mesero();
+}
+
+void main() {
+  spawn restaurante();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Para poder dar la prioridad entre los procesos
+se utiliza un semáforo de sincronización.
+En el cual los procesos interdependientes estarán
+conectados y utilizarán las primitivas de  <code>wait</code> y <code>signal</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Ejemplo de Restaurante con Semáforo</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">semaphore sync; // Definimos el semáforo
+
+process cocinero() {
+  preparar_comida();
+  signal(sync); // Avisa que la comida ya esta lista y puede ser usada por el mesero
+}
+
+process mesero() {
+  wait(sync); // Espera a la señal para poder servir la comida
+  servir_comida();
+}
+
+process restaurante() {
+  spawn cocinero();
+  spawn mesero();
+}
+
+void main() {
+  init_semaphore(sync, 0); // Inicia el semáforo con valor 0
+  spawn restaurante();
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="problema-del-productor-y-consumidor"><a class="anchor" href="#problema-del-productor-y-consumidor"></a>Problema del Productor y Consumidor</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Este es un problema donde un proceso produce
+una información que es requerida por un proceso consumidor.
+Se debe resolver la sincronización de los procesos.</p>
+</div>
+<div class="paragraph">
+<p>Este es un caso muy común hoy en día que sucede
+en plataformas de streaming como youtube, twitch, spotify,
+entre otros. Ya que existe un proceso productor de contenido (streaming de audio y video)
+que es enviado a un proceso consumidor de contenido (reune los bloques de datos y muestra un video con audio).</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Uno o más productores generan datos (de cualquier tipo) y los almacenan en un buffer de memoria.</p>
+</li>
+<li>
+<p>El consumidor lee los datos del buffer y los elimina del mismo cuando son consumidos (procesados).</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Esto quiere decir que el buffer es una sección crítica donde solo puede haber
+una operación de lectura o de escritura a la vez. Un productor no puede escribir
+al mismo tiempo que un consumidor leer y viceversa.</p>
+</div>
+<div class="paragraph">
+<p>Además el productor puede generar los elementos y almacenarlos en el buffer
+en un tiempo distinto al cual el consumidor puede leerlos. Es decir, el productor
+define el ritmo en como se llena el buffer. Puede ser más rápido o más lento
+que el consumidor.</p>
+</div>
+<div class="paragraph">
+<p>El consumidor debe leer el buffer, pero debe asegurarse de que este tenga datos.
+Si está vacío entonces debe esperar a que el productor escriba nuevos datos.
+Por lo que el consumidor debe verificar que el productor ha avanzado en generar
+bloques en el buffer antes de continuar. Es decir la cantidad de elementos de entrada
+deben ser mayor a la cantidad de elementos de salida.</p>
+</div>
+<div class="sect2">
+<h3 id="solución-con-semáforos-binarios"><a class="anchor" href="#solución-con-semáforos-binarios"></a>Solución con Semáforos Binarios</h3>
+<div class="listingblock">
+<div class="title">Solución con Semáforos Binarios</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">int bloque_anterior, bloque_actual;
+semaphore turn;
+semaphore delay;
+
+process producer() {
+  while(true) {
+    // esperamos turno para crear elemento en el buffer
+    wait(turn);
+    // añadir elemento al buffer
+    bloque_actual++;
+    if (bloque_actual == 1) {
+      // Liberamos la espera del consumidor
+      signal(delay);
+    }
+    // liberar turno
+    signal(turn);
+  }
+}
+
+process consumer() {
+  // El consumidor espera hasta que existan bloques en el buffer
+  wait(delay);
+
+  while(true) {
+    // esperar turno
+    wait(turn);
+    // obtener elemento del buffer
+    bloque_actual--;
+    // se guarda el valor del bloque antes de que el productor la modifique
+    bloque_anterior = bloque_actual;
+    // liberar turno
+    signal(turn);
+    // consumir elemento
+    if (bloque_anterior == 0) {
+      // Esperamos a que el productor tenga un nuevo bloque
+      wait(delay);
+    }
+  }
+}
+
+void main() {
+  init_semaphore(turn, 1);
+  init_semaphore(delay, 0);
+
+  spawn producer();
+  spawn consumer();
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="solución-con-semáforos-enteros"><a class="anchor" href="#solución-con-semáforos-enteros"></a>Solución con Semáforos Enteros</h3>
+<div class="paragraph">
+<p>La solución con semáforos enteros es un poco más simple
+que la solución con semáforos binarios, al tener más números
+disponibles para los estados.</p>
+</div>
+<div class="listingblock">
+<div class="title">Solución con Semáforos Enteros</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">semaphore turn;
+semaphore chunk;
+
+process producer() {
+  while(true) {
+    // crea un elemento nuevo
+    wait(turn);
+    // añade el elemento al buffer
+    signal(turn);
+    // Avisa que hay un nuevo bloque
+    signal(chunk);
+  }
+}
+
+process consumer() {
+  while(true) {
+    // El consumidor espera hasta que existan bloques en el buffer
+    wait(chunk);
+
+    // Espera a que se permita acceder a la sección crítica
+    wait(turn);
+
+    // Obtiene el bloque de datos
+    // Libera el turno
+    signal(turn);
+
+    // Consume el bloque de datos
+  }
+}
+
+void main() {
+  init_semaphore(turn, 1);
+  init_semaphore(chunk, 0);
+
+  spawn producer();
+  spawn consumer();
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="solución-con-buffer-finito"><a class="anchor" href="#solución-con-buffer-finito"></a>Solución con Buffer Finito</h3>
+<div class="paragraph">
+<p>Las soluciones anteriores consideran que el buffer no tiene límites,
+en esta solución que es más realista se considera que el buffer tiene un máximo
+de bloques de datos posible para almacenar información.</p>
+</div>
+<div class="paragraph">
+<p>El buffer en esta situación se considera como un almacenamiento circular.
+Es decir que al llegar al final del buffer se comienza desde el primer espacio
+para la próxima operación de añadir datos.</p>
+</div>
+<div class="paragraph">
+<p>Para lograr esto se requiere un semáforo adicional cuyo máximo es la cantidad
+de bloques disponibles en el buffer.</p>
+</div>
+<div class="paragraph">
+<p>En esta solución el consumidor notificará al productor de que ha consumido
+un elemento del buffer y el productor esperará a que existan bloques dentro
+del buffer antes de crear nuevo contenido. Es decir no añadirá nuevos bloques
+al buffer hasta esperar a que el consumidor los procese y habilite nuevo espacio
+dentro del buffer.</p>
+</div>
+<div class="listingblock">
+<div class="title">Solución con Buffer Finito</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">semaphore turn;
+semaphore chunk;
+semaphore buffer;
+
+process producer() {
+  while(true) {
+    // crea un elemento nuevo
+    // Esperamos al buffer
+    wait(buffer);
+    // Esperamos al turno
+    wait(turn);
+    // añade el elemento al buffer
+    // Liberamos el turno
+    signal(turn);
+    // Avisa que hay un nuevo bloque
+    signal(chunk);
+  }
+}
+
+process consumer() {
+  while(true) {
+    // El consumidor espera hasta que existan bloques en el buffer
+    wait(chunk);
+
+    // Espera a que se permita acceder a la sección crítica
+    wait(turn);
+
+    // Obtiene el bloque de datos
+    // Libera el turno
+    signal(turn);
+    // Libera el buffer
+    signal(buffer);
+    // Consume el bloque de datos
+  }
+}
+
+void main() {
+  init_semaphore(turn, 1);
+  init_semaphore(chunk, 0);
+  init_semaphore(buffer, MAX_BUFFER_SIZE);
+
+  spawn producer();
+  spawn consumer();
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="problema-de-la-barbería"><a class="anchor" href="#problema-de-la-barbería"></a>Problema de la Barbería</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>En el mundo real hay recursos limitados.
+Los procesos solicitan los recursos y el sistema operativo
+le da acceso a estos recursos y finalmente una vez realizada las operaciones
+estos recursos son liberados.</p>
+</div>
+<div class="paragraph">
+<p>Este problema se demuestra con una barbería o peluquería
+donde existen 3 barberos, 3 sillas y una sala de espera de hasta 4 clientes.</p>
+</div>
+<div class="paragraph">
+<p>Los clientes tienen que esperar en el área de espera (dentro del lugar)
+si todos los barberos están ocupados. Si hay más de cuatro clientes esperando
+entonces deben esperar en la calle (fuera del lugar).
+Los clientes entrarán a la sala de espera en modalidad FIFO.</p>
+</div>
+<div class="paragraph">
+<p>Adicionalmente existe una caja registradora para procesar los pagos.</p>
+</div>
+<div class="paragraph">
+<p>Se tiene la siguiente situación:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>3 barberos</p>
+</li>
+<li>
+<p>3 sillas</p>
+</li>
+<li>
+<p>1 caja registradora</p>
+</li>
+<li>
+<p>Un lugar de espera dentro del lugar con capacidad de 4 clientes.</p>
+</li>
+<li>
+<p>La barbería solo puede atender máximo 20 clientes.</p>
+</li>
+<li>
+<p>Existen 50 clientes que necesitan cortarse el pelo.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Por lo que dentro de los 20 máximos que pueden atender.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>3 se cortan el pelo</p>
+</li>
+<li>
+<p>4 esperan dentro del negocio</p>
+</li>
+<li>
+<p>13 esperan fuera del negocio (en la calle).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>El proceso de cortar el pelo es el siguiente:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>El cliente espera en la calle hasta que exista lugar dentro del negocio (en la sala de espera)</p>
+</li>
+<li>
+<p>El cliente espera dentro del negocio hasta que exista una silla y barbero disponible</p>
+</li>
+<li>
+<p>El cliente libera su espacio dentro de la sala de espera.</p>
+</li>
+<li>
+<p>El cliente se corta el pelo con el barbero y la silla seleccionadas.</p>
+</li>
+<li>
+<p>El cliente pasa por caja y paga su corte de pelo.</p>
+</li>
+<li>
+<p>El cliente sale del negocio liberando el espacio para otro cliente.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Este problema también se conoce como el "Barbero Dormilón"
+ya que el barbero esta esperando "durmiendo" hasta que un cliente
+se siente en la silla para poder ejecutar su corte de pelo.</p>
+</div>
+<div class="paragraph">
+<p>Máximo 3 barberos y mientras el cajero esta aceptando el pago
+solo 2 barberos pueden estar cortando el pelo. Es decir
+el babero espera a que el cliente pague antes de poder
+aceptar un nuevo cliente.</p>
+</div>
+<div class="paragraph">
+<p>Se dice que es una barbería no equitativa por la cola FIFO.
+Si hay 3 clientes en la silla del barbero solo serán liberados
+en el mismo orden en cuando se sentaron en la silla. Es decir
+si un cliente que se sentó en la silla 3 termina antes que la silla 1 o 2,
+debe esperar a que los demás clientes terminen sus procesos antes de comenzar
+el proceso de pagar. Puede haber barberos lentos o rápidos o clientes que
+tengan cortes de pelo más lentos o rápidos, pero al final el orden de entrada
+determina el orden de salida, no depende de cuán rápido demore el proceso de cortar el pelo.</p>
+</div>
+<div class="listingblock">
+<div class="title">Solución no equitativa</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">// Coordinación entre barbero y cajero
+semaphore coord;
+
+// Máxima capacidad
+semaphore max_clients;
+
+// Cuántos en la sala de espera
+semaphore waiting_room;
+
+// Cantidad de sillas disponibles
+semaphore available_chairs;
+
+// Anuncia que el corte de pelo esta listo
+semaphore client_ready;
+
+// Anunciar que ya se termino el proceso de cortar.
+semaphore client_done;
+
+// Anuncia que el cliente desocupo la silla
+semaphore leave_chair;
+
+// Anuncia que el cliente debe pagar su corte de pelo
+semaphore payment;
+
+// Anuncia que el cajero recibió el pago y el cliente puede retiraarse
+semaphore receipt;
+
+void main() {
+  init_semaphore(coord, 3);
+  init_semaphore(max_clients, 20);
+  init_semaphore(waiting_room, 4);
+  init_semaphore(available_chairs, 3);
+
+  init_semaphore(client_ready, 0);
+
+  init_semaphore(leave_chair, 0);
+  init_semaphore(payment, 0);
+  init_semaphore(receipt, 0);
+
+  // 50 clientes en total
+  for(int i = 0; i &lt;= 50; i++) {
+    spawn client(i);
+    spawn barber(1);
+    spawn barber(2);
+    spawn barber(3);
+    spawn cashier();
+  }
+}
+
+process client(int i) {
+ // esperamos que exista capacidad
+ wait(max_clients);
+
+ // entrar al negocio
+ wait(waiting_room);
+
+ // esperar silla
+ wait(available_chairs);
+
+ // silla disponible, dejar la sala de espera
+ signal(waiting_room);
+
+ // sentarse en la silla y cortarse el pelo
+ // anunciar que se cortó el pelo
+ signal(client_ready);
+
+ // esperar a que permitan terminar
+ wait(client_done);
+
+ // anunciar salir de la silla
+ signal(leave_chair);
+
+ // ir al cajero y pagar
+ // anunciar pago
+ signal(payment);
+
+ // esperar confirmación del cajero
+ wait(receipt);
+
+ // salir de la tienda y anunciar que hay espacio
+ signal(max_clients);
+}
+
+process barber(int i) {
+  while(true) {
+    wait(client_ready);
+    wait(coord);
+    // cortar pelo
+    signal(coord);
+    signal(client_done);
+    wait(leave_chair);
+    signal(available_chairs);
+  }
+}
+
+process cashier() {
+  while(true) {
+    wait(payment);
+    wait(coord);
+    // aceptar el pago;
+    signal(coord);
+    // enviar el recibo
+    signal(receipt);
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Para realizar una mejora y que la barbería sea equitativa,
+es decir que los clientes puedan dejar su silla apenas
+terminen de cortarse el pelo se debe añadir un semáforo
+del estado de terminado para cada cliente.</p>
+</div>
+<div class="paragraph">
+<p>Este estado el cliente esperará a que el barbero le de la señal
+de que puede salir de la silla y continuar hacia la caja registradora.</p>
+</div>
+<div class="paragraph">
+<p>También se debe tener un sistema de identificador de clientes,
+que permita saber el contador de clientes, evitando que dos clientes
+puedan tener el mismo número.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-c hljs" data-lang="c">semaphore client_done[50];
+
+// Se inicia un semaforo de estado terminado para cada cliente
+for(int i = 0; i &lt; 50; i++) {
+  init_semaphore(client_done[i], 0);
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
 <nav class="pagination">
   <span class="prev"><a href="problems.html">Problemas de la Concurrencia</a></span>
   <span class="next"><a href="../ada-basics/about.html">Introducción al lenguaje Ada</a></span>

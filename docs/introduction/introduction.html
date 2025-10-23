@@ -106,7 +106,7 @@
     <a class="nav-link" href="../sync/problems.html">Problemas de la Concurrencia</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../sync/semaphores.html">Semáforos y Mutex</a>
+    <a class="nav-link" href="../sync/semaphores.html">Semáforos</a>
   </li>
 </ul>
   </li>
@@ -326,30 +326,9 @@ múltiples y diversos componentes de hardware y las distintas aplicaciones que s
 El sistema operativo proporciona una máquina virtual para las aplicaciones, ésta interfaz es más conveniente
 (mayor seguridad, confiabilidad, disponibilidad, portabilidad) que si las aplicaciones interactuaran directamente con el hardware. El sistema operativo proporciona una capa que hace toda la complejidad del hardware más manejable.</p>
 </div>
-<div class="listingblock kroki-error">
+<div class="imageblock kroki">
 <div class="content">
-<pre>@startuml
-
-title Esquema de Sistema Operativo
-
-component "Aplicación 1"
-component "Aplicación 2"
-component "Aplicación 3"
-
-
-component "Sistema Operativo"
-
-
-"Aplicación 1" --&gt; "Sistema Operativo"
-"Aplicación 2" --&gt; "Sistema Operativo"
-"Aplicación 3" --&gt; "Sistema Operativo"
-
-
-component Hardware
-
-"Sistema Operativo" --&gt; Hardware
-
-@enduml</pre>
+<img src="_images/diag-495ead75afe2c5a66a8da2c640110f1b109ec8ba.svg" alt="Diagram">
 </div>
 </div>
 </div>

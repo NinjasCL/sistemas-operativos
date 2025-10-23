@@ -106,7 +106,7 @@
     <a class="nav-link" href="../sync/problems.html">Problemas de la Concurrencia</a>
   </li>
   <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="../sync/semaphores.html">Semáforos y Mutex</a>
+    <a class="nav-link" href="../sync/semaphores.html">Semáforos</a>
   </li>
 </ul>
   </li>
@@ -439,45 +439,11 @@ proporciona una abstracción del hardware que permite domar la complejidad del m
 </tr>
 </tbody>
 </table>
-<div class="listingblock kroki-error">
-<div class="title">Sistema Operativo como Máquina Virtual</div>
+<div class="imageblock kroki">
 <div class="content">
-<pre>@startuml
-
-title "Sistema Operativo como Máquina Virtual"
-
-
-
-node "Hardware" {
-    component "Memoria RAM"
-    component "Procesador"
-    component "Disco Duro"
-    component "Video"
-    component "Red"
-    component "Entrada/Salida"
-
-    package "Sistema Operativo" {
-
-      package "Programa 2" {
-        component "Memoria Infinita" as MI
-        component "Procesadores Infinitos" as PI
-        component "GUI" as GUI
-        component "Administrador de Disco" as AD
-        component "Administrador de Red" as AR
-      }
-
-      package "Programa 1" {
-        component "Memoria Infinita"
-        component "Procesadores Infinitos"
-        component "GUI" as GUI1
-        component "Administrador de Disco"
-        component "Administrador de Red"
-      }
-    }
-}
-
-@enduml</pre>
+<img src="_images/diag-603d27530a0c66c0ace41457fabdec63968a15dd.svg" alt="Sistema Operativo como Máquina Virtual">
 </div>
+<div class="title">Figure 1. Sistema Operativo como Máquina Virtual</div>
 </div>
 </div>
 </div>

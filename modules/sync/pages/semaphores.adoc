@@ -1,1 +1,729 @@
-= Semáforos y Mutex
+= Semáforos
+
+En este capítulo se verán conceptos para la gestión de la concurrencia
+a nivel de sistema operativo. Los semáforos son una herramienta
+de sincronización que provee el sistema operativo.
+
+== Operaciones 
+
+Un semáforo utiliza
+dos operaciones atómicas y mutuamente exclusivas.
+
+- `wait`: La operación de esperar, también conocida como `p`, `down` o `hold`.
+- `signal`: La operación de lanzar una señal, también conocida como `v`, `up` o `release`.
+
+La ventaja de estas operaciones frente a las soluciones de software
+es que no tienen el problema de la "espera ocupada", es decir 
+los procesos no utilizan ciclos de CPU mientras estén en estado de `wait`.
+
+Se trabaja principalmente con dos colas:
+
+- Cola de espera (wait list): Los procesos que esperan ser ejecutados.
+- Cola de resultados o listos (ready list): Los procesos que ya han sido ejecutados.
+
+=== Wait
+
+Cuando es el turno de un proceso de entrar a la sección crítica, 
+este llama a la operación `wait`, esto hace que todos los otros procesos 
+esperen su turno.
+
+Al momento de recibir un estado de `wait` los procesos se añaden
+a una cola de espera del tipo _FIFO_ (First In First Out, Primero en llegar, primero en salir).
+
+[source, c]
+----
+struct SEMAPHORE {
+  int count;
+  queue waitlist;
+} S;
+----
+
+Si el proceso debe esperar al semáforo `S`, entonces
+se añade a la cola del semáforo.
+
+=== Signal
+
+Una vez que el proceso que usa la sección crítica termina su
+ejecución, utiliza la operación `signal` la cual prioriza
+al siguiente proceso en la cola _FIFO_ y envía el proceso actual
+a la cola de espera para su próxima ejecución.
+
+== Tipos de Semáforo
+
+Hay diferentes tipos de semáforo, entre los cuales los más utilizados
+son los semáforos binarios (conocidos como Mutex en Windows) que solo pueden recibir dos estados
+y semáforos generales que pueden tener muchos valores positivos.
+
+=== Semáforos Binarios
+
+Son aquellos que pueden tener dos valores, 0 y 1. 
+Utiliza las operaciones `wait` y la operación `signal`
+de una forma binaria. Se debe recordar que estas operaciones
+son garantizadas por el sistema operativo 
+de ser atómicas y mutuamente exclusivas.
+
+[source, c]
+----
+struct SEMAPHORE {
+  int value; // (0, 1)
+  queue waitlist;
+} S;
+----
+
+La operación `wait` verifica que el valor sea 1. 
+
+En la operación `wait` es la que permite que el proceso 
+entre a la sección crítica. Si el valor es 1 significa
+que puede ingresar y vuelve su valor a 0.
+Caso contrario se añade el proceso a la cola de espera
+y se bloquea.
+
+.wait
+[source, pascal]
+----
+WaitB(s):
+  if s.value = 1 {
+    s.value = 0;
+  } else {
+    // Añadir proceso a la cola de s (s.waitlist)
+    // bloquear el proceso
+  }
+----
+
+La operación `signal` libera el uso de la sección crítica, 
+enviando una señal al siguiente proceso en la cola para que
+"despierte" y haga uso de la sección crítica.
+Finalmente añade al proceso a la cola de resultados.
+
+.signal
+[source, pascal]
+----
+SignalB(s):
+  // Si la cola está vacía entonces volver a 1
+  if s.waitlist = [] {
+    s.value = 1
+  } else {
+    // Quitar un proceso P de la cola de s.waitlist 
+    // Poner al proceso P en la cola de procesos ya ejecutados (resultados)
+  }
+----
+
+=== Semáforos Generales
+
+Son semáforos que pueden tomar más valores que los semáforos
+binarios (0 y 1). 
+
+==== Semáforos Enteros
+
+A diferencia de un semáforo binario que solo almacena
+1 y 0 (verdadero y falso). Este semáforo cuenta con  
+un contador (count) que puede tomar valores positivos 
+o negativos.
+
+[source, c]
+----
+struct SEMAPHORE {
+  int count;
+  queue waitlist;
+} S;
+----
+
+Las operaciones `wait` y `signal` son definidas
+como lo siguiente:
+
+`wait` reduce el contador en uno y si el contador 
+tiene un valor negativo, entonces el proceso pasa 
+a la cola de espera y se bloquea. 
+
+.wait
+[source, pascal]
+----
+Wait(s):
+  s.count--;
+  if (s.count < 0) {
+    // poner el proceso en s.waitlist
+    // bloquear proceso
+  }
+----
+
+`signal` incrementa el contador en uno y si el contador 
+tiene un valor negativo o igual a cero, entonces 
+se debe ejecutar el siguiente proceso en la cola de espera (mandar una señal).
+
+.signal
+[source, pascal]
+----
+Signal(s):
+  s.count++;
+  if (s.count <= 0) {
+    // obtener y ejecutar un proceso desde s.waitlist
+    // poner proceso en la cola de resultados
+  }
+----
+
+En el caso de que el contador sea mayor o igual a cero
+quiere decir que el número de procesos que pueden acceder 
+a la sección crítica sin que haya interbloqueo es el 
+mismo número del contador.
+
+En el caso de que el contador sea menor a cero, quiere decir
+que existe una cantidad de procesos esperando a ser ejecutados 
+con el valor absoluto del contador asciimath:[|"contador"|].
+
+==== Semáforos Positivos
+
+Este semáforo a diferencia del anterior, permite solamente 
+valores positivos. Por lo que se tiene una estructura adicional
+para almacenar la cantidad de procesos bloqueados.
+
+[source, c]
+----
+struct SEMAPHORE {
+  unsigned int count;
+  unsigned int locked;
+  queue waitlist;
+} S;
+----
+
+El contador (count) es el número de procesos que pueden 
+ingresar a la sección crítica (ejecutar la primitiva `wait`)
+sin que exista interbloqueo. 
+
+Y la lista de bloqueados (locked) es el número de procesos 
+que están esperando en el semáforo.
+
+
+`wait` verifica que el contador sea cero, 
+caso contrario lo disminuye en uno. 
+
+Si es cero entonces aumenta la cantidad de bloqueados.
+
+.wait
+[source, pascal]
+----
+Wait(s):
+  if (s.count == 0) {
+     s.locked++;
+    // poner el proceso en s.waitlist
+    // bloquear proceso
+  } else {
+    s.count--;
+  }
+----
+
+`signal` evalua la cantidad de bloqueados, 
+Si es cero entonces aumenta el contador en uno, 
+Si es distinto a cero entonces envía la señal para ejecutar el siguiente proceso. 
+
+.signal
+[source, pascal]
+----
+Signal(s):
+
+  if (s.locked == 0) {
+    s.count++;
+  } else {
+    // obtener y ejecutar un proceso desde s.waitlist
+    // poner proceso en la cola de resultados
+    s.locked--;
+  }
+----
+
+== ¿Para qué sirven los semáforos?
+
+Los semáforos pueden ser usados en distintos escenarios, 
+incluso fuera del ámbito de los sistemas operativos. 
+
+=== Distribución de Recursos
+
+Los semáforos sirven para limitar una cantidad asciimath:[k]
+de procesos para acceder a la sección crítica.
+
+Por ejemplo si se tiene una memoria (o recurso) limitada, los semáforos 
+pueden ser usados para distribuir el uso de memoria entre los procesos 
+de forma equitativa. Enviando una señal de bloqueo (wait) o liberación (signal) 
+a los procesos y mantener el uso de la memoria dentro de los límites
+y necesidades de cada proceso.
+
+.Ejemplo de Procesos y Recursos
+[source, c]
+----
+semaphore sem;
+
+process p(int i) {
+  while(true) {
+    wait(sem);
+    // usar sección crítica
+    signal(sem);
+  }
+}
+
+void main() {
+  // Solo 1 proceso puede acceder a la sección crítica a la vez
+  init_semaphore(sem, 1);
+  
+  spawn p(0);
+  spawn p(1);
+  spawn p(2);
+  // ... spawn p(n);
+}
+----
+
+=== Sincronización de Procesos
+
+Los semáforos permiten sincronizar varios procesos que deben
+realizar una operación en conjunto.
+
+El siguiente ejemplo muestra un restaurante 
+donde el cocinero y el mesero son procesos que inician 
+concurrentemente (al mismo tiempo) y son interdependientes, 
+es decir que el resultado de cocinero es necesario para el proceso 
+del mesero. 
+
+Por lo que el proceso de mesero debe ser ejecutado siempre
+después del proceso cocinero. 
+
+.Ejemplo de Restaurante
+[source, c]
+----
+process cocinero() {
+  preparar_comida();
+}
+
+process mesero() {
+  servir_comida();
+}
+
+process restaurante() {
+  spawn cocinero();
+  spawn mesero();
+}
+
+void main() {
+  spawn restaurante();
+}
+----
+
+Para poder dar la prioridad entre los procesos 
+se utiliza un semáforo de sincronización.
+En el cual los procesos interdependientes estarán 
+conectados y utilizarán las primitivas de  `wait` y `signal`.
+
+.Ejemplo de Restaurante con Semáforo
+[source, c]
+----
+semaphore sync; // Definimos el semáforo
+
+process cocinero() {
+  preparar_comida();
+  signal(sync); // Avisa que la comida ya esta lista y puede ser usada por el mesero
+}
+
+process mesero() {
+  wait(sync); // Espera a la señal para poder servir la comida
+  servir_comida();
+}
+
+process restaurante() {
+  spawn cocinero();
+  spawn mesero();
+}
+
+void main() {
+  init_semaphore(sync, 0); // Inicia el semáforo con valor 0
+  spawn restaurante();
+}
+----
+
+== Problema del Productor y Consumidor
+
+Este es un problema donde un proceso produce 
+una información que es requerida por un proceso consumidor.
+Se debe resolver la sincronización de los procesos.
+
+Este es un caso muy común hoy en día que sucede 
+en plataformas de streaming como youtube, twitch, spotify, 
+entre otros. Ya que existe un proceso productor de contenido (streaming de audio y video)
+que es enviado a un proceso consumidor de contenido (reune los bloques de datos y muestra un video con audio).
+
+. Uno o más productores generan datos (de cualquier tipo) y los almacenan en un buffer de memoria. 
+. El consumidor lee los datos del buffer y los elimina del mismo cuando son consumidos (procesados).
+
+Esto quiere decir que el buffer es una sección crítica donde solo puede haber 
+una operación de lectura o de escritura a la vez. Un productor no puede escribir 
+al mismo tiempo que un consumidor leer y viceversa.
+
+Además el productor puede generar los elementos y almacenarlos en el buffer 
+en un tiempo distinto al cual el consumidor puede leerlos. Es decir, el productor 
+define el ritmo en como se llena el buffer. Puede ser más rápido o más lento 
+que el consumidor.
+
+El consumidor debe leer el buffer, pero debe asegurarse de que este tenga datos.
+Si está vacío entonces debe esperar a que el productor escriba nuevos datos.
+Por lo que el consumidor debe verificar que el productor ha avanzado en generar
+bloques en el buffer antes de continuar. Es decir la cantidad de elementos de entrada 
+deben ser mayor a la cantidad de elementos de salida.
+
+=== Solución con Semáforos Binarios 
+
+.Solución con Semáforos Binarios
+[source, c]
+----
+int bloque_anterior, bloque_actual;
+semaphore turn;
+semaphore delay;
+
+process producer() {
+  while(true) {
+    // esperamos turno para crear elemento en el buffer
+    wait(turn);
+    // añadir elemento al buffer
+    bloque_actual++;
+    if (bloque_actual == 1) {
+      // Liberamos la espera del consumidor
+      signal(delay);
+    }
+    // liberar turno
+    signal(turn);
+  }
+}
+
+process consumer() {
+  // El consumidor espera hasta que existan bloques en el buffer
+  wait(delay);
+  
+  while(true) {
+    // esperar turno
+    wait(turn);
+    // obtener elemento del buffer
+    bloque_actual--;
+    // se guarda el valor del bloque antes de que el productor la modifique
+    bloque_anterior = bloque_actual;
+    // liberar turno
+    signal(turn);
+    // consumir elemento
+    if (bloque_anterior == 0) {
+      // Esperamos a que el productor tenga un nuevo bloque
+      wait(delay);
+    }
+  }
+} 
+
+void main() {
+  init_semaphore(turn, 1);
+  init_semaphore(delay, 0);
+  
+  spawn producer();
+  spawn consumer();
+}
+----
+
+=== Solución con Semáforos Enteros
+
+La solución con semáforos enteros es un poco más simple
+que la solución con semáforos binarios, al tener más números
+disponibles para los estados.
+
+.Solución con Semáforos Enteros
+[source, c]
+----
+semaphore turn;
+semaphore chunk;
+
+process producer() {
+  while(true) {
+    // crea un elemento nuevo
+    wait(turn);
+    // añade el elemento al buffer
+    signal(turn);
+    // Avisa que hay un nuevo bloque
+    signal(chunk);
+  }
+}
+
+process consumer() {
+  while(true) {
+    // El consumidor espera hasta que existan bloques en el buffer
+    wait(chunk);
+    
+    // Espera a que se permita acceder a la sección crítica
+    wait(turn);
+    
+    // Obtiene el bloque de datos
+    // Libera el turno
+    signal(turn);
+    
+    // Consume el bloque de datos
+  }
+} 
+
+void main() {
+  init_semaphore(turn, 1);
+  init_semaphore(chunk, 0);
+  
+  spawn producer();
+  spawn consumer();
+}
+----
+
+=== Solución con Buffer Finito
+
+Las soluciones anteriores consideran que el buffer no tiene límites, 
+en esta solución que es más realista se considera que el buffer tiene un máximo
+de bloques de datos posible para almacenar información.
+
+El buffer en esta situación se considera como un almacenamiento circular. 
+Es decir que al llegar al final del buffer se comienza desde el primer espacio
+para la próxima operación de añadir datos.
+
+Para lograr esto se requiere un semáforo adicional cuyo máximo es la cantidad 
+de bloques disponibles en el buffer.
+
+En esta solución el consumidor notificará al productor de que ha consumido 
+un elemento del buffer y el productor esperará a que existan bloques dentro 
+del buffer antes de crear nuevo contenido. Es decir no añadirá nuevos bloques
+al buffer hasta esperar a que el consumidor los procese y habilite nuevo espacio
+dentro del buffer.
+
+.Solución con Buffer Finito
+[source, c]
+----
+semaphore turn;
+semaphore chunk;
+semaphore buffer;
+
+process producer() {
+  while(true) {
+    // crea un elemento nuevo
+    // Esperamos al buffer 
+    wait(buffer);
+    // Esperamos al turno
+    wait(turn);
+    // añade el elemento al buffer
+    // Liberamos el turno
+    signal(turn);
+    // Avisa que hay un nuevo bloque
+    signal(chunk);
+  }
+}
+
+process consumer() {
+  while(true) {
+    // El consumidor espera hasta que existan bloques en el buffer
+    wait(chunk);
+    
+    // Espera a que se permita acceder a la sección crítica
+    wait(turn);
+    
+    // Obtiene el bloque de datos
+    // Libera el turno
+    signal(turn);
+    // Libera el buffer
+    signal(buffer);
+    // Consume el bloque de datos
+  }
+} 
+
+void main() {
+  init_semaphore(turn, 1);
+  init_semaphore(chunk, 0);
+  init_semaphore(buffer, MAX_BUFFER_SIZE);
+  
+  spawn producer();
+  spawn consumer();
+}
+----
+
+== Problema de la Barbería
+
+En el mundo real hay recursos limitados. 
+Los procesos solicitan los recursos y el sistema operativo 
+le da acceso a estos recursos y finalmente una vez realizada las operaciones 
+estos recursos son liberados.
+
+Este problema se demuestra con una barbería o peluquería
+donde existen 3 barberos, 3 sillas y una sala de espera de hasta 4 clientes.
+
+Los clientes tienen que esperar en el área de espera (dentro del lugar)
+si todos los barberos están ocupados. Si hay más de cuatro clientes esperando 
+entonces deben esperar en la calle (fuera del lugar).
+Los clientes entrarán a la sala de espera en modalidad FIFO.
+
+Adicionalmente existe una caja registradora para procesar los pagos. 
+
+Se tiene la siguiente situación:
+
+- 3 barberos
+- 3 sillas
+- 1 caja registradora
+- Un lugar de espera dentro del lugar con capacidad de 4 clientes.
+- La barbería solo puede atender máximo 20 clientes.
+- Existen 50 clientes que necesitan cortarse el pelo.
+
+Por lo que dentro de los 20 máximos que pueden atender.
+
+- 3 se cortan el pelo
+- 4 esperan dentro del negocio
+- 13 esperan fuera del negocio (en la calle).
+
+El proceso de cortar el pelo es el siguiente:
+
+. El cliente espera en la calle hasta que exista lugar dentro del negocio (en la sala de espera)
+. El cliente espera dentro del negocio hasta que exista una silla y barbero disponible
+. El cliente libera su espacio dentro de la sala de espera.
+. El cliente se corta el pelo con el barbero y la silla seleccionadas.
+. El cliente pasa por caja y paga su corte de pelo.
+. El cliente sale del negocio liberando el espacio para otro cliente.
+
+Este problema también se conoce como el "Barbero Dormilón"
+ya que el barbero esta esperando "durmiendo" hasta que un cliente 
+se siente en la silla para poder ejecutar su corte de pelo.
+
+Máximo 3 barberos y mientras el cajero esta aceptando el pago 
+solo 2 barberos pueden estar cortando el pelo. Es decir 
+el babero espera a que el cliente pague antes de poder 
+aceptar un nuevo cliente.
+
+Se dice que es una barbería no equitativa por la cola FIFO. 
+Si hay 3 clientes en la silla del barbero solo serán liberados 
+en el mismo orden en cuando se sentaron en la silla. Es decir 
+si un cliente que se sentó en la silla 3 termina antes que la silla 1 o 2, 
+debe esperar a que los demás clientes terminen sus procesos antes de comenzar 
+el proceso de pagar. Puede haber barberos lentos o rápidos o clientes que 
+tengan cortes de pelo más lentos o rápidos, pero al final el orden de entrada 
+determina el orden de salida, no depende de cuán rápido demore el proceso de cortar el pelo.
+
+.Solución no equitativa
+[source, c]
+----
+// Coordinación entre barbero y cajero
+semaphore coord;
+
+// Máxima capacidad
+semaphore max_clients;
+
+// Cuántos en la sala de espera
+semaphore waiting_room;
+
+// Cantidad de sillas disponibles
+semaphore available_chairs;
+
+// Anuncia que el corte de pelo esta listo
+semaphore client_ready;
+
+// Anunciar que ya se termino el proceso de cortar.
+semaphore client_done;
+
+// Anuncia que el cliente desocupo la silla
+semaphore leave_chair;
+
+// Anuncia que el cliente debe pagar su corte de pelo
+semaphore payment;
+
+// Anuncia que el cajero recibió el pago y el cliente puede retiraarse
+semaphore receipt;
+
+void main() {
+  init_semaphore(coord, 3);
+  init_semaphore(max_clients, 20);
+  init_semaphore(waiting_room, 4);
+  init_semaphore(available_chairs, 3);
+  
+  init_semaphore(client_ready, 0);
+  
+  init_semaphore(leave_chair, 0);
+  init_semaphore(payment, 0);
+  init_semaphore(receipt, 0);
+  
+  // 50 clientes en total
+  for(int i = 0; i <= 50; i++) {
+    spawn client(i);
+    spawn barber(1);
+    spawn barber(2);
+    spawn barber(3);
+    spawn cashier();
+  }
+}
+
+process client(int i) {
+ // esperamos que exista capacidad
+ wait(max_clients);
+ 
+ // entrar al negocio 
+ wait(waiting_room);
+ 
+ // esperar silla
+ wait(available_chairs);
+ 
+ // silla disponible, dejar la sala de espera
+ signal(waiting_room);
+ 
+ // sentarse en la silla y cortarse el pelo
+ // anunciar que se cortó el pelo
+ signal(client_ready);
+ 
+ // esperar a que permitan terminar
+ wait(client_done);
+ 
+ // anunciar salir de la silla
+ signal(leave_chair);
+ 
+ // ir al cajero y pagar 
+ // anunciar pago
+ signal(payment);
+ 
+ // esperar confirmación del cajero
+ wait(receipt);
+ 
+ // salir de la tienda y anunciar que hay espacio
+ signal(max_clients);
+}
+
+process barber(int i) {
+  while(true) {
+    wait(client_ready);
+    wait(coord);
+    // cortar pelo
+    signal(coord);
+    signal(client_done);
+    wait(leave_chair);
+    signal(available_chairs);
+  }
+}
+
+process cashier() {
+  while(true) {
+    wait(payment);
+    wait(coord);
+    // aceptar el pago;
+    signal(coord);
+    // enviar el recibo
+    signal(receipt);
+  }
+}
+----
+
+Para realizar una mejora y que la barbería sea equitativa, 
+es decir que los clientes puedan dejar su silla apenas
+terminen de cortarse el pelo se debe añadir un semáforo 
+del estado de terminado para cada cliente.
+
+Este estado el cliente esperará a que el barbero le de la señal
+de que puede salir de la silla y continuar hacia la caja registradora.
+
+También se debe tener un sistema de identificador de clientes, 
+que permita saber el contador de clientes, evitando que dos clientes 
+puedan tener el mismo número. 
+
+
+[source, c]
+----
+semaphore client_done[50];
+
+// Se inicia un semaforo de estado terminado para cada cliente 
+for(int i = 0; i < 50; i++) {
+  init_semaphore(client_done[i], 0);
+}
+----
+
+// TODO: Completar
