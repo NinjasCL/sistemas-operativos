@@ -2,4 +2,6 @@
 * xref:concurrency.adoc[]
 * xref:problems.adoc[]
 * xref:semaphores.adoc[]
-// * xref:monitors.adoc[]
+* xref:monitors.adoc[]
+// * xref:messages.adoc[]
+// * xref:schedulers.adoc[]
