@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Untitled :: Conceptos de Sistemas Operativos</title>
+    <title>Monitores :: Conceptos de Sistemas Operativos</title>
     <link rel="canonical" href="https://ninjascl.github.io/sistemas-operativos/sync/monitors.html">
+    <link rel="prev" href="semaphores.html">
+    <link rel="next" href="../ada-basics/about.html">
     <meta name="generator" content="Antora 3.1.10">
     <link rel="stylesheet" href="../_/css/site.css">
     <link rel="stylesheet" href="../_/js/vendor/styles/monokai.css">  </head>
@@ -106,6 +108,9 @@
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="semaphores.html">Semáforos</a>
   </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="monitors.html">Monitores</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="0">
@@ -188,6 +193,11 @@
 <button class="nav-toggle"></button>
   <a href="../index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">Conceptos de Sistemas Operativos</a></li>
+    <li>Sincronización</li>
+    <li><a href="monitors.html">Monitores</a></li>
+  </ul>
 </nav>
 <div class="edit-this-page"><a href="file:///antora/./modules/sync/pages/monitors.adoc">Edit this Page</a></div>
 </div>
@@ -196,7 +206,249 @@
   <div class="toc-menu"></div>
 </aside>
 <article class="doc">
+<h1 class="page">Monitores</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Son soluciones similares a los semáforos, pero de más alto nivel,
+normalmente incluidos dentro de los lenguajes de programación.</p>
+</div>
+<div class="paragraph">
+<p>Un monitor es una estructura de datos que permite que solamente
+un proceso o hilo pueda ejecutar sus funciones a la vez.</p>
+</div>
+<div class="paragraph">
+<p>Los procesos o hilos que llamen al las funciones de un monitor
+quedarán bloqueados hasta que el monitor este disponible.</p>
+</div>
+<div class="paragraph">
+<p>El monitor tiene una cola de entradas y datos locales que permiten
+priorizar las tareas a elaborar. También tiene una cola de condición donde se almacenan los procesos
+en espera.</p>
+</div>
+<div class="paragraph">
+<p>El primer paso hacia poder detectar cuando un proceso ha fallado es enlazarlo. Cuando dos procesos A y B
+están enlazados, que A aborte su ejecución notificará a B, y que B aborte su ejecución notificará a A.
+Un enlace es, por lo tanto, bidireccional.</p>
+</div>
+<div class="paragraph">
+<p>Los monitores son útiles cuando queremos abordar el caso cuando un proceso tenga errores.
+Lo que queremos es detectar ese error desde fuera para tomar una acción correctiva, y esto no lo podemos hacer con enlaces normales, sino con monitores.
+Cuando creamos un monitor, lo que estamos haciendo es crear una conexión entre dos procesos. En este caso, la relación no es bidireccional,
+sino que hay un proceso monitorizado y un proceso que monitoriza.</p>
+</div>
+<div class="paragraph">
+<p>Cuando haya establecido un monitor por el que A supervisa el proceso B, si el proceso B cae,
+el proceso A recibirá una notificación para manejar la situación.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="monitores-con-señales-links-enlaces"><a class="anchor" href="#monitores-con-señales-links-enlaces"></a>Monitores con Señales (Links, Enlaces)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Existen dos funciones principales de los monitores con señales: <code>cwait</code> y <code>csignal</code>.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>cwait(condición)</code>: Suspende la ejecución de un proceso según la condición. El monitor estará disponible para ser usado por otro proceso.</p>
+</li>
+<li>
+<p><code>csignal(condición)</code>: Reaunuda la ejecución de un proceso según la condición. Si hay varios proceso elige solo uno, si no hay procesos no realiza operaciones.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Flujo de un Monitor con Señales</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>El proceso 1 espera en la cola de entrada, ya que ha invocado una de las funciones del monitor.</p>
+</li>
+<li>
+<p>Asumiendo que no hay más procesos, el monitor asigna y monitorea solamente al proceso 1.</p>
+</li>
+<li>
+<p>El proceso 2 desea invocar un método del monitor, el cual ya está ocupado por el proceso 1.</p>
+</li>
+<li>
+<p>El proceso 1 puede utilizar <code>csignal</code>, pero como no hay otros procesos en la cola de condición, esta señal es ignorada.</p>
+</li>
+<li>
+<p>El proceso 1 entonces utilizar <code>cwait</code> y pasa a la cola de condiciones. Lo que permite que proceso 2 entre al monitor.</p>
+</li>
+<li>
+<p>El proceso 2 puede invocar a <code>csignal</code>, lo que provocaría que el proceso 1 abandone al monitor. Sin embargo si esto no ocurre, debe ocurrir un cambio de contexto para suspender al proceso 2 y volver a reanudarlo.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="monitores-con-notificaciones-mensajes"><a class="anchor" href="#monitores-con-notificaciones-mensajes"></a>Monitores con Notificaciones (Mensajes)</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>La principal característica es que se utiliza una función <code>cnotify</code> a un consumidor esperando.
+En vez de utilizar <code>csignal</code>. Es decir, envía una notificación en vez de una señal. Esto permite
+evitar el problema mostrado anteriormente que un proceso necesite cambios de contexto adicionales.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>El proceso 1 espera en la cola de entrada, ya que ha invocado una de las funciones el monitor.</p>
+</li>
+<li>
+<p>Asumiendo que no hay más procesos, el monitor asigna y monitorea solamente al proceso 1.</p>
+</li>
+<li>
+<p>El proceso 2 desea invocar un método del monitor, el cual ya está ocupado por el proceso 1.</p>
+</li>
+<li>
+<p>El proceso 1 entonces utilizar <code>cwait</code> y pasa a la cola de condiciones. Lo que permite que proceso 2 entre al monitor.</p>
+</li>
+<li>
+<p>El proceso 2 llama a <code>cnotify</code> para que la cola de condiciones priorice el siguiente proceso dentro del monitor, aunque este seguirá en espera a que el monitor este disponible.</p>
+</li>
+<li>
+<p>El proceso 2 sigue ejecutandose hasta abandonar el monitor.</p>
+</li>
+<li>
+<p>El monitor está disponible, por lo que el proceso 1 continúa su ejecución hasta abandonar el monitor o ejecutar nuevamente un <code>cwait</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="ejemplos-con-lenguajes-de-programación"><a class="anchor" href="#ejemplos-con-lenguajes-de-programación"></a>Ejemplos con Lenguajes de Programación</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ejemplo con <em>Ada</em>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Ejemplo de Monitor en Ada</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-ada hljs" data-lang="ada">-- Definición de un monitor para sincronizar el acceso a un contador
+monitor Contador_Monitor is
+    -- Variable de datos privada
+    private
+        Contador : Integer := 0;
 
+    -- Método público para incrementar el contador
+    procedure Incrementar (Self : in out Contador_Monitor);
+
+    -- Método público para obtener el valor actual del contador
+    function Obtener_Valor (Self : in Contador_Monitor) return Integer;
+
+-- Implementación de los métodos
+procedure Incrementar (Self : in out Contador_Monitor) is
+begin
+    -- El monitor se encarga de la exclusión mutua,
+    -- así que solo un hilo puede estar aquí a la vez.
+    Self.Contador := Self.Contador + 1;
+end Incrementar;
+
+function Obtener_Valor (Self : in Contador_Monitor) return Integer is
+begin
+    return Self.Contador;
+end Obtener_Valor;
+
+end Contador_Monitor;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ejemplo con <em>Python</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-python hljs" data-lang="python">import threading
+
+class Monitor:
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._recurso_compartido = []
+
+    def agregar(self, elemento):
+        with self._lock:
+            self._recurso_compartido.append(elemento)
+            print(f"Agregado: {elemento}")
+
+    def obtener(self):
+        with self._lock:
+            if not self._recurso_compartido:
+                return None
+            return self._recurso_compartido.pop(0)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ejemplo de monitor con <em>Java</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-java hljs" data-lang="java">public class ContadorCompartido {
+    private int contador = 0;
+
+    // Este método es un monitor. Solo un hilo puede ejecutarlo a la vez.
+    public synchronized void incrementar() {
+        contador++;
+        System.out.println(Thread.currentThread().getName() + " ha incrementado. Contador: " + contador);
+    }
+
+    // Este método también es un monitor.
+    public synchronized int getContador() {
+        return contador;
+    }
+
+    public static void main(String[] args) {
+        ContadorCompartido miContador = new ContadorCompartido();
+
+        // Creamos dos hilos que incrementan el contador
+        Thread hilo1 = new Thread(() -&gt; {
+            for (int i = 0; i &lt; 100; i++) {
+                miContador.incrementar();
+            }
+        }, "Hilo-1");
+
+        Thread hilo2 = new Thread(() -&gt; {
+            for (int i = 0; i &lt; 100; i++) {
+                miContador.incrementar();
+            }
+        }, "Hilo-2");
+
+        hilo1.start();
+        hilo2.start();
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ejemplo de monitor con <em>Erlang</em></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-erlang hljs" data-lang="erlang">-module(mymodule).
+start() -&gt;
+    gen_server:start({local, ?MODULE}, ?MODULE, [], []).
+...
+start_link() -&gt;
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+...
+crash() -&gt;
+    gen_server:cast(?MODULE, crash).
+...
+handle_cast(crash,State) -&gt;
+    {stop, error, State};
+...</code></pre>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="semaphores.html">Semáforos</a></span>
+  <span class="next"><a href="../ada-basics/about.html">Introducción al lenguaje Ada</a></span>
+</nav>
 </article>
   </div>
 </main>

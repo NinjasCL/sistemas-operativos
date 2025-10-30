@@ -1,0 +1,176 @@
+= Monitores
+
+// https://marcelog.github.io/articles/erlang_link_vs_monitor_difference.html
+
+Son soluciones similares a los semáforos, pero de más alto nivel, 
+normalmente incluidos dentro de los lenguajes de programación.
+
+Un monitor es una estructura de datos que permite que solamente 
+un proceso o hilo pueda ejecutar sus funciones a la vez.
+
+Los procesos o hilos que llamen al las funciones de un monitor 
+quedarán bloqueados hasta que el monitor este disponible.
+
+El monitor tiene una cola de entradas y datos locales que permiten 
+priorizar las tareas a elaborar. También tiene una cola de condición donde se almacenan los procesos 
+en espera.
+
+El primer paso hacia poder detectar cuando un proceso ha fallado es enlazarlo. Cuando dos procesos A y B 
+están enlazados, que A aborte su ejecución notificará a B, y que B aborte su ejecución notificará a A.
+Un enlace es, por lo tanto, bidireccional.
+
+Los monitores son útiles cuando queremos abordar el caso cuando un proceso tenga errores. 
+Lo que queremos es detectar ese error desde fuera para tomar una acción correctiva, y esto no lo podemos hacer con enlaces normales, sino con monitores.
+Cuando creamos un monitor, lo que estamos haciendo es crear una conexión entre dos procesos. En este caso, la relación no es bidireccional, 
+sino que hay un proceso monitorizado y un proceso que monitoriza.
+
+Cuando haya establecido un monitor por el que A supervisa el proceso B, si el proceso B cae, 
+el proceso A recibirá una notificación para manejar la situación.
+
+== Monitores con Señales (Links, Enlaces)
+
+Existen dos funciones principales de los monitores con señales: `cwait` y `csignal`.
+
+- `cwait(condición)`: Suspende la ejecución de un proceso según la condición. El monitor estará disponible para ser usado por otro proceso.
+- `csignal(condición)`: Reaunuda la ejecución de un proceso según la condición. Si hay varios proceso elige solo uno, si no hay procesos no realiza operaciones.
+
+*Flujo de un Monitor con Señales*
+
+. El proceso 1 espera en la cola de entrada, ya que ha invocado una de las funciones del monitor.
+. Asumiendo que no hay más procesos, el monitor asigna y monitorea solamente al proceso 1.
+. El proceso 2 desea invocar un método del monitor, el cual ya está ocupado por el proceso 1.
+. El proceso 1 puede utilizar `csignal`, pero como no hay otros procesos en la cola de condición, esta señal es ignorada.
+. El proceso 1 entonces utilizar `cwait` y pasa a la cola de condiciones. Lo que permite que proceso 2 entre al monitor.
+. El proceso 2 puede invocar a `csignal`, lo que provocaría que el proceso 1 abandone al monitor. Sin embargo si esto no ocurre, debe ocurrir un cambio de contexto para suspender al proceso 2 y volver a reanudarlo.
+
+== Monitores con Notificaciones (Mensajes)
+
+La principal característica es que se utiliza una función `cnotify` a un consumidor esperando. 
+En vez de utilizar `csignal`. Es decir, envía una notificación en vez de una señal. Esto permite 
+evitar el problema mostrado anteriormente que un proceso necesite cambios de contexto adicionales.
+
+. El proceso 1 espera en la cola de entrada, ya que ha invocado una de las funciones el monitor.
+. Asumiendo que no hay más procesos, el monitor asigna y monitorea solamente al proceso 1.
+. El proceso 2 desea invocar un método del monitor, el cual ya está ocupado por el proceso 1.
+. El proceso 1 entonces utilizar `cwait` y pasa a la cola de condiciones. Lo que permite que proceso 2 entre al monitor.
+. El proceso 2 llama a `cnotify` para que la cola de condiciones priorice el siguiente proceso dentro del monitor, aunque este seguirá en espera a que el monitor este disponible.
+. El proceso 2 sigue ejecutandose hasta abandonar el monitor.
+. El monitor está disponible, por lo que el proceso 1 continúa su ejecución hasta abandonar el monitor o ejecutar nuevamente un `cwait`.
+
+== Ejemplos con Lenguajes de Programación 
+
+Ejemplo con _Ada_.
+
+.Ejemplo de Monitor en Ada
+[source, ada]
+----
+-- Definición de un monitor para sincronizar el acceso a un contador
+monitor Contador_Monitor is
+    -- Variable de datos privada
+    private
+        Contador : Integer := 0;
+    
+    -- Método público para incrementar el contador
+    procedure Incrementar (Self : in out Contador_Monitor);
+    
+    -- Método público para obtener el valor actual del contador
+    function Obtener_Valor (Self : in Contador_Monitor) return Integer;
+
+-- Implementación de los métodos
+procedure Incrementar (Self : in out Contador_Monitor) is
+begin
+    -- El monitor se encarga de la exclusión mutua,
+    -- así que solo un hilo puede estar aquí a la vez.
+    Self.Contador := Self.Contador + 1;
+end Incrementar;
+
+function Obtener_Valor (Self : in Contador_Monitor) return Integer is
+begin
+    return Self.Contador;
+end Obtener_Valor;
+
+end Contador_Monitor;
+----
+
+Ejemplo con _Python_
+
+[source, python]
+----
+import threading
+
+class Monitor:
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._recurso_compartido = []
+
+    def agregar(self, elemento):
+        with self._lock:
+            self._recurso_compartido.append(elemento)
+            print(f"Agregado: {elemento}")
+
+    def obtener(self):
+        with self._lock:
+            if not self._recurso_compartido:
+                return None
+            return self._recurso_compartido.pop(0)
+
+----
+
+Ejemplo de monitor con _Java_
+
+[source, java]
+----
+public class ContadorCompartido {
+    private int contador = 0;
+
+    // Este método es un monitor. Solo un hilo puede ejecutarlo a la vez.
+    public synchronized void incrementar() {
+        contador++;
+        System.out.println(Thread.currentThread().getName() + " ha incrementado. Contador: " + contador);
+    }
+
+    // Este método también es un monitor.
+    public synchronized int getContador() {
+        return contador;
+    }
+
+    public static void main(String[] args) {
+        ContadorCompartido miContador = new ContadorCompartido();
+
+        // Creamos dos hilos que incrementan el contador
+        Thread hilo1 = new Thread(() -> {
+            for (int i = 0; i < 100; i++) {
+                miContador.incrementar();
+            }
+        }, "Hilo-1");
+
+        Thread hilo2 = new Thread(() -> {
+            for (int i = 0; i < 100; i++) {
+                miContador.incrementar();
+            }
+        }, "Hilo-2");
+
+        hilo1.start();
+        hilo2.start();
+    }
+}
+----
+
+Ejemplo de monitor con _Erlang_
+
+[source, erlang]
+----
+-module(mymodule).
+start() ->
+    gen_server:start({local, ?MODULE}, ?MODULE, [], []).
+...
+start_link() ->
+    gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
+...
+crash() ->
+    gen_server:cast(?MODULE, crash).
+...
+handle_cast(crash,State) ->
+    {stop, error, State};
+...
+----
